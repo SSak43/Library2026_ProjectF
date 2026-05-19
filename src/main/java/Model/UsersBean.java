@@ -26,18 +26,41 @@ public class UsersBean implements Serializable{
 		this.userUpdate = userUpdate;
 	}
 	
-	public int getUserId();
+	public int getUserId() {return userId;}
 	public void setUserId(int userId) {
 		this.userId = userId;
 	}
-	public String getUserName();
-	public String getTel();
-	public int getLoginId();
-	public String getPassword();
-	public char getUserClass();
-	public char getUserStatus();
-	public Date getUserRegist();
-	public Date getUserUpdate();
-	
+	public String getUserName() {return userName;}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	public String getTel(){return tel;}
+	public void setTel(String tel) {
+		this.tel = tel;
+	}
+	public int getLoginId(){return loginId;}
+	public void setLoginId(int loginId) {
+		this.loginId = loginId;
+	}
+	public String getPassword(){return password;}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public char getUserClass(){return userClass;}
+	public void setUserClass(char userClass) {
+		this.userClass = userClass;
+	}
+	public char getUserStatus(){return userStatus;}
+	public void setUserStatus(char userStatus) {
+		this.userStatus = userStatus;
+	}
+	public Date getUserRegist(){return userRegist;}
+	public void setUserRegist(Date userRegist) {
+		this.userRegist = userRegist;
+	}
+	public Date getUserUpdate(){return userUpdate;}
+	public void setUserUpdate(Date userUpdate) {
+		this.userUpdate = userUpdate;
+	}
 
 }

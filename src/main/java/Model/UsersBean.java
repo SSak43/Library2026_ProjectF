@@ -27,6 +27,9 @@ public class UsersBean implements Serializable{
 	}
 	
 	public int getUserId();
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
 	public String getUserName();
 	public String getTel();
 	public int getLoginId();

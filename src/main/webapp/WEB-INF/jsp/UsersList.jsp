@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ page import="model.UsersBean, java.util.List %>
+    <%@ page import="Model.UsersBean, java.util.List" %>
     <%
     	List<UsersBean> usersList = (List<UsersBean>) session.getAttribute("usersList");
     %>
@@ -18,7 +18,7 @@
 		<input type="radio" name="mode" value="nameQuery">氏名
 		
 		<p>
-			キーワード：（商品名の一部、価格を入力してください）<br>
+			キーワード：（氏名の一部、利用者IDを入力してください）<br>
 			<input type="text" name="name">
 		</p>
 		<input type="submit" value="検索">
@@ -27,7 +27,7 @@
 	<table border="1">
 		<tr><th>利用者ID</th><th>氏名</th><th>電話番号</th><th>ログインID</th><th>パスワード</th><th>区分</th><th>状態</th><th>登録日</th><th>更新日</th></tr>
 		<% if (usersList != null){ %><% for (UsersBean usersBean : usersList){ %>
-		<tr><td><%=usersBean.getUserId() %></td><td><%=usersBean.getUserName() %></td><td><%=usersBean.getTel() %></td><td><%=usersBean.getLoginId() %></td><td><%=usersBean.getPassword() %></td><td><%=usersBean.getUserClass() %></td><td><%=usersBean.getStatus() %></td><td><%=usersBean.getUserRegist() %></td><td><%=usersBean.getUpdate() %></td></tr>
+		<tr><td><%=usersBean.getUserId() %></td><td><%=usersBean.getUserName() %></td><td><%=usersBean.getTel() %></td><td><%=usersBean.getLoginId() %></td><td><%=usersBean.getPassword() %></td><td><%=usersBean.getUserClass() %></td><td><%=usersBean.getUserStatus() %></td><td><%=usersBean.getUserRegist() %></td><td><%=usersBean.getUserUpdate() %></td></tr>
 		<% } %><% } %>
 	</table>
 	

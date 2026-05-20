@@ -1,11 +1,16 @@
 package Servlet;
 
+import java.io.IOException;
+import java.util.List;
+
+import Model.UsersBean;
+import Model.UsersListLogic;
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class UsersListServlet
@@ -26,7 +31,29 @@ public class UsersListServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		request.setCharacterEncoding("UTF-8");
+		String mode = request.getParameter("mode");
+		String name = request.getParameter("name");
+		
+		UsersBean usersBean = new UsersBean();
+		UsersListLogic logic = new UsersListLogic();
+		List<UsersBean> usersList = null;
+		
+		
+//		if(mode == null || name == null || name.isEmpty()) {
+//			usersBean.setUserName(name);
+//			usersList = logic.name(usersBean);
+//		}else if("nameQuery".equals(mode)) {
+			usersBean.setUserName(name);
+			usersList = logic.name(usersBean);
+//		}
+		
+		HttpSession session = request.getSession();
+		session.setAttribute("usersList", usersList);
+		
+		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/UsersList.jsp");
+		dispatcher.forward(request, response);
+		
 	}
 
 	/**

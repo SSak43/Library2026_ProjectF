@@ -32,24 +32,42 @@ public class UsersListServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		request.setCharacterEncoding("UTF-8");
-		String mode = request.getParameter("mode");
-		String name = request.getParameter("name");
+		String id = request.getParameter("userId");
+		String name = request.getParameter("userName");
 		
 		UsersBean usersBean = new UsersBean();
 		UsersListLogic logic = new UsersListLogic();
 		List<UsersBean> usersList = null;
+
 		
+		if (id != null && !id.isEmpty()) {
+	        try {
+	            usersBean.setUserId(Integer.parseInt(id));
+	            usersList = logic.id(usersBean);
+	        } catch (NumberFormatException e) {
+	            // IDに数字以外が入った場合の安全対策として全件表示にする
+	            usersList = logic.all(usersBean);
+	        }
+	    }// 2. 氏名欄に入力がある場合（nullではなく、空文字でもない）
+	    else if (name != null && !name.isEmpty()) {
+	        usersBean.setUserName(name);
+	        usersList = logic.name(usersBean);
+	    } 
+	    // 3. どちらも空っぽの場合
+	    else {
+	        usersList = logic.all(usersBean);
+	    }
 		
-		if(mode == null || name == null || name.isEmpty()) {
-			usersBean.setUserName(name);
-			usersList = logic.all(usersBean);
-		}else if("nameQuery".equals(mode)) {
-			usersBean.setUserName(name);
-			usersList = logic.name(usersBean);
-		}else if("idQuery".equals(mode)) {
-			usersBean.setUserId(Integer.parseInt(name));
-			usersList = logic.id(usersBean);
-		}
+//		if(id == null || name == null || name.isEmpty()) {
+//			usersBean.setUserName(name);
+//			usersList = logic.all(usersBean);
+//		}else if("userName".equals(name)) {
+//			usersBean.setUserName(name);
+//			usersList = logic.name(usersBean);
+//		}else if("userName".equals(id)) {
+//			usersBean.setUserId(Integer.parseInt(id));
+//			usersList = logic.id(usersBean);
+//		}
 		
 		HttpSession session = request.getSession();
 		session.setAttribute("usersList", usersList);

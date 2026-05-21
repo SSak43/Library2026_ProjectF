@@ -13,13 +13,15 @@
 <body> 
 	<h1>利用者一覧</h1>
 	<form action="UsersListServlet" method="GET">
-		<p>検索方法：</p>
-		<input type="radio" name="mode" value="idQuery">利用者ID
-		<input type="radio" name="mode" value="nameQuery">氏名
+<!-- 		<p>検索方法：</p> -->
+<!-- 		<input type="radio" name="mode" value="idQuery">利用者ID -->
+<!-- 		<input type="radio" name="mode" value="nameQuery">氏名 -->
 		
 		<p>
-			キーワード：（氏名の一部、利用者IDを入力してください）<br>
-			<input type="text" name="name">
+			利用者IDを入力<br>
+			<input type="text" name="userId"><br>
+			利用者氏名を入力<br>
+			<input type="text" name="userName">
 		</p>
 		<input type="submit" value="検索">
 		<input type="reset" value="リセット">

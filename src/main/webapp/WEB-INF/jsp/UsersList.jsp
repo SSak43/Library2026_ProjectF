@@ -11,7 +11,7 @@
 <title>利用者情報</title>
 </head>
 <body> 
-	<h1>利用者検索</h1>
+	<h1>利用者一覧</h1>
 	<form action="UsersListServlet" method="GET">
 		<p>検索方法：</p>
 		<input type="radio" name="mode" value="idQuery">利用者ID

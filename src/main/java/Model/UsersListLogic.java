@@ -14,4 +14,9 @@ public class UsersListLogic {
 		UsersDAO dao = new UsersDAO();
 		return dao.findByName(usersBean);
 	}
+	
+	public List<UsersBean> id(UsersBean usersBean){
+		UsersDAO dao = new UsersDAO();
+		return dao.findById(usersBean);
+	}
 }

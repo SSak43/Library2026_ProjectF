@@ -46,6 +46,9 @@ public class UsersListServlet extends HttpServlet {
 		}else if("nameQuery".equals(mode)) {
 			usersBean.setUserName(name);
 			usersList = logic.name(usersBean);
+		}else if("idQuery".equals(mode)) {
+			usersBean.setUserId(Integer.parseInt(name));
+			usersList = logic.id(usersBean);
 		}
 		
 		HttpSession session = request.getSession();

@@ -40,13 +40,13 @@ public class UsersListServlet extends HttpServlet {
 		List<UsersBean> usersList = null;
 		
 		
-//		if(mode == null || name == null || name.isEmpty()) {
-//			usersBean.setUserName(name);
-//			usersList = logic.name(usersBean);
-//		}else if("nameQuery".equals(mode)) {
+		if(mode == null || name == null || name.isEmpty()) {
+			usersBean.setUserName(name);
+			usersList = logic.all(usersBean);
+		}else if("nameQuery".equals(mode)) {
 			usersBean.setUserName(name);
 			usersList = logic.name(usersBean);
-//		}
+		}
 		
 		HttpSession session = request.getSession();
 		session.setAttribute("usersList", usersList);

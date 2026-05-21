@@ -6,3 +6,5 @@ public class DAOBase {
 	protected final String DB_PASS = "password";
 
 }
+
+//更新用

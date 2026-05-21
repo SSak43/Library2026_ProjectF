@@ -62,5 +62,5 @@ public class UsersBean implements Serializable{
 	public void setUserUpdate(Date userUpdate) {
 		this.userUpdate = userUpdate;
 	}
-
+	//更新用
 }

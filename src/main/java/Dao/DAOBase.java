@@ -7,4 +7,3 @@ public class DAOBase {
 
 }
 
-//更新用

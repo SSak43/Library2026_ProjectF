@@ -44,6 +44,41 @@ public class UsersDAO extends DAOBase {
 		return usersList;
 	}
 
+	public List<UsersBean> findByClass(UsersBean usersBean) {
+		List<UsersBean> usersList = new ArrayList<>();
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			throw new IllegalStateException("JDBCドライバを読み込めません");
+		}
+		try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
+			String sql = "SELECT * FROM USERS WHERE USER_CLASS = ?";
+			PreparedStatement pStmt = conn.prepareStatement(sql);
+			pStmt.setString(1, usersBean.getUserClass());
+
+			try (ResultSet rs = pStmt.executeQuery()) {
+				while (rs.next()) {
+					UsersBean u = new UsersBean();
+					u.setUserId(rs.getInt("USER_ID"));
+					u.setUserName(rs.getString("USER_NAME"));
+					u.setTel(rs.getString("TEL"));
+					u.setLoginId(rs.getInt("LOGIN_ID"));
+					u.setPassword(rs.getString("PASSWORD"));
+					u.setUserClass(rs.getString("USER_CLASS"));
+					u.setUserStatus(rs.getString("USER_STATUS"));
+					u.setUserRegist(rs.getDate("USER_REGIST"));
+					u.setUserUpdate(rs.getDate("USER_UPDATE"));
+					usersList.add(u);
+				}
+
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return usersList;
+
+	}
+
 	public List<UsersBean> findByName(UsersBean usersBean) {
 		List<UsersBean> usersList = new ArrayList<>();
 		try {
@@ -77,6 +112,7 @@ public class UsersDAO extends DAOBase {
 		}
 		return usersList;
 	}
+
 	public List<UsersBean> findById(UsersBean usersBean) {
 		List<UsersBean> usersList = new ArrayList<>();
 		try {

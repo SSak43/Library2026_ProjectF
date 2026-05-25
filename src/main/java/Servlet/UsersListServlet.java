@@ -33,7 +33,8 @@ public class UsersListServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		request.setCharacterEncoding("UTF-8");
 		String id = request.getParameter("userId");
-		String name = request.getParameter("userName");
+//		String name = request.getParameter("userName");
+		String cla = request.getParameter("cla");
 		
 		UsersBean usersBean = new UsersBean();
 		UsersListLogic logic = new UsersListLogic();
@@ -48,10 +49,10 @@ public class UsersListServlet extends HttpServlet {
 	            // IDに数字以外が入った場合の安全対策として全件表示にする
 	            usersList = logic.all(usersBean);
 	        }
-	    }// 2. 氏名欄に入力がある場合（nullではなく、空文字でもない）
-	    else if (name != null && !name.isEmpty()) {
-	        usersBean.setUserName(name);
-	        usersList = logic.name(usersBean);
+	    }// 2. クラス欄に入力がある場合（nullではなく、空文字でもない）
+	    else if (cla != null && !cla.isEmpty()) {
+	        usersBean.setUserClass(cla);
+	        usersList = logic.userClass(usersBean);
 	    } 
 	    // 3. どちらも空っぽの場合
 	    else {

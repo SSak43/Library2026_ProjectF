@@ -10,11 +10,16 @@ public class UsersListLogic {
 		return dao.findByAll(usersBean);
 	}
 	
-	public List<UsersBean> name(UsersBean usersBean){
+//	public List<UsersBean> name(UsersBean usersBean){
+//		UsersDAO dao = new UsersDAO();
+//		return dao.findByName(usersBean);
+//	}
+
+	public List<UsersBean> userClass(UsersBean usersBean){
 		UsersDAO dao = new UsersDAO();
-		return dao.findByName(usersBean);
+		return dao.findByClass(usersBean);
 	}
-	
+
 	public List<UsersBean> id(UsersBean usersBean){
 		UsersDAO dao = new UsersDAO();
 		return dao.findById(usersBean);

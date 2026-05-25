@@ -95,7 +95,7 @@ List<UsersBean> usersList = (List<UsersBean>) session.getAttribute("usersList");
 		}
 		%>
 	</table>
-	
+<!-- 	更新用 -->
 	
 </body>
 </html>

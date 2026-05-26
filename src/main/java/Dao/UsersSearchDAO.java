@@ -10,7 +10,7 @@ import java.util.List;
 
 import Model.UsersBean;
 
-public class UsersDAO extends DAOBase {
+public class UsersSearchDAO extends DAOBase {
 
 	public List<UsersBean> findByAll(UsersBean usersBean) {
 		List<UsersBean> usersList = new ArrayList<>();

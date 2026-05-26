@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import Model.UsersBean;
-import Model.UsersListLogic;
+import Model.UsersSearchLogic;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -37,7 +37,7 @@ public class UsersListServlet extends HttpServlet {
 		String cla = request.getParameter("cla");
 		
 		UsersBean usersBean = new UsersBean();
-		UsersListLogic logic = new UsersListLogic();
+		UsersSearchLogic logic = new UsersSearchLogic();
 		List<UsersBean> usersList = null;
 
 		

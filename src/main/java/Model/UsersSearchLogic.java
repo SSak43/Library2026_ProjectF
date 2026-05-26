@@ -2,26 +2,26 @@ package Model;
 
 import java.util.List;
 
-import Dao.UsersDAO;
+import Dao.UsersSearchDAO;
 
-public class UsersListLogic {
+public class UsersSearchLogic {
 	public List<UsersBean> all(UsersBean usersBean){
-		UsersDAO dao = new UsersDAO();
+		UsersSearchDAO dao = new UsersSearchDAO();
 		return dao.findByAll(usersBean);
 	}
 	
 //	public List<UsersBean> name(UsersBean usersBean){
-//		UsersDAO dao = new UsersDAO();
+//		UsersSearchDAO dao = new UsersSearchDAO();
 //		return dao.findByName(usersBean);
 //	}
 
 	public List<UsersBean> userClass(UsersBean usersBean){
-		UsersDAO dao = new UsersDAO();
+		UsersSearchDAO dao = new UsersSearchDAO();
 		return dao.findByClass(usersBean);
 	}
 
 	public List<UsersBean> id(UsersBean usersBean){
-		UsersDAO dao = new UsersDAO();
+		UsersSearchDAO dao = new UsersSearchDAO();
 		return dao.findById(usersBean);
 	}
 }

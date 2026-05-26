@@ -17,32 +17,58 @@ List<UsersBean> usersList = (List<UsersBean>) session.getAttribute("usersList");
 		<!-- 		<input type="radio" name="mode" value="idQuery">利用者ID -->
 		<!-- 		<input type="radio" name="mode" value="nameQuery">氏名 -->
 
-		<p>
-			利用者IDを入力<br> <input type="text" name="userId"><br>
+
+			<input type="text" name="userId" placeholder="利用者IDを入力">
+			
+<!-- 			氏名での検索 -->
 			<!-- 			利用者氏名を入力<br> -->
 			<!-- 			<input type="text" name="userName"> -->
-		</p>
-		<table border="1">
-			<tr>
-				<th>区分</th>
-				<td><input type="radio" name="cla" value="0">管理者
-				</td>
-				<td>
-		<input type="radio" name="cla" value="1">司書</td>
-				<td>
-		<input type="radio" name="cla" value="2">利用者
-		</td>
-			</tr>
-		</table>
+			
+<!-- 			区分ごとでの検索 -->
+<!-- 		<table border="1"> -->
+<!-- 			<tr> -->
+<!-- 				<th>区分</th> -->
+<!-- 				<td><input type="radio" name="cla" value="0">管理者 -->
+<!-- 				</td> -->
+<!-- 				<td> -->
+<!-- 		<input type="radio" name="cla" value="1">司書</td> -->
+<!-- 				<td> -->
+<!-- 		<input type="radio" name="cla" value="2">利用者 -->
+<!-- 		</td> -->
+<!-- 			</tr> -->
+<!-- 		</table> -->
+
 		<input type="submit" value="表示">
-		<input type="reset" value="リセット">
+
+
+
 	</form>
 	<% 
-		// リストが空っぽじゃない（1件以上データがある）時だけ表示する
-		if (usersList != null && usersList.size() > 0) { 
-			// リストの先頭（0番目）のデータを取り出して、firstUser という名前をつける
+		// URLパラメータから userId を取得し、入力されているかチェック
+		String searchedId = request.getParameter("userId");
+		boolean isIdSearch = (searchedId != null && !searchedId.isEmpty());
+
+		// ID検索がされていて、かつ結果が1件以上ある時だけ表示
+		if (isIdSearch && usersList != null && usersList.size() > 0) { 
 			UsersBean usersBean = usersList.get(0);
+			
+			// ＝＝＝ 区分の表示文字列を作成 ＝＝＝
+			String uClass = usersBean.getUserClass();
+			// 三項演算子（条件 ? trueの時 : falseの時）を使ってシンプルに記述
+			String adminMark = "0".equals(uClass) ? "<span style='color:blue;'>■</span>" : "□";
+			String libMark   = "1".equals(uClass) ? "<span style='color:blue;'>■</span>" : "□";
+			String userMark  = "2".equals(uClass) ? "<span style='color:blue;'>■</span>" : "□";
+			String classDisplay = adminMark + "管理者 " + libMark + "司書 " + userMark + "利用者";
+
+			// ＝＝＝ 状態の表示文字列を作成（※値はDB設定に合わせて修正してください） ＝＝＝
+			String uStatus = usersBean.getUserStatus();
+			String normalMark = "0".equals(uStatus) ? "<span style='color:green;'>■</span>" : "□";
+			String stopMark   = "1".equals(uStatus) ? "<span style='color:red;'>■</span>" : "□";
+			String statusDisplay = normalMark + "可 " + stopMark + "不可";
 	%>
+	
+	<table><tr><th>区分</th><td><%=classDisplay %></td></tr></table>
+	
 	<table border="1">
 		<tr>
 			<td>氏名</td>
@@ -57,6 +83,9 @@ List<UsersBean> usersList = (List<UsersBean>) session.getAttribute("usersList");
 			<td><%=usersBean.getPassword()%></td>
 		</tr>
 	</table>
+	
+		<table><tr><th>利用</th><td><%=statusDisplay %></td></tr></table>
+	
 	<% } %>
 	
 <!-- 	<table border="1"> -->

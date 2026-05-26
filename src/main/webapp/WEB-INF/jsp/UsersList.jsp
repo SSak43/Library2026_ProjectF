@@ -41,61 +41,61 @@ List<UsersBean> usersList = (List<UsersBean>) session.getAttribute("usersList");
 		// リストが空っぽじゃない（1件以上データがある）時だけ表示する
 		if (usersList != null && usersList.size() > 0) { 
 			// リストの先頭（0番目）のデータを取り出して、firstUser という名前をつける
-			UsersBean firstUser = usersList.get(0);
+			UsersBean usersBean = usersList.get(0);
 	%>
 	<table border="1">
 		<tr>
 			<td>氏名</td>
-			<td><%=firstUser.getUserName()%></td>
+			<td><%=usersBean.getUserName()%></td>
 		</tr>
 		<tr>
 			<td>電話番号</td>
-			<td><%=firstUser.getTel()%></td>
+			<td><%=usersBean.getTel()%></td>
 		</tr>
 		<tr>
 			<td>パスワード</td>
-			<td><%=firstUser.getPassword()%></td>
+			<td><%=usersBean.getPassword()%></td>
 		</tr>
 	</table>
 	<% } %>
 	
-	<table border="1">
-		<tr>
-			<th>利用者ID</th>
-			<th>氏名</th>
-			<th>電話番号</th>
-			<th>ログインID</th>
-			<th>パスワード</th>
-			<th>区分</th>
-			<th>状態</th>
-			<th>登録日</th>
-			<th>更新日</th>
-		</tr>
-		<%
-		if (usersList != null) {
-		%>
-		<%
-		for (UsersBean usersBean : usersList) {
-		%>
-		<tr>
-			<td><%=usersBean.getUserId()%></td>
-			<td><%=usersBean.getUserName()%></td>
-			<td><%=usersBean.getTel()%></td>
-			<td><%=usersBean.getLoginId()%></td>
-			<td><%=usersBean.getPassword()%></td>
-			<td><%=usersBean.getUserClass()%></td>
-			<td><%=usersBean.getUserStatus()%></td>
-			<td><%=usersBean.getUserRegist()%></td>
-			<td><%=usersBean.getUserUpdate()%></td>
-		</tr>
-		<%
-		}
-		%>
-		<%
-		}
-		%>
-	</table>
-<!-- 	更新用 -->
+<!-- 	<table border="1"> -->
+<!-- 		<tr> -->
+<!-- 			<th>利用者ID</th> -->
+<!-- 			<th>氏名</th> -->
+<!-- 			<th>電話番号</th> -->
+<!-- 			<th>ログインID</th> -->
+<!-- 			<th>パスワード</th> -->
+<!-- 			<th>区分</th> -->
+<!-- 			<th>状態</th> -->
+<!-- 			<th>登録日</th> -->
+<!-- 			<th>更新日</th> -->
+<!-- 		</tr> -->
+<%-- 		<% --%>
+<!-- // 		if (usersList != null) { -->
+<%-- 		%> --%>
+<%-- 		<% --%>
+<!-- // 		for (UsersBean usersBean : usersList) { -->
+<%-- 		%> --%>
+<!-- 		<tr> -->
+<%-- 			<td><%=usersBean.getUserId()%></td> --%>
+<%-- 			<td><%=usersBean.getUserName()%></td> --%>
+<%-- 			<td><%=usersBean.getTel()%></td> --%>
+<%-- 			<td><%=usersBean.getLoginId()%></td> --%>
+<%-- 			<td><%=usersBean.getPassword()%></td> --%>
+<%-- 			<td><%=usersBean.getUserClass()%></td> --%>
+<%-- 			<td><%=usersBean.getUserStatus()%></td> --%>
+<%-- 			<td><%=usersBean.getUserRegist()%></td> --%>
+<%-- 			<td><%=usersBean.getUserUpdate()%></td> --%>
+<!-- 		</tr> -->
+<%-- 		<% --%>
+<!-- // 		} -->
+<%-- 		%> --%>
+<%-- 		<% --%>
+<!-- // 		} -->
+<%-- 		%> --%>
+<!-- 	</table> -->
+
 	
 </body>
 </html>

@@ -6,19 +6,17 @@ public class UsersBean implements Serializable{
 	protected int userId;
 	protected String userName;
 	protected String tel;
-	protected int loginId;
 	protected String password;
-	protected char userClass;
-	protected char userStatus;
+	protected String userClass;
+	protected String userStatus;
 	protected Date userRegist;
 	protected Date userUpdate;
 	
 	public UsersBean() {}
-	public UsersBean(int userId,String userName,String tel,int loginId,String password,char userClass,char userStatus,Date userRegist,Date userUpdate) {
+	public UsersBean(int userId,String userName,String tel,String password,String userClass,String userStatus,Date userRegist,Date userUpdate) {
 		this.userId = userId;
 		this.userName = userName;
 		this.tel = tel;
-		this.loginId = loginId;
 		this.password = password;
 		this.userClass = userClass;
 		this.userStatus = userStatus;
@@ -38,20 +36,16 @@ public class UsersBean implements Serializable{
 	public void setTel(String tel) {
 		this.tel = tel;
 	}
-	public int getLoginId(){return loginId;}
-	public void setLoginId(int loginId) {
-		this.loginId = loginId;
-	}
 	public String getPassword(){return password;}
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public char getUserClass(){return userClass;}
-	public void setUserClass(char userClass) {
+	public String getUserClass(){return userClass;}
+	public void setUserClass(String userClass) {
 		this.userClass = userClass;
 	}
-	public char getUserStatus(){return userStatus;}
-	public void setUserStatus(char userStatus) {
+	public String getUserStatus(){return userStatus;}
+	public void setUserStatus(String userStatus) {
 		this.userStatus = userStatus;
 	}
 	public Date getUserRegist(){return userRegist;}

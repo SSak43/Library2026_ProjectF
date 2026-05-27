@@ -23,23 +23,21 @@ public class UsersRegistDAO extends DAOBase {
 			throw new IllegalStateException("JDBCドライバを読み込めません");
 		}
 		try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
-			String sql = "INSERT INTO USERS (USER_NAME,TEL,LOGIN_ID,PASSWORD,USER_CLASS,USER_STATUS,USER_REGIST,USER_UPDATE) VALUES(?,?,?,?,?,?,?,?)";
+			String sql = "INSERT INTO USERS (USER_NAME,TEL,PASSWORD,USER_CLASS,USER_STATUS,USER_REGIST,USER_UPDATE) VALUES(?,?,?,?,?,?,?,?)";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 			pStmt.setString(1, usersBean.getUserName());
 			pStmt.setString(2, usersBean.getTel());
-			pStmt.setInt(3, usersBean.getLoginId());
-			pStmt.setString(4, usersBean.getPassword());
-			pStmt.setString(5, usersBean.getUserClass());
-			pStmt.setString(6, usersBean.getUserStatus());
+			pStmt.setString(3, usersBean.getPassword());
+			pStmt.setString(4, usersBean.getUserClass());
+			pStmt.setString(5, usersBean.getUserStatus());
+			pStmt.setDate(6, sqlDate);
 			pStmt.setDate(7, sqlDate);
-			pStmt.setDate(8, sqlDate);
 			try (ResultSet rs = pStmt.executeQuery()) {
 				while (rs.next()) {
 					UsersBean u = new UsersBean();
 					u.setUserId(rs.getInt("USER_ID"));
 					u.setUserName(rs.getString("USER_NAME"));
 					u.setTel(rs.getString("TEL"));
-					u.setLoginId(rs.getInt("LOGIN_ID"));
 					u.setPassword(rs.getString("PASSWORD"));
 					u.setUserClass(rs.getString("USER_CLASS"));
 					u.setUserStatus(rs.getString("USER_STATUS"));

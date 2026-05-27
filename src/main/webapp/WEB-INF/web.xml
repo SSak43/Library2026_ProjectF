@@ -29,4 +29,14 @@
     <servlet-name>UsersMainServlet</servlet-name>
     <url-pattern>/UsersMainServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>UsersRegistServlet</display-name>
+    <servlet-name>UsersRegistServlet</servlet-name>
+    <servlet-class>Servlet.UsersRegistServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UsersRegistServlet</servlet-name>
+    <url-pattern>/UsersRegistServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

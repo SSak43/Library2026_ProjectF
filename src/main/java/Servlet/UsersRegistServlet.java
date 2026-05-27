@@ -1,11 +1,13 @@
 package Servlet;
 
+import java.io.IOException;
+
+import Model.UsersRegistLogic;
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 /**
  * Servlet implementation class UsersRegistServlet
@@ -26,7 +28,17 @@ public class UsersRegistServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		// 1. Logicを呼び出して最新のIDを取得する
+         UsersRegistLogic logic = new UsersRegistLogic(); 
+         int latestId = logic.getLatestId();
+        
+        // 2. 取得したIDを request にセットしてJSPに渡す
+        request.setAttribute("latestId", latestId);
+        
+        // 3. 登録画面（JSP）へフォワード
+        RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/UsersRegist.jsp");
+        dispatcher.forward(request, response);		
+		
 	}
 
 	/**

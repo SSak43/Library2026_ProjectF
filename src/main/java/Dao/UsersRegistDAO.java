@@ -12,6 +12,34 @@ import java.util.List;
 import Model.UsersBean;
 
 public class UsersRegistDAO extends DAOBase {
+	public int getMaxUserId() {
+	    int maxId = 0;
+	    
+	    // ※テーブル名（users）やカラム名（user_id）は、ご自身のデータベースに合わせてください
+
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			throw new IllegalStateException("JDBCドライバを読み込めません");
+		}
+		try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
+		    String sql = "SELECT MAX(USER_ID) AS max_id FROM users"; 
+		    PreparedStatement pStmt = conn.prepareStatement(sql);
+	         ResultSet rs = pStmt.executeQuery();
+	        
+	        if (rs.next()) {
+	            // AS でつけた max_id という名前で結果を取り出す
+	            maxId = rs.getInt("max_id");
+	        }
+	        
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return maxId;
+	}
+	
+	
+	
 	public List<UsersBean> add(UsersBean usersBean) {
 		List<UsersBean> usersList = new ArrayList<>();
 

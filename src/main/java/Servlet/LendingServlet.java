@@ -128,6 +128,8 @@ public class LendingServlet extends HttpServlet {
 					errorMessage = "貸出登録に失敗しました。システム管理者に連絡してください。";
 				}
 			}
+			
+			
 		}
 
 		// 4. JSP（画面）に表示データを送る

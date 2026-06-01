@@ -11,7 +11,10 @@ public class LendsBean {
     private Date returnDate;     // 返却日
     private Date lendRegist;     // 登録日
     private Date lendUpdate;     // 更新日
-
+    private String title;    // 画面表示用の書名
+    private String userName;
+    
+    
     // ゲッターとセッター
     public int getLendId() { return lendId; }
     public void setLendId(int lendId) { this.lendId = lendId; }
@@ -36,4 +39,9 @@ public class LendsBean {
 
     public Date getLendUpdate() { return lendUpdate; }
     public void setLendUpdate(Date lendUpdate) { this.lendUpdate = lendUpdate; }
+    
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    public String getUserName() { return userName; }
+    public void setUserName(String userName) { this.userName = userName; }
 }

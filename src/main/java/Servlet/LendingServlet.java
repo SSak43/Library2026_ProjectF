@@ -140,6 +140,6 @@ public class LendingServlet extends HttpServlet {
 		request.setAttribute("successMessage", successMessage);
 
 		// 5. 貸出画面（JSP）へ進む
-		request.getRequestDispatcher("/lending.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/jsp/lending/lending.jsp").forward(request, response);
 	}
 }

@@ -22,7 +22,7 @@ public class LogoutServlet extends HttpServlet {
 			session.invalidate();
 		}
 		
-		// 3. ログイン画面（login.jsp）へリダイレクト
+		// 3. ログイン画面へリダイレクト
 		response.sendRedirect("login.jsp");
 	}
 }

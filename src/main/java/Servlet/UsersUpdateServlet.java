@@ -1,11 +1,16 @@
 package Servlet;
 
+import java.io.IOException;
+import java.util.List;
+
+import Model.UsersBean;
+import Model.UsersUpdateLogic;
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class UsersUpdateServlet
@@ -25,8 +30,29 @@ public class UsersUpdateServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		request.setCharacterEncoding("UTF-8");
+		String id = request.getParameter("userId");
+//		String name = request.getParameter("userName");
+		String cla = request.getParameter("cla");
+		
+		UsersBean usersBean = new UsersBean();
+		UsersUpdateLogic logic = new UsersUpdateLogic();
+		List<UsersBean> usersList = null;
+
+		
+		if (id != null && !id.isEmpty()) {
+	        try {
+	            usersBean.setUserId(Integer.parseInt(id));
+	            usersList = logic.id(usersBean);
+	        } catch (NumberFormatException e) {
+	        	//後ほどエラー文追加
+	        }
+	    }
+		
+		HttpSession session = request.getSession();
+		session.setAttribute("usersList", usersList);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/UsersUpdate.jsp");
+		dispatcher.forward(request,response);
 	}
 
 	/**

@@ -7,21 +7,23 @@ import Model.UsersBean;
 import Model.UsersSearchLogic;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 /**
- * Servlet implementation class UsersListServlet
+ * Servlet implementation class UsersSearchServlet
  */
-public class UsersListServlet extends HttpServlet {
+
+public class UsersSearchServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public UsersListServlet() {
+    public UsersSearchServlet() {
         super();
         // TODO Auto-generated constructor stub
     }

@@ -2,13 +2,13 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://jakarta.ee/xml/ns/jakartaee" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd" version="6.0">
   <servlet>
     <description></description>
-    <display-name>UsersListServlet</display-name>
-    <servlet-name>UsersListServlet</servlet-name>
-    <servlet-class>Servlet.UsersListServlet</servlet-class>
+    <display-name>UsersSearchServlet</display-name>
+    <servlet-name>UsersSearchServlet</servlet-name>
+    <servlet-class>Servlet.UsersSearchServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>UsersListServlet</servlet-name>
-    <url-pattern>/UsersListServlet</url-pattern>
+    <servlet-name>UsersSearchServlet</servlet-name>
+    <url-pattern>/UsersSearchServlet</url-pattern>
   </servlet-mapping>
   <display-name>Library2026_ProjectF</display-name>
   <welcome-file-list>
@@ -19,4 +19,24 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  <servlet>
+    <description></description>
+    <display-name>UsersMainServlet</display-name>
+    <servlet-name>UsersMainServlet</servlet-name>
+    <servlet-class>Servlet.UsersMainServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UsersMainServlet</servlet-name>
+    <url-pattern>/UsersMainServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>UsersRegistServlet</display-name>
+    <servlet-name>UsersRegistServlet</servlet-name>
+    <servlet-class>Servlet.UsersRegistServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UsersRegistServlet</servlet-name>
+    <url-pattern>/UsersRegistServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

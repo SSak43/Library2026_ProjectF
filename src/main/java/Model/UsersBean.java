@@ -6,7 +6,6 @@ public class UsersBean implements Serializable{
 	protected int userId;
 	protected String userName;
 	protected String tel;
-	protected int loginId;
 	protected String password;
 	protected String userClass;
 	protected String userStatus;
@@ -14,11 +13,10 @@ public class UsersBean implements Serializable{
 	protected Date userUpdate;
 	
 	public UsersBean() {}
-	public UsersBean(int userId,String userName,String tel,int loginId,String password,String userClass,String userStatus,Date userRegist,Date userUpdate) {
+	public UsersBean(int userId,String userName,String tel,String password,String userClass,String userStatus,Date userRegist,Date userUpdate) {
 		this.userId = userId;
 		this.userName = userName;
 		this.tel = tel;
-		this.loginId = loginId;
 		this.password = password;
 		this.userClass = userClass;
 		this.userStatus = userStatus;
@@ -37,10 +35,6 @@ public class UsersBean implements Serializable{
 	public String getTel(){return tel;}
 	public void setTel(String tel) {
 		this.tel = tel;
-	}
-	public int getLoginId(){return loginId;}
-	public void setLoginId(int loginId) {
-		this.loginId = loginId;
 	}
 	public String getPassword(){return password;}
 	public void setPassword(String password) {

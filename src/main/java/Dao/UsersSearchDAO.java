@@ -28,7 +28,6 @@ public class UsersSearchDAO extends DAOBase {
 					u.setUserId(rs.getInt("USER_ID"));
 					u.setUserName(rs.getString("USER_NAME"));
 					u.setTel(rs.getString("TEL"));
-					u.setLoginId(rs.getInt("LOGIN_ID"));
 					u.setPassword(rs.getString("PASSWORD"));
 					u.setUserClass(rs.getString("USER_CLASS"));
 					u.setUserStatus(rs.getString("USER_STATUS"));
@@ -62,7 +61,6 @@ public class UsersSearchDAO extends DAOBase {
 					u.setUserId(rs.getInt("USER_ID"));
 					u.setUserName(rs.getString("USER_NAME"));
 					u.setTel(rs.getString("TEL"));
-					u.setLoginId(rs.getInt("LOGIN_ID"));
 					u.setPassword(rs.getString("PASSWORD"));
 					u.setUserClass(rs.getString("USER_CLASS"));
 					u.setUserStatus(rs.getString("USER_STATUS"));
@@ -97,7 +95,6 @@ public class UsersSearchDAO extends DAOBase {
 					u.setUserId(rs.getInt("USER_ID"));
 					u.setUserName(rs.getString("USER_NAME"));
 					u.setTel(rs.getString("TEL"));
-					u.setLoginId(rs.getInt("LOGIN_ID"));
 					u.setPassword(rs.getString("PASSWORD"));
 					u.setUserClass(rs.getString("USER_CLASS"));
 					u.setUserStatus(rs.getString("USER_STATUS"));
@@ -131,7 +128,6 @@ public class UsersSearchDAO extends DAOBase {
 					u.setUserId(rs.getInt("USER_ID"));
 					u.setUserName(rs.getString("USER_NAME"));
 					u.setTel(rs.getString("TEL"));
-					u.setLoginId(rs.getInt("LOGIN_ID"));
 					u.setPassword(rs.getString("PASSWORD"));
 					u.setUserClass(rs.getString("USER_CLASS"));
 					u.setUserStatus(rs.getString("USER_STATUS"));

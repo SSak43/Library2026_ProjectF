@@ -19,7 +19,6 @@
 
             <div class="error-container">
                 <%
-                    // サーブレット等から受け取ったエラーメッセージがある場合のみ表示
                     String errorMessage = (String) request.getAttribute("errorMessage");
                     if (errorMessage != null && !errorMessage.isEmpty()) {
                 %>
@@ -31,19 +30,36 @@
 
             <form action="login" method="post">
                 <div class="form-group">
-                    <label for="id">ID</label>
-                    <input type="text" id="id" name="id" class="form-control">
+                    <label for="login_id">ID</label>
+                    <input type="text" id="login_id" name="login_id" class="form-control" required>
                 </div>
 
                 <div class="form-group">
                     <label for="password">パスワード</label>
-                    <input type="password" id="password" name="password" class="form-control">
+                    <input type="password" id="password" name="password" class="form-control" required>
                 </div>
 
                 <button type="submit" class="btn-login">ログイン</button>
             </form>
         </div>
     </div>
+
+    <%
+        String systemError = (String) request.getAttribute("systemError");
+        if (systemError != null && !systemError.isEmpty()) {
+    %>
+    <div class="modal-overlay" id="systemErrorModal">
+        <div class="modal-content">
+            <p class="modal-text">予期せぬシステムエラーが発生しました。</p>
+            <p class="modal-text">しばらく時間をおいてから再度お試しください。</p>
+            <div class="modal-actions">
+                <button type="button" class="btn-confirm" onclick="document.getElementById('systemErrorModal').style.display='none'">確認</button>
+            </div>
+        </div>
+    </div>
+    <%
+        }
+    %>
 
 </body>
 </html>

@@ -10,7 +10,7 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    background-color: #b4c7e7; /* 全体の水色背景 */
+    background-color: #b4c7e7;
 }
 
 /* ヘッダー部分 */
@@ -48,8 +48,7 @@ body {
     color: #111;
 }
 
-/* エラーメッセージ用の固定スペース */
-/* エラー文字が出ていない時も高さを確保してフォーム全体を下に下げます */
+/* 入力間違いエラー用のスペース */
 .error-container {
     min-height: 27px;
     margin-bottom: 20px;
@@ -83,6 +82,7 @@ body {
     background-color: #fff;
     padding: 0 10px;
     font-size: 16px;
+    outline: none;
 }
 
 /* ログインボタン */
@@ -99,4 +99,51 @@ body {
 
 .btn-login:hover {
     background-color: #e8e8e8;
+}
+
+/* ===== システムエラーポップアップ（モーダル）のCSS ===== */
+.modal-overlay {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #c0c0c0;
+    border: 1px solid #999;
+    width: 550px;
+    padding: 60px 40px 20px 40px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.modal-text {
+    color: red;
+    font-size: 22px;
+    text-align: center;
+    text-decoration: underline;
+    margin-bottom: 30px;
+}
+
+.modal-actions {
+    text-align: right;
+    margin-top: 20px;
+}
+
+.btn-confirm {
+    background-color: #fff;
+    border: 1px solid #333;
+    padding: 5px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-confirm:hover {
+    background-color: #f2f2f2;
 }

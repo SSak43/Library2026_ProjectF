@@ -39,4 +39,14 @@
     <servlet-name>UsersRegistServlet</servlet-name>
     <url-pattern>/UsersRegistServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>UsersUpdateServlet</display-name>
+    <servlet-name>UsersUpdateServlet</servlet-name>
+    <servlet-class>Servlet.UsersUpdateServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UsersUpdateServlet</servlet-name>
+    <url-pattern>/UsersUpdateServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

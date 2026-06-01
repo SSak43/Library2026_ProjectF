@@ -31,10 +31,7 @@ public class UsersMainServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		String mode = request.getParameter("mode");
 		
-		if("Regist".equals(mode)) {
-			RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/UsersRegist.jsp");
-			dispatcher.forward(request,response);
-		}else if("Search".equals(mode)) {
+		if("Search".equals(mode)) {
 			RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/UsersList.jsp");
 			dispatcher.forward(request,response);
 		}else {

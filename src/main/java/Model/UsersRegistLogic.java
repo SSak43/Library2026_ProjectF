@@ -9,4 +9,8 @@ public class UsersRegistLogic {
 		UsersRegistDAO dao = new UsersRegistDAO();
 		return dao.add(usersBean);
 	}
+	public int getLatestId() {
+	    UsersRegistDAO dao = new UsersRegistDAO();
+	    return dao.getMaxUserId();
+	}
 }

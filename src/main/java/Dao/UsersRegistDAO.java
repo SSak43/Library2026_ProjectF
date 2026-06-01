@@ -83,5 +83,5 @@ public class UsersRegistDAO extends DAOBase {
 			e.printStackTrace();
 			return false;
 		}
-	}//更新用
+	}
 }

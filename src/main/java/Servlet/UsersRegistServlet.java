@@ -69,7 +69,7 @@ public class UsersRegistServlet extends HttpServlet {
 		} else {
 			request.setAttribute("errorMsg", "登録に失敗しました");
 		}
-//更新用
+
 	}
 
 }

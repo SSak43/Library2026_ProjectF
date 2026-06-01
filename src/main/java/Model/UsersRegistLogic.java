@@ -12,3 +12,4 @@ public class UsersRegistLogic {
 	    return dao.getMaxUserId();
 	}
 }
+//更新用

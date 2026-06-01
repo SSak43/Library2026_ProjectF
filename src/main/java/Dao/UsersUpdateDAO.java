@@ -1,4 +1,4 @@
-package Model;
+package Dao;
 
 public class UsersUpdateDAO {
 

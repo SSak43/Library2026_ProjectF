@@ -55,15 +55,15 @@ public class UsersUpdateDAO extends DAOBase{
 			throw new IllegalStateException("JDBCドライバを読み込めません");
 		}
 		try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
-			String sql = "INSERT INTO USERS (USER_NAME,TEL,PASSWORD,USER_CLASS,USER_STATUS,USER_REGIST,USER_UPDATE) VALUES(?,?,?,?,?,?,?)";
+			String sql = "UPDATE USERS SET USER_NAME = ?,TEL = ?,PASSWORD = ?,USER_CLASS = ?,USER_STATUS = ?,USER_UPDATE = ? WHERE USER_ID = ?";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 			pStmt.setString(1, usersBean.getUserName());
 			pStmt.setString(2, usersBean.getTel());
 			pStmt.setString(3, usersBean.getPassword());
 			pStmt.setString(4, usersBean.getUserClass());
-			pStmt.setString(5, "0");
+			pStmt.setString(5, usersBean.getUserStatus());
 			pStmt.setDate(6, sqlDate);
-			pStmt.setDate(7, sqlDate);
+			pStmt.setInt(7, usersBean.getUserId());
 			
 			int result = pStmt.executeUpdate();
 			

@@ -59,8 +59,32 @@ public class UsersUpdateServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		// 入力データ受け取る
+		String id = request.getParameter("userId");
+		String cla = request.getParameter("cla");
+		String name = request.getParameter("userName");
+		String tel = request.getParameter("Tel");
+		String pass = request.getParameter("Password");
+		String status = request.getParameter("status");
+		
+		//　受け取ったデータをセット
+		UsersBean usersBean = new UsersBean();
+		usersBean.setUserId(Integer.parseInt(id));
+		usersBean.setUserClass(cla);
+		usersBean.setUserName(name);
+		usersBean.setTel(tel);
+		usersBean.setPassword(pass);
+		usersBean.setUserStatus(status);
+
+		//データベースへ登録
+		UsersUpdateLogic logic = new UsersUpdateLogic();
+		boolean update = logic.update(usersBean);
+
+		if (update) {
+			response.sendRedirect("UsersMainServlet");
+		} else {
+			request.setAttribute("errorMsg", "登録に失敗しました");
+		}
 	}
 
 }

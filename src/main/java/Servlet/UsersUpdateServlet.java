@@ -67,6 +67,7 @@ public class UsersUpdateServlet extends HttpServlet {
 		String pass = request.getParameter("Password");
 		String status = request.getParameter("status");
 		
+		
 		//　受け取ったデータをセット
 		UsersBean usersBean = new UsersBean();
 		usersBean.setUserId(Integer.parseInt(id));

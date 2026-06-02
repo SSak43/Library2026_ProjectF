@@ -40,8 +40,8 @@ List<UsersBean> usersList = (List<UsersBean>) session.getAttribute("usersList");
 
 			// ＝＝＝ 状態の表示文字列を作成（※値はDB設定に合わせて修正してください） ＝＝＝
 			String uStatus = usersBean.getUserStatus();
-			String normalMark = "0".equals(uStatus) ? "<input type='radio' name='status' value='0' checked>" : "<input type='radio' name='status' value='ok'>";
-			String stopMark   = "1".equals(uStatus) ? "<input type='radio' name='status' value='1' checked>" : "<input type='radio' name='status' value='ok'>";			
+			String normalMark = "0".equals(uStatus) ? "<input type='radio' name='status' value='0' checked>" : "<input type='radio' name='status' value='0'>";
+			String stopMark   = "1".equals(uStatus) ? "<input type='radio' name='status' value='1' checked>" : "<input type='radio' name='status' value='1'>";			
 			// 			String normalMark = "0".equals(uStatus) ? "<span style='color:green;'>■</span>" : "□";
 // 			String stopMark   = "1".equals(uStatus) ? "<span style='color:red;'>■</span>" : "□";
 			String statusDisplay = normalMark + "可 " + stopMark + "不可";

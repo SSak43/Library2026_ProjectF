@@ -1,10 +1,10 @@
-package Servlet;
+package f06_return.servlet;
 
 import java.io.IOException;
 import java.util.List;
 
-import Dao.ReserveSearchDAO;
 import Model.ReserveBean;
+import f07_reserve.dao.ReserveSearchDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

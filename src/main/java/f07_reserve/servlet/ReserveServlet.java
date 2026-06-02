@@ -1,16 +1,16 @@
-package Servlet;
+package f07_reserve.servlet;
 
 import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
-import Dao.BooksSearchDAO;
-import Dao.ReserveDAO;
-import Dao.UsersSearchDAO;
 import Model.BooksBean;
 import Model.ReserveBean;
 import Model.UsersBean;
+import f02_user.dao.UsersSearchDAO;
+import f04_book_search.dao.BooksSearchDAO;
+import f07_reserve.dao.ReserveDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

@@ -1,9 +1,9 @@
-package Servlet;
+package f02_user.servlet;
 
 import java.io.IOException;
 
 import Model.UsersBean;
-import Model.UsersRegistLogic;
+import f02_user.logic.UsersRegistLogic;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;

@@ -1,4 +1,4 @@
-package Dao;
+package f05_lending.dao;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 
 import Model.LendsBean;
+import common.DAOBase;
 
 public class LendsDAO extends DAOBase {
 

@@ -1,10 +1,10 @@
-package Servlet;
+package f04_book_search.servlet;
 
 import java.io.IOException;
 import java.util.List;
 
-import Dao.BooksSearchDAO;
 import Model.BooksBean;
+import f04_book_search.dao.BooksSearchDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

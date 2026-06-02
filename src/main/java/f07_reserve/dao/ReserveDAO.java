@@ -1,4 +1,4 @@
-package Dao;
+package f07_reserve.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import Model.ReserveBean;
+import common.DAOBase;
 
 public class ReserveDAO extends DAOBase {
 

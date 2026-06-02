@@ -1,10 +1,10 @@
-package Servlet;
+package f02_user.servlet;
 
 import java.io.IOException;
 import java.util.List;
 
 import Model.UsersBean;
-import Model.UsersUpdateLogic;
+import f02_user.logic.UsersUpdateLogic;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;

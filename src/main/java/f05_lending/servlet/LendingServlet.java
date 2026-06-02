@@ -1,16 +1,16 @@
-package Servlet;
+package f05_lending.servlet;
 
 import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
-import Dao.BooksSearchDAO;
-import Dao.LendsDAO;
-import Dao.UsersSearchDAO;
 import Model.BooksBean;
 import Model.LendsBean;
 import Model.UsersBean;
+import f02_user.dao.UsersSearchDAO;
+import f04_book_search.dao.BooksSearchDAO;
+import f05_lending.dao.LendsDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

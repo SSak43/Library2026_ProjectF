@@ -1,6 +1,7 @@
-package Model;
+package f02_user.logic;
 
-import Dao.UsersRegistDAO;
+import Model.UsersBean;
+import f02_user.dao.UsersRegistDAO;
 
 public class UsersRegistLogic {
 	public boolean add(UsersBean usersBean){

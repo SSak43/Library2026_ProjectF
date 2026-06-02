@@ -1,4 +1,4 @@
-package Dao;
+package f02_user.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Model.UsersBean;
+import common.DAOBase;
 
 public class UsersUpdateDAO extends DAOBase{
 	public List<UsersBean> findById(UsersBean usersBean) {

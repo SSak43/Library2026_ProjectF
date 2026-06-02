@@ -19,8 +19,8 @@
     <div class="main-content-base layout-center">
         <div class="link-group">
             <a href="F-2.user_register.jsp">利用者登録</a>
-            <a href="F-3.userUpdate.jsp">更新</a>
-            <a href="#">利用者情報参照</a>
+            <a href="F-2.userUpdate.jsp">更新</a>
+            <a href="F-2.userReference.jsp">利用者情報参照</a>
         </div>
     </div>
 

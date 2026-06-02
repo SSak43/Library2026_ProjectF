@@ -1,4 +1,4 @@
-package Dao;
+package f04_book_search.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Model.BooksBean;
+import common.DAOBase;
 
 public class BooksSearchDAO extends DAOBase {
 

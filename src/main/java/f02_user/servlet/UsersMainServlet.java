@@ -1,4 +1,4 @@
-package Servlet;
+package f02_user.servlet;
 
 import java.io.IOException;
 

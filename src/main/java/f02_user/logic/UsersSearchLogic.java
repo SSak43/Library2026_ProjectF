@@ -1,8 +1,9 @@
-package Model;
+package f02_user.logic;
 
 import java.util.List;
 
-import Dao.UsersSearchDAO;
+import Model.UsersBean;
+import f02_user.dao.UsersSearchDAO;
 
 public class UsersSearchLogic {
 	public List<UsersBean> all(UsersBean usersBean){

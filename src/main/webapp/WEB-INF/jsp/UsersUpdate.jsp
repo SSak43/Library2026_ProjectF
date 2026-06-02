@@ -29,17 +29,27 @@ List<UsersBean> usersList = (List<UsersBean>) session.getAttribute("usersList");
 			// ＝＝＝ 区分の表示文字列を作成 ＝＝＝
 			String uClass = usersBean.getUserClass();
 			// 三項演算子（条件 ? trueの時 : falseの時）を使ってシンプルに記述
-			String adminMark = "0".equals(uClass) ? "<span style='color:blue;'>■</span>" : "□";
+			String adminMark = "0".equals(uClass) ? "<input type='radio' name='cla' value='0' checked>" : "<input type='radio' name='cla' value='0'>";
+			String libMark   = "1".equals(uClass) ? "<input type='radio' name='cla' value='1' checked>" : "<input type='radio' name='cla' value='1'>";
+			String userMark  = "2".equals(uClass) ? "<input type='radio' name='cla' value='2' checked>" : "<input type='radio' name='cla' value='2'>";
+					
+/* 			String adminMark = "0".equals(uClass) ? "<span style='color:blue;'>■</span>" : "□";
 			String libMark   = "1".equals(uClass) ? "<span style='color:blue;'>■</span>" : "□";
-			String userMark  = "2".equals(uClass) ? "<span style='color:blue;'>■</span>" : "□";
+			String userMark  = "2".equals(uClass) ? "<span style='color:blue;'>■</span>" : "□"; */
 			String classDisplay = adminMark + "管理者 " + libMark + "司書 " + userMark + "利用者";
 
 			// ＝＝＝ 状態の表示文字列を作成（※値はDB設定に合わせて修正してください） ＝＝＝
 			String uStatus = usersBean.getUserStatus();
-			String normalMark = "0".equals(uStatus) ? "<span style='color:green;'>■</span>" : "□";
-			String stopMark   = "1".equals(uStatus) ? "<span style='color:red;'>■</span>" : "□";
+			String normalMark = "0".equals(uStatus) ? "<input type='radio' name='status' value='0' checked>" : "<input type='radio' name='status' value='ok'>";
+			String stopMark   = "1".equals(uStatus) ? "<input type='radio' name='status' value='1' checked>" : "<input type='radio' name='status' value='ok'>";			
+			// 			String normalMark = "0".equals(uStatus) ? "<span style='color:green;'>■</span>" : "□";
+// 			String stopMark   = "1".equals(uStatus) ? "<span style='color:red;'>■</span>" : "□";
 			String statusDisplay = normalMark + "可 " + stopMark + "不可";
 	%>
+	
+	<form action="UsersUpdateServlet" method="POST">
+	
+	<input type="hidden" name="userId" value="<%= usersBean.getUserId() %>">
 	
 	<table><tr><th>区分</th><td><%=classDisplay %></td></tr></table>
 	
@@ -62,5 +72,7 @@ List<UsersBean> usersList = (List<UsersBean>) session.getAttribute("usersList");
 		<table><tr><th>利用</th><td><%=statusDisplay %></td></tr></table>
 	
 	<% } %>
+			<input type="submit" value="登録">
+	</form>
 </body>
 </html>

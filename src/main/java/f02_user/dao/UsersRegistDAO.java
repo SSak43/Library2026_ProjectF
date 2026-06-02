@@ -1,4 +1,4 @@
-package Dao;
+package f02_user.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 
 import Model.UsersBean;
+import common.DAOBase;
 
 public class UsersRegistDAO extends DAOBase {
 	public int getMaxUserId() {

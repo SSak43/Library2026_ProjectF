@@ -1,9 +1,9 @@
-package Servlet;
+package f01_login.servlet;
 
 import java.io.IOException;
 
-import Dao.UsersSearchDAO;
 import Model.UsersBean;
+import f02_user.dao.UsersSearchDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

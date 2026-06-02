@@ -1,4 +1,4 @@
-package Servlet; 
+package f01_login.servlet; 
 
 import java.io.IOException;
 

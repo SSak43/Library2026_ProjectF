@@ -1,10 +1,10 @@
-package Servlet;
+package f07_reserve.servlet;
 
 import java.io.IOException;
 import java.time.LocalDate;
 
-import Dao.LendsDAO;
 import Model.LendsBean;
+import f05_lending.dao.LendsDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

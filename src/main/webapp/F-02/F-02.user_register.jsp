@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>利用者登録入力画面</title>
     <!-- 外部の共通CSSファイルを読み込む -->
-    <link rel="stylesheet" href="F-2.css">
+    <link rel="stylesheet" href="F-02.css">
 </head>
 <body>
 

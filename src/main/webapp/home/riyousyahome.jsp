@@ -16,10 +16,7 @@
     </header>
 
     <main class="main-container">
-<<<<<<< HEAD
-        <!-- ログインパネルのスタイルを流用した大きなパネル -->
-=======
->>>>>>> branch 'master' of https://github.com/SSak43/Library2026_ProjectF.git
+
         <div class="menu-panel">
             <a href="${pageContext.request.contextPath}/booksSearch" class="menu-link" style="font-size: 40px;">図書検索</a>
             <a href="${pageContext.request.contextPath}/reserveBook" class="menu-link" style="font-size: 40px;">予約処理</a>

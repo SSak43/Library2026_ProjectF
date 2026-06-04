@@ -7,8 +7,8 @@
 <title>利用者管理</title>
 </head>
 <body>
-	<a href="UsersRegistServlet">１．利用者登録</a>
-	<a href="UsersUpdateServlet">２．利用者情報更新</a>
-	<a href="UsersMainServlet?mode=Search">３．利用者情報参照</a>
+	<a href="/Library2026_ProjectF/UsersRegist">１．利用者登録</a>
+	<a href="/Library2026_ProjectF/UsersUpdate">２．利用者情報更新</a>
+	<a href="/Library2026_ProjectF/UsersSearch">３．利用者情報参照</a>
 </body>
 </html>

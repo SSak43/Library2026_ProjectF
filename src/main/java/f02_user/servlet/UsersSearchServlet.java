@@ -7,6 +7,7 @@ import Model.UsersBean;
 import f02_user.logic.UsersSearchLogic;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -15,7 +16,7 @@ import jakarta.servlet.http.HttpSession;
 /**
  * Servlet implementation class UsersSearchServlet
  */
-
+@WebServlet("/UsersSearch")
 public class UsersSearchServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

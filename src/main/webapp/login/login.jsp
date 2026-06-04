@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>図書システム - ログイン</title>
-    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="/Library2026_ProjectF/login/login.css">
 </head>
 <body>
 
@@ -28,7 +28,7 @@
                 %>
             </div>
 
-            <form action="login" method="post">
+            <form action="/Library2026_ProjectF/login" method="post">
                 <div class="form-group">
                     <label for="login_id">ID</label>
                     <input type="text" id="login_id" name="login_id" class="form-control" required>

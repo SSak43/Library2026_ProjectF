@@ -62,7 +62,7 @@ public boolean add(UsersBean usersBean) {
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 			pStmt.setString(1, usersBean.getUserName());
 			pStmt.setString(2, usersBean.getTel());
-			pStmt.setString(3, hashPassword(usersBean.getPassword()));
+			pStmt.setString(3, usersBean.getPassword());
 			pStmt.setString(4, usersBean.getUserClass());
 			pStmt.setString(5, usersBean.getUserStatus());
 			pStmt.setDate(6, sqlDate);
@@ -79,7 +79,7 @@ public boolean add(UsersBean usersBean) {
 	}
 
 	// ★クラスの末尾などに追加するハッシュ化メソッド
-	private String hashPassword(String password) {
+	public String hashPassword(String password) {
 		if (password == null) {
 			return "";
 		}

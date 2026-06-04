@@ -69,6 +69,6 @@ public class BooksSearchServlet extends HttpServlet {
 		request.setAttribute("hasPrevPage", hasPrevPage); // 「前へ」ボタンを出すかどうかのフラグ
 
 		// 5. 検索画面（JSP）へ遷移して表示させる
-		request.getRequestDispatcher("/search_result.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/jsp/serach/serach.jsp").forward(request, response);
 	}
 }

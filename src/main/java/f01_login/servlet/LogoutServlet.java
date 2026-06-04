@@ -22,7 +22,12 @@ public class LogoutServlet extends HttpServlet {
 			session.invalidate();
 		}
 		
-		// 3. ログイン画面
+		// 3. ⭕ ログイン画面のサーブレット（/login）へ戻るように修正！
 		response.sendRedirect(request.getContextPath() + "/login");
+	}
+
+	// 万が一、URL直接入力などでGET通信で来た場合も doPost と同じ処理をしてログアウトさせる
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doPost(request, response);
 	}
 }

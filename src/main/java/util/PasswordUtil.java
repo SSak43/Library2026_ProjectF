@@ -1,4 +1,4 @@
-package Util; // パッケージ名はご自身の環境に合わせて変更してください
+package util; // パッケージ名はご自身の環境に合わせて変更してください
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

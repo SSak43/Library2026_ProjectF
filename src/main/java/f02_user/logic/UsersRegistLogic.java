@@ -1,11 +1,10 @@
-package Model;
+package f02_user.logic;
 
-import java.util.List;
-
-import Dao.UsersRegistDAO;
+import Model.UsersBean;
+import f02_user.dao.UsersRegistDAO;
 
 public class UsersRegistLogic {
-	public List<UsersBean> add(UsersBean usersBean){
+	public boolean add(UsersBean usersBean){
 		UsersRegistDAO dao = new UsersRegistDAO();
 		return dao.add(usersBean);
 	}

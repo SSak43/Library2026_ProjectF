@@ -67,7 +67,7 @@ public class UsersRegistServlet extends HttpServlet {
 		boolean Add = logic.add(usersBean);
 
 		if (Add) {
-			response.sendRedirect("UsersMainServlet");
+			response.sendRedirect("/Library2026_ProjectF/UsersMain");
 		} else {
 			request.setAttribute("errorMsg", "登録に失敗しました");
 		}

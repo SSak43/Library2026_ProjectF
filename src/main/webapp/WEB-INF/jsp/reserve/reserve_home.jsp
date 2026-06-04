@@ -18,8 +18,8 @@
     <main class="main-container">
 
         <div class="menu-panel">
-            <a href="${pageContext.request.contextPath}/booksSearch" class="menu-link" style="font-size: 40px;">予約登録</a>
-            <a href="${pageContext.request.contextPath}/reserveBook" class="menu-link" style="font-size: 40px;">照会・取り消し</a>
+            <a href="${pageContext.request.contextPath}/booksSearch" class="menu-link" style="font-size: 40px;">貸出状況</a>
+            <a href="${pageContext.request.contextPath}/reserveBook" class="menu-link" style="font-size: 40px;">予約状況</a>
         </div>
     </main>
 </body>

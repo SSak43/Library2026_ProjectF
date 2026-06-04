@@ -63,8 +63,8 @@ List<UsersBean> usersList = (List<UsersBean>) session.getAttribute("usersList");
 			<td><input type="text" name="Tel" value="<%=usersBean.getTel()%>"></td>
 		</tr>
 		<tr>
-			<td>パスワード</td>
-			<td><input type="text" name="Password"></td>	
+			<td>パスワード変更</td>
+			<td><input type="text" name="Password" placeholder="変更する場合のみ入力"></td>	
 		</tr>
 	</table>
 	

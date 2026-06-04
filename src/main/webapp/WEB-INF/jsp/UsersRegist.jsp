@@ -12,8 +12,8 @@ List<UsersBean> usersList = (List<UsersBean>) session.getAttribute("usersList");
 </head>
 <body>
 	<h1>利用者登録</h1>
-	<a href="UsersMainServlet">戻る</a>
-	<form action="UsersRegistServlet" method="POST">
+	<a href="/Library2026_ProjectF/UsersMain">戻る</a>
+	<form action="/Library2026_ProjectF/UsersRegist" method="POST">
 		<table border="1">
 			<tr>
 				<th>区分</th>

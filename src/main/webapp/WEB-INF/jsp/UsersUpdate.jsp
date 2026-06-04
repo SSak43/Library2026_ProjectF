@@ -12,8 +12,8 @@ List<UsersBean> usersList = (List<UsersBean>) session.getAttribute("usersList");
 </head>
 <body>
 <h1>更新入力画面</h1>
-<a href="UsersMainServlet">戻る</a>
-	<form action="UsersUpdateServlet" method="GET">
+<a href="/Library2026_ProjectF/UsersMain">戻る</a>
+	<form action="/Library2026_ProjectF/UsersUpdate" method="GET">
 			<input type="text" name="userId" placeholder="利用者IDを入力">
 		<input type="submit" value="表示">
 	</form>
@@ -47,7 +47,7 @@ List<UsersBean> usersList = (List<UsersBean>) session.getAttribute("usersList");
 			String statusDisplay = normalMark + "可 " + stopMark + "不可";
 	%>
 	
-	<form action="UsersUpdateServlet" method="POST">
+	<form action="/Library2026_ProjectF/UsersUpdate" method="POST">
 	
 	<input type="hidden" name="userId" value="<%= usersBean.getUserId() %>">
 	
@@ -63,9 +63,8 @@ List<UsersBean> usersList = (List<UsersBean>) session.getAttribute("usersList");
 			<td><input type="text" name="Tel" value="<%=usersBean.getTel()%>"></td>
 		</tr>
 		<tr>
-<!-- 		ハッシュ値から戻す処理はあとで -->
 			<td>パスワード</td>
-			<td><input type="text" name="Password" value="<%=usersBean.getPassword()%>"></td>	
+			<td><input type="text" name="Password"></td>	
 		</tr>
 	</table>
 	

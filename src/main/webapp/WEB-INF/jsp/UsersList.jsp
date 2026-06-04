@@ -11,8 +11,8 @@ List<UsersBean> usersList = (List<UsersBean>) session.getAttribute("usersList");
 <title>利用者情報</title>
 </head>
 <body>
-	<h1>利用者一覧</h1><a href="UsersMainServlet">戻る</a>
-	<form action="UsersSearchServlet" method="GET">
+	<h1>利用者一覧</h1><a href="/Library2026_ProjectF/UsersMain">戻る</a>
+	<form action="/Library2026_ProjectF/UsersSearch" method="GET">
 		<!-- 		<p>検索方法：</p> -->
 		<!-- 		<input type="radio" name="mode" value="idQuery">利用者ID -->
 		<!-- 		<input type="radio" name="mode" value="nameQuery">氏名 -->

@@ -21,9 +21,9 @@
     <main class="main-container">
         <!-- ログインパネルのスタイルを流用した大きなパネル kkkk-->
         <div class="menu-panel">
-            <a href="search.html" class="menu-link" style="font-size: 40px;">図書検索</a>
-            <a href="reserve.html" class="menu-link" style="font-size: 40px;">予約処理</a>
-            <a href="status.html" class="menu-link" style="font-size: 40px;">貸出状況照会</a>
+            <a href="kensaku.html" class="menu-link" style="font-size: 40px;">図書検索</a>
+            <a href="yoyaku.html" class="menu-link" style="font-size: 40px;">予約処理</a>
+            <a href="syoukai.html" class="menu-link" style="font-size: 40px;">貸出状況照会</a>
         </div>
     </main>
 </body>

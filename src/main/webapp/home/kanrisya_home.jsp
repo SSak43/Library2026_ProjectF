@@ -4,13 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>司書メニュー画面</title>
+    <title>管理者メニュー画面</title>
     <link rel="stylesheet" href="riyousyahome.css">
 </head>
 <body>
     <!-- ヘッダー -->
     <header class="header">
-        <div class="header-title">司書メニュー画面</div>
+        <div class="header-title">管理者メニュー画面</div>
         <!-- ログアウトしてログイン画面に戻る（プレビュー用に拡張子を.htmlにしています） -->
         <form action="logout" method="post">
     <button type="submit" class="logout-btn">ログアウト</button>

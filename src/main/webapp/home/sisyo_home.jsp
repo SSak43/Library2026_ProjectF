@@ -5,30 +5,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>司書メニュー画面</title>
-    <link rel="stylesheet" href="riyousyahome.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/home/riyousyahome.css">
 </head>
 <body>
-    <!-- ヘッダー -->
     <header class="header">
         <div class="header-title">司書メニュー画面</div>
-        <!-- ログアウトしてログイン画面に戻る（プレビュー用に拡張子を.htmlにしています） -->
-        <form action="logout" method="post">
-    <button type="submit" class="logout-btn">ログアウト</button>
-</form>
+        <form action="/Library2026_ProjectF/logout" method="post" style="margin-left: auto;">
+            <button type="submit" class="btn-logout">ログアウト</button>
+        </form>
     </header>
 
-    <!-- メイン領域 -->
     <main class="main-container">
-        <!-- ログインパネルのスタイルを流用した大きなパネル -->
+
         <div class="menu-panel">
-            <a href="kensaku.html" class="menu-link" style="font-size: 40px;">図書検索</a>
-            <a href="yoyaku.html" class="menu-link" style="font-size: 40px;">予約処理</a>
-            <a href="syoukai.html" class="menu-link" style="font-size: 40px;">貸出状況照会</a>
-            <a href="zousyo.html" class="menu-link" style="font-size: 40px;">蔵書管理</a>
-            <a href="kasidasi.html" class="menu-link" style="font-size: 40px;">貸出処理</a>
-            <a href="henkyaku.html" class="menu-link" style="font-size: 40px;">返却処理</a>
-            <a href="entai.html" class="menu-link" style="font-size: 40px;">延滞一覧</a>
-            <a href="dassyu.html" class="menu-link" style="font-size: 40px;">ダッシュボード</a>
+        
+        	<a href="${pageContext.request.contextPath}/booksSearch" class="menu-link" style="font-size: 40px;">図書検索</a>
+            <a href="${pageContext.request.contextPath}/reserveBook" class="menu-link" style="font-size: 40px;">予約処理</a>
+            <a href="${pageContext.request.contextPath}/lending" class="menu-link" style="font-size: 40px;">貸出処理</a>
+            <a href="${pageContext.request.contextPath}/returnBook" class="menu-link" style="font-size: 40px;">返却処理</a>
+            <a href="${pageContext.request.contextPath}/none" class="menu-link" style="font-size: 40px;">貸出状況照会</a>
+            <a href="${pageContext.request.contextPath}/none" class="menu-link" style="font-size: 40px;">蔵書管理</a>
+            <a href="${pageContext.request.contextPath}/none" class="menu-link" style="font-size: 40px;">延滞一覧</a>
+            <a href="${pageContext.request.contextPath}/none" class="menu-link" style="font-size: 40px;">ダッシュボード</a>
+           
         </div>
     </main>
 </body>

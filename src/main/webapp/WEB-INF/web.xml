@@ -49,4 +49,44 @@
     <servlet-name>UsersUpdateServlet</servlet-name>
     <url-pattern>/UsersUpdateServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>BooksRegistServlet</display-name>
+    <servlet-name>BooksRegistServlet</servlet-name>
+    <servlet-class>f03_book.servlet.BooksRegistServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>BooksRegistServlet</servlet-name>
+    <url-pattern>/BooksRegistServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>BooksMainServlet</display-name>
+    <servlet-name>BooksMainServlet</servlet-name>
+    <servlet-class>f03_book.servlet.BooksMainServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>BooksMainServlet</servlet-name>
+    <url-pattern>/BooksMainServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>BookSearchServlet</display-name>
+    <servlet-name>BookSearchServlet</servlet-name>
+    <servlet-class>f03_book.servlet.BookSearchServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>BookSearchServlet</servlet-name>
+    <url-pattern>/BookSearchServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>BooksUpdateServlet</display-name>
+    <servlet-name>BooksUpdateServlet</servlet-name>
+    <servlet-class>f03_book.servlet.BooksUpdateServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>BooksUpdateServlet</servlet-name>
+    <url-pattern>/BooksUpdateServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

@@ -15,4 +15,10 @@ public class UsersUpdateLogic {
 		UsersUpdateDAO dao = new UsersUpdateDAO();
 		return dao.add(usersBean);
 	}
+	
+	public String hash(String pass) {
+		UsersUpdateDAO dao = new UsersUpdateDAO();
+		return dao.hashPassword(pass);
+	}
+	
 }

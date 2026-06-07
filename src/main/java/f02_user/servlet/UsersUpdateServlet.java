@@ -52,7 +52,7 @@ public class UsersUpdateServlet extends HttpServlet {
 
 		HttpSession session = request.getSession();
 		session.setAttribute("usersList", usersList);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/UsersUpdate.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/user/UsersUpdate.jsp");
 		dispatcher.forward(request, response);
 	}
 

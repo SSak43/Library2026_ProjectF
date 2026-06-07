@@ -40,7 +40,7 @@ public class UsersRegistServlet extends HttpServlet {
 		request.setAttribute("latestId", latestId);
 
 		// 3. 登録画面（JSP）へフォワード
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/UsersRegist.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/user/UsersRegist.jsp");
 		dispatcher.forward(request, response);
 
 	}

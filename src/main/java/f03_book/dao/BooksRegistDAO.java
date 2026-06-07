@@ -51,13 +51,13 @@ public class BooksRegistDAO extends DAOBase {
 			throw new IllegalStateException("JDBCドライバを読み込めません");
 		}
 		try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
-			String sql = "INSERT INTO BOOKS (TITLE,WRITER_NAME,COMPANY,BOOK_CLASS,BOOK_STATUS,BOOK_REGIST_BOOK_UPDATE) VALUES(?,?,?,?,?,?,?)";
+			String sql = "INSERT INTO BOOKS (TITLE,WRITER_NAME,COMPANY,BOOK_CLASS,BOOK_STATUS,BOOK_REGIST,BOOK_UPDATE) VALUES(?,?,?,?,?,?,?)";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 			pStmt.setString(1, booksBean.getTitle());
 			pStmt.setString(2, booksBean.getWriterName());
 			pStmt.setString(3, booksBean.getCompany());
 			pStmt.setString(4, booksBean.getBookClass());
-			pStmt.setString(5, booksBean.getBookStatus());
+			pStmt.setString(5, "0");
 			pStmt.setDate(6, sqlDate);
 			pStmt.setDate(7, sqlDate);
 

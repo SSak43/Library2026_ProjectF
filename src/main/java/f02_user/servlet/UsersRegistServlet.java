@@ -6,6 +6,7 @@ import Model.UsersBean;
 import f02_user.logic.UsersRegistLogic;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class UsersRegistServlet
  */
+@WebServlet("/UsersRegist")
 public class UsersRegistServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -38,7 +40,7 @@ public class UsersRegistServlet extends HttpServlet {
 		request.setAttribute("latestId", latestId);
 
 		// 3. 登録画面（JSP）へフォワード
-		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/UsersRegist.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/user/UsersRegist.jsp");
 		dispatcher.forward(request, response);
 
 	}
@@ -65,7 +67,7 @@ public class UsersRegistServlet extends HttpServlet {
 		boolean Add = logic.add(usersBean);
 
 		if (Add) {
-			response.sendRedirect("UsersMainServlet");
+			response.sendRedirect("/Library2026_ProjectF/UsersMain");
 		} else {
 			request.setAttribute("errorMsg", "登録に失敗しました");
 		}

@@ -1,1 +1,92 @@
-@charset "UTF-8";
+        /* リセットCSS */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Meiryo", "Hiragino Kaku Gothic ProN", sans-serif;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            background-color: #b4c7e7; /* 背景色流用 */
+        }
+
+        /* ヘッダー部分 (流用・調整) */
+        .header {
+            background-color: #e2e2e2;
+            border-bottom: 1px solid #7a8fa6;
+            padding: 15px 20px; /* 左右にpaddingを追加 */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative; /* タイトルを絶対中央にするため */
+        }
+
+        .header-title {
+            font-size: 20px;
+            color: #333;
+            /* タイトルをヘッダーの完全な中央に配置 */
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* ログアウトボタン (モーダルのbtn-confirmをベースに作成) */
+        .btn-logout {
+            background-color: #fff;
+            border: 1px solid #7a8fa6;
+            padding: 5px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            color: #333;
+            text-decoration: none;
+            margin-left: auto; /* flexboxで右端に寄せる */
+            z-index: 1; /* タイトルより前面に出す */
+        }
+
+        .btn-logout:hover {
+            background-color: #f2f2f2;
+        }
+
+        /* メインコンテンツ領域 (流用) */
+        .main-container {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px; /* パネルの外側の余白 */
+        }
+
+        /* メニューパネル (login-panelを流用・調整) */
+        .menu-panel {
+            background-color: #dadada;
+            border: 1px solid #7a8fa6;
+            /* ログイン画面の丸み(50px)は外し、画像に合わせ四角くする */
+            border-radius: 0; 
+            width: 100%;
+            max-width: 1200px; /* 横長に広げる */
+            height: 100%; /* 縦にも広げる */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 40px; /* メニュー同士の縦の間隔 */
+        }
+
+        /* メニューリンク */
+        .menu-link {
+            font-size: 40px; /* 画像に合わせて文字を大きく */
+            color: #333;
+            text-decoration: underline; /* 下線あり */
+            transition: all 0.2s ease;
+        }
+
+        /* カーソルを合わせると強調表示 */
+        .menu-link:hover {
+            color: #0056b3; /* 青色に変更 */
+            /* font-weight: bold; を使うと文字幅が変わって全体がガタつくため、
+               text-shadowを使って疑似的に太字に見せています */
+            text-shadow: 1px 0 0 #0056b3, -1px 0 0 #0056b3, 0 1px 0 #0056b3, 0 -1px 0 #0056b3;
+        }

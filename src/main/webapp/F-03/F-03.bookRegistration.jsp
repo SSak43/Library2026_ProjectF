@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>蔵書登録入力画面</title>
     <!-- F-3用の共通CSSファイルを読み込む -->
-    <link rel="stylesheet" href="f3-style.css">
+    <link rel="stylesheet" href="F-03.css">
 </head>
 <body>
 

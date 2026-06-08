@@ -1,5 +1,7 @@
 package f02_user.dao;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -54,7 +56,7 @@ public class UsersRegistDAO extends DAOBase {
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 			pStmt.setString(1, usersBean.getUserName());
 			pStmt.setString(2, usersBean.getTel());
-			pStmt.setString(3, usersBean.getPassword());
+			pStmt.setString(3, hashPassword(usersBean.getPassword()));
 			pStmt.setString(4, usersBean.getUserClass());
 			pStmt.setString(5, "0");
 			pStmt.setDate(6, sqlDate);
@@ -85,4 +87,26 @@ public class UsersRegistDAO extends DAOBase {
 			return false;
 		}
 	}
+	private String hashPassword(String password) {
+		if (password == null) {
+			return "";
+		}
+		try {
+			// SHA-256 という安全な規格を使ってハッシュ化を準備
+			MessageDigest md = MessageDigest.getInstance("SHA-256");
+			byte[] hash = md.digest(password.getBytes(StandardCharsets.UTF_8));
+
+			// バイトデータを16進数の文字列に変換する
+			StringBuilder sb = new StringBuilder();
+			for (byte b : hash) {
+				sb.append(String.format("%02x", b));
+			}
+			return sb.toString(); // 64文字の暗号化された文字列が返ります
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return password;
+		}
+	}
+
 }

@@ -75,7 +75,7 @@ public class UsersSearchServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		session.setAttribute("usersList", usersList);
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/UsersList.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/user/UsersList.jsp");
 		dispatcher.forward(request, response);
 		
 	}

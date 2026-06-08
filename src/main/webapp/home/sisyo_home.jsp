@@ -8,12 +8,15 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/home/riyousyahome.css">
 </head>
 <body>
+
     <header class="header">
         <div class="header-title">司書メニュー画面</div>
+
         <form action="/Library2026_ProjectF/logout" method="post" style="margin-left: auto;">
             <button type="submit" class="btn-logout">ログアウト</button>
         </form>
     </header>
+
 
     <main class="main-container">
 

@@ -32,7 +32,7 @@ public class UsersMainServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		String mode = request.getParameter("mode");
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/UsersMain.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/user/UsersMain.jsp");
 		dispatcher.forward(request,response);
 		
 

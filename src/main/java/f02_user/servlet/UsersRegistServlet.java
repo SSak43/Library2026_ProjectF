@@ -11,67 +11,63 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-/**
- * Servlet implementation class UsersRegistServlet
- */
 @WebServlet("/UsersRegist")
 public class UsersRegistServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
 	public UsersRegistServlet() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+	// 🛠️ 初期表示処理（最新のIDを取得して画面を開く）
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		// 1. Logicを呼び出して最新のIDを取得する
+		
 		UsersRegistLogic logic = new UsersRegistLogic();
 		int latestId = logic.getLatestId();
 
-		// 2. 取得したIDを request にセットしてJSPに渡す
+		// 取得した現在の最大IDを登録画面に引き渡す
 		request.setAttribute("latestId", latestId);
 
-		// 3. 登録画面（JSP）へフォワード
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/user/UsersRegist.jsp");
 		dispatcher.forward(request, response);
-
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+	// 💾 登録実行処理（JSPの確認モーダルの「登録」が押されたらここに来る）
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// 入力データ受け取る
+		request.setCharacterEncoding("UTF-8");
+		
+		// JSPの各 input / radio の name 属性から値を受け取る
 		String cla = request.getParameter("cla");
 		String name = request.getParameter("userName");
 		String tel = request.getParameter("Tel");
 		String pass = request.getParameter("Password");
-		//　受け取ったデータをセット
+		
+		// 受け取ったデータを作っていただいたBeanにセット
 		UsersBean usersBean = new UsersBean();
 		usersBean.setUserClass(cla);
 		usersBean.setUserName(name);
 		usersBean.setTel(tel);
 		usersBean.setPassword(pass);
 
-		//データベースへ登録
+		// データベースへ登録実行
 		UsersRegistLogic logic = new UsersRegistLogic();
-		boolean Add = logic.add(usersBean);
-
-		if (Add) {
-			response.sendRedirect("/Library2026_ProjectF/UsersMain");
-		} else {
-			request.setAttribute("errorMsg", "登録に失敗しました");
+		boolean isSuccess = logic.add(usersBean);
+		
+		// 画面を再表示するため、最新のIDをもう一度取得する（登録が成功していれば+1された状態になる）
+		int latestId = logic.getLatestId();
+		
+		// 結果フラグやIDをJSPへ渡す
+		request.setAttribute("latestId", latestId);
+		request.setAttribute("isSuccess", isSuccess);
+		
+		if (!isSuccess) {
+			request.setAttribute("errorMessage", "登録に失敗しました。システム管理者にお問い合わせください。");
 		}
 
+		// 再度、登録画面へフォワード（JSP側の制御で完了モーダルが開きます）
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/user/UsersRegist.jsp");
+		dispatcher.forward(request, response);
 	}
-
 }

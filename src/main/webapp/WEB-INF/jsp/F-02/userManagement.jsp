@@ -5,22 +5,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>利用者管理</title>
-    <!-- 外部の共通CSSファイルを読み込む -->
-    <link rel="stylesheet" href="F-02.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/F-02.css">
 </head>
 <body>
 
     <div class="header">
         <h1 class="header-title">利用者管理</h1>
-        <button class="menu-button">メニュー</button>
+        <button class="menu-button" type="button" onclick="location.href='${pageContext.request.contextPath}/admin_home.jsp'">メニュー</button>
     </div>
 
-    <!-- 共通ベースクラス(main-content-base) ＋ 中央寄せレイアウトクラス(layout-center) -->
     <div class="main-content-base layout-center">
         <div class="link-group">
-            <a href="F-2.user_register.jsp">利用者登録</a>
-            <a href="F-2.userUpdate.jsp">更新</a>
-            <a href="F-2.userReference.jsp">利用者情報参照</a>
+            <a href="${pageContext.request.contextPath}/UsersRegist">利用者登録</a>
+            
+            <a href="${pageContext.request.contextPath}/#">更新</a>
+            <a href="${pageContext.request.contextPath}/#">利用者情報参照</a>
         </div>
     </div>
 

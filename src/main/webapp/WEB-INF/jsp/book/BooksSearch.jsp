@@ -11,7 +11,7 @@ List<BooksBean> booksList = (List<BooksBean>) session.getAttribute("booksList");
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>蔵書一覧</h1>
+	<h1>蔵書検索</h1>
 	<a href="/Library2026_ProjectF/BooksMain">戻る</a>
 	<form action="/Library2026_ProjectF/BooksSearch" method="GET">
 				<input type="text" name="bookId" placeholder="図書IDを入力">

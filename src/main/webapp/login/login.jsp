@@ -31,7 +31,7 @@
             <form action="/Library2026_ProjectF/login" method="post">
                 <div class="form-group">
                     <label for="login_id">ID</label>
-                    <input type="text" id="login_id" name="login_id" class="form-control" required>
+                    <input type="text" id="login_id" name="login_id" class="form-control" required autofocus>
                 </div>
 
                 <div class="form-group">

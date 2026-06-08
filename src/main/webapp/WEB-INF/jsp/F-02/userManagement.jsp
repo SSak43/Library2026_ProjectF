@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>利用者管理</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/F-02.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/home.css">
 </head>
 <body>
 
@@ -17,7 +17,6 @@
     <div class="main-content-base layout-center">
         <div class="link-group">
             <a href="${pageContext.request.contextPath}/UsersRegist">利用者登録</a>
-            
             <a href="${pageContext.request.contextPath}/#">更新</a>
             <a href="${pageContext.request.contextPath}/#">利用者情報参照</a>
         </div>

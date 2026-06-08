@@ -8,5 +8,7 @@
 </head>
 <body>
 <a href="/Library2026_ProjectF/BooksRegist">１．図書登録</a>
+<a href="/Library2026_ProjectF/BooksSearch">２．図書検索</a>
+<a href="/Library2026_ProjectF/BooksUpdate">３．図書更新</a>
 </body>
 </html>

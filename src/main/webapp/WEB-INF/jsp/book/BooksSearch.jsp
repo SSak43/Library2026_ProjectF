@@ -9,11 +9,16 @@ List<BooksBean> booksList = (List<BooksBean>) session.getAttribute("booksList");
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" href="/Library2026_ProjectF/css/home.css">
 </head>
 <body>
-	<h1>蔵書検索</h1>
-	<a href="/Library2026_ProjectF/BooksMain">戻る</a>
-	<form action="/Library2026_ProjectF/BooksSearch" method="GET">
+	<div class="header">
+		<h1 class="header-title">蔵書検索画面</h1>
+		<button class="menu-button" type="button"
+			onclick="location.href='${pageContext.request.contextPath}/home/admin_home.jsp'">メニュー</button>
+		<!-- 		<a href="/Library2026_ProjectF/BooksMain">戻る</a> -->
+	</div>
+	<form action="${pageContext.request.contextPath}/BooksSearch" method="GET" id="searchForm">
 				<input type="text" name="bookId" placeholder="図書IDを入力">
 		<input type="submit" value="表示">
 	</form>

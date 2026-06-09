@@ -19,7 +19,7 @@
     <!-- メインコンテンツエリア (上下左右中央配置) -->
     <div class="main-content-base layout-center">
         
-        <!-- 横幅を極限まで引き伸ばしたコンテナ（画像2枚目を完全に再現） -->
+        <!-- 横幅を極限まで引き伸ばしたコンテナ -->
         <div style="width: 95%; max-width: 1000px; padding: 10px; display: flex; flex-direction: column;">
             
             <div class="error-message" id="error-message" style="margin-bottom: 25px; text-align: center;">
@@ -60,7 +60,7 @@
                             </div>
                         </td>
                     </tr>
-                    <!-- 4行目: 分類 & 個別リセット (no-border-rowクラスを取り除き、境界線を美しく復活させました) -->
+                    <!-- 4行目: 分類  -->
                     <tr>
                         <th>分類</th>
                         <td>

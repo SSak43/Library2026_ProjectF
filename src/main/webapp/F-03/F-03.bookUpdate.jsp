@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>更新画面</title>
     <!-- キャッシュバスターを更新 -->
-    <link class="style-link" rel="stylesheet" href="F-03.css?v=20260608_id_search_left_aligned">
+     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/F-03.css">
 </head>
 <body>
 

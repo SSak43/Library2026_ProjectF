@@ -6,8 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>登録画面</title>
     <!-- キャッシュバスターを更新 -->
-    <link class="style-link" rel="stylesheet" href="F-03.css?v=20260608_registration_border_fix">
-</head>
+ <link rel="stylesheet" href="${pageContext.request.contextPath}/css/F-03.css"></head>
 <body>
 
     <!-- ヘッダー -->

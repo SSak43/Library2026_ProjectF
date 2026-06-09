@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>状態変更画面</title>
     <!-- 共通のスタイルシートを読み込み -->
-    <link rel="stylesheet" href="F-03.css?v=20260608_status_centered">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/F-03.css">
 </head>
 <body>
 

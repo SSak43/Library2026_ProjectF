@@ -1,37 +1,39 @@
 /* =========================================
-   F-3 (蔵書管理系) 専用スタイルシート (完全版・レイアウト崩れ対策済)
+   F-3 (蔵書管理系) 専用スタイルシート (お手本スタイル完全統合版)
    ========================================= */
 
 /* 全体のリセットと背景設定 */
 * {
     box-sizing: border-box; /* すべての要素の幅に境界線と余白を含める */
+    margin: 0;
+    padding: 0;
 }
 
 body {
     background-color: #b4c7e7;
-    margin: 0;
-    padding: 30px; /* 周囲の余白を30pxに固定 */
-    font-family: "Noto Serif JP", "Yu Mincho", "MS Mincho", serif;
+    font-family: "Meiryo", "Hiragino Kaku Gothic ProN", "Noto Serif JP", "Yu Mincho", serif;
     height: 100vh;
     display: flex;
     flex-direction: column;
     overflow: hidden; /* 画面全体の余計なスクロールバーを抑止 */
+    margin: 0;
+    padding: 0; /* ヘッダーを全幅に広げるためボディのパディングを解除 */
 }
 
 /* =========================================
    1. 蔵書管理 共通レイアウト (全画面共通)
    ========================================= */
-/* 共通ヘッダー（グレー背景＋青枠） */
+/* 共通ヘッダー（グレー背景＋落ち着きのある下境界線、全幅フラッシュデザイン） */
 .header {
     background-color: #e2e2e2;
-    border: 1.5px solid #2f5597;
-    padding: 0 20px;
+    border-bottom: 1.5px solid #7a8fa6; /* 四方ではなく、下線のみに修正して画像に統合 */
+    padding: 0 30px; /* 左右に30pxのパディングを確保 */
     height: 55px;
     display: flex;
     align-items: center;
     justify-content: flex-end; /* ボタンを右端に配置 */
     position: relative;
-    margin-bottom: 20px;
+    margin-bottom: 30px; /* 下部コンテンツとの間隔 */
     width: 100%;
 }
 .header-title {
@@ -40,28 +42,33 @@ body {
     top: 50%;
     transform: translate(-50%, -50%);
     margin: 0;
-    font-size: 1.2rem;
+    font-size: 1.25rem;
     font-weight: normal;
     white-space: nowrap;
+    color: #333;
 }
 .menu-button {
     background-color: white;
-    border: 1px solid #2f5597;
+    border: 1px solid #7a8fa6;
     padding: 8px 30px;
     font-size: 1rem;
     cursor: pointer;
     font-family: inherit;
     z-index: 2;
+    color: #111;
+}
+.menu-button:hover {
+    background-color: #f2f2f2;
 }
 
-/* 共通メインコンテンツ領域（グレー背景＋青枠） */
+/* 共通メインコンテンツ領域（グレー背景＋青枠、左右下に30pxのマージンを設定） */
 .main-content-base {
     background-color: #d9d9d9;
     border: 1.5px solid #2f5597;
     flex-grow: 1;
     display: flex;
     position: relative; 
-    width: 100%;
+    margin: 0 30px 30px 30px; /* 画面の端から30px浮かせるマージンを追加 */
     overflow: hidden; /* 中の子要素のはみ出しを確実に防止 */
 }
 .layout-top-padding {
@@ -103,7 +110,7 @@ body {
     padding: 8px 12px; 
     font-size: 1.2rem; 
     font-family: inherit;
-    border: 1px solid #000;
+    border: 1px solid #666;
     background-color: #fff;
     cursor: pointer;
     width: 180px;
@@ -113,11 +120,12 @@ body {
 .search-input {
     flex-grow: 1; /* 入力欄をカプセルの余白に合わせていっぱいに広げる */
     padding: 8px 12px;
-    border: 1px solid #000;
+    border: 1px solid #666;
     font-size: 1.2rem; 
     font-family: inherit;
     background-color: #fff;
     border-radius: 0;
+    outline: none;
 }
 .search-btn-group {
     display: flex;
@@ -126,13 +134,16 @@ body {
 }
 .search-btn {
     background-color: #fff;
-    border: 1px solid #000;
+    border: 1px solid #666;
     padding: 8px 25px; 
     font-size: 1.2rem; 
     font-family: inherit;
     cursor: pointer;
     border-radius: 0;
     white-space: nowrap;
+}
+.search-btn:hover {
+    background-color: #f2f2f2;
 }
 .search-btn-primary {
     padding: 8px 35px; 
@@ -237,7 +248,9 @@ body {
     font-size: 1.2rem;
 }
 
-/* ページネーション配置 */
+/* =========================================
+   【極シンプル化】ページネーション配置 (三角を用いたシンプルなデザイン)
+   ========================================= */
 .pagination-container {
     background-color: #f2f2f2;
     border-top: 1.5px solid #2f5597;
@@ -245,32 +258,37 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 20px;
+    gap: 15px; /* 要素間の隙間を適切に設定 */
     flex-shrink: 0; 
 }
 .pagination-btn {
-    background-color: white;
-    border: 1.5px solid #2f5597;
-    width: 35px;
-    height: 30px;
+    background: none; /* 背景色なし */
+    border: none; /* 枠線なし */
+    font-size: 1.4rem; /* 三角記号を大きめに見せる */
+    cursor: pointer;
+    font-family: inherit;
+    color: #000; /* シンプルな黒 */
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1.2rem;
-    cursor: pointer;
-    font-family: inherit;
-    font-weight: bold;
-    border-radius: 4px;
+    padding: 5px 12px;
+    outline: none;
+    transition: opacity 0.2s;
+}
+.pagination-btn:hover:not(:disabled) {
+    opacity: 0.6; /* ホバー時は不透明度を変化させる */
 }
 .pagination-btn:disabled {
-    background-color: #e0e0e0;
-    border-color: #b0b0b0;
-    color: #888;
+    color: #b0b0b0; /* 無効化状態の落ち着いたグレー */
     cursor: not-allowed;
+    opacity: 0.4;
 }
 .pagination-info {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     color: #333;
+    font-weight: normal;
+    letter-spacing: 0.05em;
+    user-select: none;
 }
 
 
@@ -282,17 +300,19 @@ body {
 .error-message { color: red; font-size: 1.1rem; margin-bottom: 15px; display: none; }
 .form-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; table-layout: fixed; border: 1px solid #000; }
 .form-table th, .form-table td { border-bottom: 1px solid #000; padding: 10px; text-align: left; font-weight: normal; }
-.form-table th { width: 15%; font-size: 1.4rem; border-right: 1px solid #000; } /* 見出し幅の比率をスマートに固定 */
+.form-table th { width: 15%; font-size: 1.4rem; border-right: 1px solid #000; color: #111; } /* 見出し幅の比率をスマートに固定 */
 .form-table td { display: flex; gap: 10px; align-items: center; }
 
 /* 共通のテキストフィールド */
 .input-field {
     width: 100%;
     padding: 8px;
-    border: 1px solid #2f5597;
+    border: 1px solid #666;
     font-size: 1.2rem;
     font-family: inherit;
     box-sizing: border-box;
+    background-color: #fff;
+    outline: none;
 }
 .input-field-update {
     width: 100%;
@@ -302,27 +322,116 @@ body {
     font-size: 1.2rem;
     font-family: inherit;
     color: #333;
+    outline: none;
 }
 
 .btn-register { background-color: white; border: 1px solid #2f5597; padding: 10px 40px; font-size: 1.1rem; font-family: inherit; cursor: pointer; }
-.select-field { padding: 8px 10px; font-size: 1.2rem; font-family: inherit; border: 1px solid #000; background-color: #fff; cursor: pointer; }
+.select-field { padding: 8px 10px; font-size: 1.2rem; font-family: inherit; border: 1px solid #666; background-color: #fff; cursor: pointer; border-radius: 0; outline: none; }
 .select-field:disabled { background-color: #e0e0e0; cursor: not-allowed; color: #888; }
 .no-border-row th, .no-border-row td { border-bottom: none; }
 .no-border-row th { border-right: none; }
 .status-td-content { width: 100%; display: flex; justify-content: space-between; align-items: center; }
-.btn { background-color: white; border: 1px solid #2f5597; padding: 5px 15px; font-size: 1rem; cursor: pointer; font-family: inherit; }
-.btn:disabled, .btn-register:disabled { background-color: #cccccc !important; color: #666666 !important; border-color: #999999 !important; cursor: not-allowed; }
 
-/* モーダル */
-.modal-overlay { display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.1); justify-content: center; align-items: center; z-index: 10; }
-.modal-content { background-color: #d9d9d9; border: 1.5px solid #2f5597; box-shadow: 5px 5px 15px rgba(0,0,0,0.3); padding: 30px; width: 70%; max-width: 600px; position: relative; }
-.modal-title { text-align: center; margin-top: 0; margin-bottom: 20px; font-size: 1.2rem; font-weight: normal; }
-.confirm-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-.confirm-table th, .confirm-table td { border-top: 1px solid #000; border-bottom: 1px solid #000; padding: 8px; text-align: left; }
-.confirm-table th { width: 25%; font-size: 1.3rem; border-right: 1px solid #000; font-weight: normal; }
-.confirm-input { width: 100%; padding: 5px; background-color: #b0b0b0; border: 2px solid #6fa8dc; font-size: 1.1rem; color: #555; font-family: inherit; box-sizing: border-box; }
-.modal-actions { display: flex; justify-content: flex-end; gap: 15px; }
-.complete-message { text-align: center; font-size: 1.6rem; margin: 40px 0; }
+/* 汎用ボタン（お手本のトーンと融合） */
+.btn {
+    background-color: #fff;
+    border: 1px solid #666;
+    padding: 5px 15px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: inherit;
+    color: #111;
+}
+.btn:hover {
+    background-color: #f2f2f2;
+}
+.btn:disabled, .btn-register:disabled {
+    background-color: #cccccc !important;
+    color: #666666 !important;
+    border-color: #999999 !important;
+    cursor: not-allowed;
+}
+
+/* =========================================
+   【お手本融合】モーダル (ポップアップ)
+   ========================================= */
+.modal-overlay {
+    display: none;
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(0, 0, 0, 0.15); /* お手本指定の透過比率 */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* お手本の前面順位 */
+}
+.modal-content {
+    background-color: #c0c0c0; /* お手本のシルバーグレー */
+    border: 1px solid #999; /* お手本の細いボーダー */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* お手本の柔らかい影 */
+    padding: 60px 40px 20px 40px; /* お手本の内側余白 */
+    width: 70%;
+    max-width: 550px; /* お手本の550px幅 */
+    position: relative;
+}
+.modal-title {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 25px;
+    font-size: 1.25rem;
+    font-weight: normal;
+    color: #111;
+}
+.confirm-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+.confirm-table th, .confirm-table td {
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+    padding: 10px;
+    text-align: left;
+}
+.confirm-table th {
+    width: 25%;
+    font-size: 1.3rem;
+    border-right: 1px solid #000;
+    font-weight: normal;
+    color: #111;
+}
+.confirm-input {
+    width: 100%;
+    padding: 5px;
+    background-color: #b0b0b0;
+    border: 2px solid #6fa8dc;
+    font-size: 1.1rem;
+    color: #333;
+    font-family: inherit;
+    box-sizing: border-box;
+    outline: none;
+}
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* お手本のポップアップ内エラー文言・目立たせ用装飾 */
+.modal-text {
+    color: red;
+    font-size: 22px;
+    text-align: center;
+    text-decoration: underline;
+    margin-bottom: 30px;
+}
+
+.complete-message {
+    text-align: center;
+    font-size: 1.6rem;
+    margin: 40px 0;
+    color: #111;
+}
 
 
 /* =========================================

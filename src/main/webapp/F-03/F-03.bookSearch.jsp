@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>検索入力画面</title>
-    <!-- キャッシュの影響を防ぐためのパラメータ付きCSS指定 -->
-    <link class="style-link" rel="stylesheet" href="F-03.css?v=20260608_pagination">
+    <!-- ご指定のフォルダ構成 (css/style.css) に合わせたパスに変更 -->
+     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/F-03.css">
 </head>
 <body>
 
@@ -77,11 +77,14 @@
                 </table>
             </div>
 
-            <!-- ③ 下部に常に固定されるページ切替用のフッターナビゲーション -->
+            <!-- ③ 【三角ボタン採用】下部に常に固定されるページネーションナビゲーション -->
             <div class="pagination-container">
-                <button type="button" class="pagination-btn" id="prevPageBtn" onclick="changePage(-1);" disabled>&lt;</button>
-                <span class="pagination-info" id="pageInfo">1 / 1 ページ</span>
-                <button type="button" class="pagination-btn" id="nextPageBtn" onclick="changePage(1);" disabled>&gt;</button>
+                <!-- 「&lt;」から「◀ (&#9664;)」に変更し、不要な白ボタン枠のないフラット仕様に変更 -->
+                <button type="button" class="pagination-btn" id="prevPageBtn" onclick="changePage(-1);" disabled>&#9664;</button>
+                <!-- 「1 / 1 ページ」から「1 / 1」というシンプルな文字数指定に変更 -->
+                <span class="pagination-info" id="pageInfo">1 / 1</span>
+                <!-- 「&gt;」から「▶ (&#9654;)」に変更し、不要な白ボタン枠のないフラット仕様に変更 -->
+                <button type="button" class="pagination-btn" id="nextPageBtn" onclick="changePage(1);" disabled>&#9654;</button>
             </div>
 
         </div>
@@ -167,7 +170,7 @@
                 return;
             }
 
-            // 現在のページの切り出し範囲を算出 (例: 1ページ目なら 0〜9番目のアイテム)
+            // 現在のページの切り出し範囲を算出
             const startIndex = (currentPage - 1) * itemsPerPage;
             const endIndex = startIndex + itemsPerPage;
             const pageItems = currentResults.slice(startIndex, endIndex);
@@ -198,7 +201,8 @@
         function updatePaginationControls(totalItems) {
             const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
             
-            document.getElementById("pageInfo").innerText = `${currentPage} / ${totalPages} ページ`;
+            // 表記をシンプルに「 1 / 2 」のように変更
+            document.getElementById("pageInfo").innerText = `${currentPage} / ${totalPages}`;
 
             const prevBtn = document.getElementById("prevPageBtn");
             const nextBtn = document.getElementById("nextPageBtn");

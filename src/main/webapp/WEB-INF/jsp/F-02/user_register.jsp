@@ -22,7 +22,7 @@
 
         <div class="main-content-base layout-top-padding register-main-content">
     
-            <div class="register-error-message" id="error-message"></div>
+            <div class="register-error-message" id="error-message" style="min-height: 1.5em; visibility: hidden;"></div>
 
             <fmt:formatNumber value="${latestId + 1}" pattern="00000" var="formattedId" />
 
@@ -31,7 +31,7 @@
                     <th>区分</th>
                     <td>
                         <div class="category-options">
-                            <label><input type="radio" name="cla" value="0" checked> 管理者</label>
+                            <label><input type="radio" name="cla" value="0"> 管理者</label>
                             <label><input type="radio" name="cla" value="1"> 司書</label>
                             <label><input type="radio" name="cla" value="2"> 利用者</label>
                         </div>
@@ -67,7 +67,7 @@
             </table>
 
             <div class="bottom-button-container">
-                <button type="button" class="register-button" onclick="showConfirmModal()">登録確認</button>
+                <button type="button" class="register-button" onclick="showConfirmModal()">登録</button>
             </div>
 
         </div>

@@ -205,7 +205,7 @@ body {
     border-bottom: 2px solid #2f5597;
 }
 
-/* 8カラムの幅比率設定 */
+/* 8カラム of Results Table Widths */
 .results-table th.col-no { width: 7%; text-align: center; white-space: nowrap; }
 .results-table th.col-id { width: 10%; }
 .results-table th.col-title { width: 24%; }
@@ -249,29 +249,30 @@ body {
 }
 
 /* =========================================
-   【極シンプル化】ページネーション配置 (三角を用いたシンプルなデザイン)
+   【極シンプル・右下配置・隙間なし】ページネーション
    ========================================= */
 .pagination-container {
     background-color: #f2f2f2;
     border-top: 1.5px solid #2f5597;
     height: 50px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end; /* 右端に配置 */
     align-items: center;
-    gap: 15px; /* 要素間の隙間を適切に設定 */
+    padding-right: 25px; /* 右側の程よい余白 */
+    gap: 0; /* ◀ と ▶ の真ん中の隙間を完全になくす */
     flex-shrink: 0; 
 }
 .pagination-btn {
     background: none; /* 背景色なし */
     border: none; /* 枠線なし */
-    font-size: 1.4rem; /* 三角記号を大きめに見せる */
+    font-size: 1.35rem; /* 三角記号の大きさ */
     cursor: pointer;
     font-family: inherit;
     color: #000; /* シンプルな黒 */
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 5px 12px;
+    padding: 5px 6px; /* パディングを抑えて密着化 */
     outline: none;
     transition: opacity 0.2s;
 }
@@ -282,13 +283,6 @@ body {
     color: #b0b0b0; /* 無効化状態の落ち着いたグレー */
     cursor: not-allowed;
     opacity: 0.4;
-}
-.pagination-info {
-    font-size: 1.15rem;
-    color: #333;
-    font-weight: normal;
-    letter-spacing: 0.05em;
-    user-select: none;
 }
 
 
@@ -359,18 +353,18 @@ body {
     display: none;
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background-color: rgba(0, 0, 0, 0.15); /* お手本指定の透過比率 */
+    background-color: rgba(0, 0, 0, 0.15); /* お手本指定 of backdrop opacity */
     justify-content: center;
     align-items: center;
-    z-index: 1000; /* お手本の前面順位 */
+    z-index: 1000; 
 }
 .modal-content {
-    background-color: #c0c0c0; /* お手本のシルバーグレー */
-    border: 1px solid #999; /* お手本の細いボーダー */
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* お手本の柔らかい影 */
-    padding: 60px 40px 20px 40px; /* お手本の内側余白 */
+    background-color: #c0c0c0; /* シルバーグレー */
+    border: 1px solid #999; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+    padding: 60px 40px 20px 40px; 
     width: 70%;
-    max-width: 550px; /* お手本の550px幅 */
+    max-width: 550px; 
     position: relative;
 }
 .modal-title {

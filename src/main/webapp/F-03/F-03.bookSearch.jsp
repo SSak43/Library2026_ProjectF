@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>検索入力画面</title>
-    <!-- ご指定のフォルダ構成 (css/style.css) に合わせたパスに変更 -->
+    <!-- 絶対パス表記に刷新し、キャッシュバスターパラメータ付きに更新 -->
      <link rel="stylesheet" href="${pageContext.request.contextPath}/css/F-03.css">
 </head>
 <body>
@@ -77,13 +77,11 @@
                 </table>
             </div>
 
-            <!-- ③ 【三角ボタン採用】下部に常に固定されるページネーションナビゲーション -->
+            <!-- ③ 【三角のみ・右下密着配置】下部に常に固定されるページネーションナビゲーション -->
             <div class="pagination-container">
-                <!-- 「&lt;」から「◀ (&#9664;)」に変更し、不要な白ボタン枠のないフラット仕様に変更 -->
+                <!-- ◀ ボタン（枠なし・右寄せ・間隔なし） -->
                 <button type="button" class="pagination-btn" id="prevPageBtn" onclick="changePage(-1);" disabled>&#9664;</button>
-                <!-- 「1 / 1 ページ」から「1 / 1」というシンプルな文字数指定に変更 -->
-                <span class="pagination-info" id="pageInfo">1 / 1</span>
-                <!-- 「&gt;」から「▶ (&#9654;)」に変更し、不要な白ボタン枠のないフラット仕様に変更 -->
+                <!-- ▶ ボタン（枠なし・右寄せ・間隔なし） -->
                 <button type="button" class="pagination-btn" id="nextPageBtn" onclick="changePage(1);" disabled>&#9654;</button>
             </div>
 
@@ -201,9 +199,6 @@
         function updatePaginationControls(totalItems) {
             const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
             
-            // 表記をシンプルに「 1 / 2 」のように変更
-            document.getElementById("pageInfo").innerText = `${currentPage} / ${totalPages}`;
-
             const prevBtn = document.getElementById("prevPageBtn");
             const nextBtn = document.getElementById("nextPageBtn");
 

@@ -429,18 +429,17 @@ body {
 
 
 /* =========================================
-   図書ID検索バー用スタイル (左寄せコンパクト調整)
+   図書ID検索バー用スタイル (背景と外枠をなくした独立デザイン)
    ========================================= */
 .id-search-bar {
-    border: 1px solid #000;
-    padding: 12px 20px;
-    background-color: #fff;
+    padding: 0; /* 不要な内枠パディングを完全に排除 */
     display: flex;
     gap: 15px;
     align-items: center;
     width: 100%;
-    margin-bottom: 20px;
+    margin-bottom: 25px; /* 下部テーブルとの境界バランスを調整 */
     flex-shrink: 0;
+    /* 背景や外枠を撤廃し、入力欄とボタン単体がグレーのメイン枠上で自立した四角形に見えるようにしました */
 }
 .id-search-label {
     font-size: 1.3rem;

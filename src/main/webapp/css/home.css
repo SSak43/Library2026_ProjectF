@@ -1,0 +1,89 @@
+@charset "UTF-8";
+
+/* =========================================
+   全画面共通のベーススタイル（home.css）
+   ========================================= */
+
+/* 全体のリセットと背景設定 */
+body {
+    background-color: #b4c7e7;
+    margin: 0;
+    padding: 30px;
+    font-family: "Noto Serif JP", "Yu Mincho", "MS Mincho", serif;
+    height: 100vh;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ヘッダー部分（共通） */
+.header {
+    background-color: #e2e2e2;
+    border: 1.5px solid #2f5597;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.header-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: normal;
+}
+
+.menu-button {
+    margin-left: auto;
+    background-color: white;
+    border: 1px solid #2f5597;
+    padding: 8px 0;
+    width: 140px;
+    text-align: center;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+/* メインコンテンツの「共通ベース」 */
+.main-content-base {
+    background-color: #d9d9d9;
+    border: 1.5px solid #2f5597;
+    flex-grow: 1;
+    display: flex;
+    position: relative; 
+}
+
+/* =========================================
+   利用者管理画面 (userManagement.jsp) 用スタイル
+   ========================================= */
+
+/* メインコンテンツ内を完全中央に配置する */
+.layout-center {
+    justify-content: center;
+    align-items: center;
+}
+
+/* リンクを縦に並べて、間隔を広くあける */
+.link-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* 左揃え */
+    gap: 40px; /* リンク同士の縦の間隔 */
+}
+
+/*  最初は黒文字、下線ありの状態にする */
+.link-group a {
+    font-size: 2.2rem; /* 画像に合わせた大きめの文字 */
+    color: black;      /* 初期状態は黒文字 */
+    text-decoration: underline; /* 下線あり */
+    letter-spacing: 0.1em;
+    transition: color 0.2s ease; /* 色が滑らかに変わるアニメーション */
+}
+
+.link-group a:hover {
+    color: #2f5597;    /* 枠線などと統一されたきれいな青紺色に変更 */
+}

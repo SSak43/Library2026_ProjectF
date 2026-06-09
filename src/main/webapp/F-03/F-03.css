@@ -1,5 +1,5 @@
 /* =========================================
-   F-3 (蔵書管理系) 専用スタイルシート (完全版・検索一覧統合)
+   F-3 (蔵書管理系) 専用スタイルシート (完全版・レイアウト崩れ対策済)
    ========================================= */
 
 /* 全体のリセットと背景設定 */
@@ -15,7 +15,7 @@ body {
     height: 100vh;
     display: flex;
     flex-direction: column;
-    overflow: hidden; 
+    overflow: hidden; /* 画面全体の余計なスクロールバーを抑止 */
 }
 
 /* =========================================
@@ -62,10 +62,11 @@ body {
     display: flex;
     position: relative; 
     width: 100%;
+    overflow: hidden; /* 中の子要素のはみ出しを確実に防止 */
 }
 .layout-top-padding {
     flex-direction: column;
-    padding: 30px 40px; /* 上部・左右の余白を適切に設定 */
+    padding: 20px 40px; /* 上下の余白を適切に設定 */
 }
 .layout-center {
     justify-content: center;
@@ -74,56 +75,67 @@ body {
 
 
 /* =========================================
-   2. 検索入力画面 専用スタイル (カプセル＋下部一覧)
+   2. 検索入力画面 専用スタイル (横長極スリムカプセル)
    ========================================= */
-/* 黒い枠線のカプセル型コンテナ（上部に小さく配置できるよう調整） */
+/* 黒い枠線のカプセル型コンテナ */
 .search-box-container {
     border: 1.5px solid #000;
-    padding: 20px 45px; 
-    width: 75%; 
-    max-width: 750px;
-    margin: 0 auto 25px auto; /* 画面上部中央に配置し、下部テーブルとの隙間を確保 */
-    border-radius: 60px; /* カプセル状の角丸 */
+    padding: 10px 25px; /* 上下のパディングをさらに削り極限まで薄く */
+    width: 95%; 
+    max-width: 900px;
+    margin: 0 auto 15px auto; /* 下部との間隔 */
+    border-radius: 50px; 
     background-color: transparent; 
+    flex-shrink: 0; /* カプセルの高さを自動縮小させず固定 */
 }
 
-/* 検索画面内のフォーム要素 (文字サイズ1.4rem) */
+/* 検索フォーム内の各行の並びを完全に横一列に制御 */
+.search-form-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px; /* 要素間の横の隙間 */
+    width: 100%;
+}
+
+/* 検索画面内のフォーム要素 */
 .search-select {
-    padding: 10px 15px; 
-    font-size: 1.4rem; 
+    padding: 8px 12px; 
+    font-size: 1.2rem; 
     font-family: inherit;
     border: 1px solid #000;
     background-color: #fff;
     cursor: pointer;
-    width: 200px;
+    width: 180px;
+    flex-shrink: 0;
     border-radius: 0;
 }
 .search-input {
-    width: 100%;
-    padding: 10px 15px;
+    flex-grow: 1; /* 入力欄をカプセルの余白に合わせていっぱいに広げる */
+    padding: 8px 12px;
     border: 1px solid #000;
-    font-size: 1.4rem; 
+    font-size: 1.2rem; 
     font-family: inherit;
     background-color: #fff;
     border-radius: 0;
 }
-.search-box-actions {
+.search-btn-group {
     display: flex;
-    justify-content: space-between; 
-    align-items: center;
-    margin-top: 10px; 
+    gap: 10px;
+    flex-shrink: 0;
 }
 .search-btn {
     background-color: #fff;
     border: 1px solid #000;
-    padding: 10px 40px; 
-    font-size: 1.4rem; 
+    padding: 8px 25px; 
+    font-size: 1.2rem; 
     font-family: inherit;
     cursor: pointer;
     border-radius: 0;
+    white-space: nowrap;
 }
 .search-btn-primary {
-    padding: 10px 60px; /* 検索ボタンは横幅を広く */
+    padding: 8px 35px; 
 }
 
 /* =========================================
@@ -133,43 +145,134 @@ body {
     display: flex; 
     flex-direction: column;
     width: 100%;
+    flex-grow: 1; /* 残りの高さをすべてこの領域に割り当てる */
+    background-color: #fff; 
+    border: 1.5px solid #2f5597; /* 最初から大きく表示される外枠線 */
+    overflow: hidden; 
+}
+
+/* 検索件数お知らせヘッダーエリア */
+.results-header-info {
+    background-color: #f2f2f2;
+    padding: 10px 15px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #333;
+    border-bottom: 1.5px solid #2f5597;
+    flex-shrink: 0;
+}
+
+/* テーブルスクロール用コンテナ */
+.table-scroll-container {
     flex-grow: 1;
-    overflow-y: auto; /* テーブルが溢れた場合はスクロール可能にする */
+    overflow-y: auto; /* データが多くなるとここだけでスクロールします */
 }
 
 .results-table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 20px;
-    background-color: #fff;
-    border: 1px solid #000;
-    table-layout: fixed; /* 列幅を固定 */
+    table-layout: fixed; 
 }
 .results-table th, .results-table td {
-    border: 1px solid #000;
-    padding: 12px 10px;
+    border-bottom: 1.5px solid #2f5597; 
+    border-right: 1.5px solid #2f5597;
+    padding: 10px 12px; 
     text-align: left;
     font-size: 1.1rem;
     word-break: break-all;
+    vertical-align: middle;
+}
+.results-table th:last-child, .results-table td:last-child {
+    border-right: none; 
 }
 .results-table th {
     background-color: #e2e2e2;
     font-weight: normal;
+    position: sticky; /* スクロール時もヘッダーを最上部に固定 */
+    top: 0;
+    z-index: 1;
+    border-bottom: 2px solid #2f5597;
 }
 
-/* 検索結果テーブルの各カラム幅の調整 */
-.results-table th.col-id { width: 12%; }
-.results-table th.col-isbn { width: 20%; }
-.results-table th.col-title { width: 35%; }
-.results-table th.col-author { width: 18%; }
+/* 8カラムの幅比率設定 */
+.results-table th.col-no { width: 7%; text-align: center; white-space: nowrap; }
+.results-table th.col-id { width: 10%; }
+.results-table th.col-title { width: 24%; }
+.results-table th.col-author { width: 14%; }
 .results-table th.col-pub { width: 15%; }
+.results-table th.col-class { width: 10%; }
+.results-table th.col-status { width: 12%; }
+.results-table th.col-action { width: 8%; text-align: center; }
 
-/* データがないときのプレースホルダー行 */
+/* セル内整列 */
+.results-table td.cell-no {
+    text-align: center;
+    padding: 5px;
+    white-space: nowrap; 
+}
+.results-table td.cell-action {
+    text-align: center;
+    padding: 5px;
+}
+
+/* 検索結果の「詳細」ボタン */
+.btn-detail-view {
+    background-color: #e2e2e2;
+    border: 1px solid #000;
+    padding: 4px 12px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: inherit;
+    border-radius: 0;
+}
+.btn-detail-view:hover {
+    background-color: #d0d0d0;
+}
+
+/* 最初から枠を大きく見せるための、広々としたメッセージ行スタイル */
 .no-data-row {
     text-align: center !important;
-    color: #666;
-    background-color: #fafafa;
+    color: #555;
+    background-color: #ffffff;
+    font-size: 1.2rem;
 }
+
+/* ページネーション配置 */
+.pagination-container {
+    background-color: #f2f2f2;
+    border-top: 1.5px solid #2f5597;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    flex-shrink: 0; 
+}
+.pagination-btn {
+    background-color: white;
+    border: 1.5px solid #2f5597;
+    width: 35px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: bold;
+    border-radius: 4px;
+}
+.pagination-btn:disabled {
+    background-color: #e0e0e0;
+    border-color: #b0b0b0;
+    color: #888;
+    cursor: not-allowed;
+}
+.pagination-info {
+    font-size: 1.1rem;
+    color: #333;
+}
+
 
 /* --- 他画面(登録/更新/状態変更) 共通スタイル保持 --- */
 .link-group { display: flex; flex-direction: column; align-items: flex-start; gap: 40px; }
@@ -177,12 +280,30 @@ body {
 .link-group a:hover { color: blue; }
 
 .error-message { color: red; font-size: 1.1rem; margin-bottom: 15px; display: none; }
-.form-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; table-layout: fixed; }
+.form-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; table-layout: fixed; border: 1px solid #000; }
 .form-table th, .form-table td { border-bottom: 1px solid #000; padding: 10px; text-align: left; font-weight: normal; }
-.form-table th { width: 15%; font-size: 1.4rem; border-right: 1px solid #000; }
+.form-table th { width: 15%; font-size: 1.4rem; border-right: 1px solid #000; } /* 見出し幅の比率をスマートに固定 */
 .form-table td { display: flex; gap: 10px; align-items: center; }
-.input-field { flex-grow: 1; padding: 8px; border: 1px solid #2f5597; font-size: 1.2rem; font-family: inherit; box-sizing: border-box; }
-.input-field-update { flex-grow: 1; padding: 8px; background-color: #b0b0b0; border: 2px solid #6fa8dc; font-size: 1.2rem; font-family: inherit; color: #333; }
+
+/* 共通のテキストフィールド */
+.input-field {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #2f5597;
+    font-size: 1.2rem;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+.input-field-update {
+    width: 100%;
+    padding: 8px;
+    background-color: #b0b0b0;
+    border: 2px solid #6fa8dc;
+    font-size: 1.2rem;
+    font-family: inherit;
+    color: #333;
+}
+
 .btn-register { background-color: white; border: 1px solid #2f5597; padding: 10px 40px; font-size: 1.1rem; font-family: inherit; cursor: pointer; }
 .select-field { padding: 8px 10px; font-size: 1.2rem; font-family: inherit; border: 1px solid #000; background-color: #fff; cursor: pointer; }
 .select-field:disabled { background-color: #e0e0e0; cursor: not-allowed; color: #888; }
@@ -202,3 +323,36 @@ body {
 .confirm-input { width: 100%; padding: 5px; background-color: #b0b0b0; border: 2px solid #6fa8dc; font-size: 1.1rem; color: #555; font-family: inherit; box-sizing: border-box; }
 .modal-actions { display: flex; justify-content: flex-end; gap: 15px; }
 .complete-message { text-align: center; font-size: 1.6rem; margin: 40px 0; }
+
+
+/* =========================================
+   図書ID検索バー用スタイル (左寄せコンパクト調整)
+   ========================================= */
+.id-search-bar {
+    border: 1px solid #000;
+    padding: 12px 20px;
+    background-color: #fff;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+    flex-shrink: 0;
+}
+.id-search-label {
+    font-size: 1.3rem;
+    font-weight: normal;
+    color: #000;
+    width: 15%; /* メインフォームの th 幅(15%)にぴったり揃える */
+    flex-shrink: 0;
+}
+.id-search-input-wrapper {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    width: 100%;
+}
+.id-search-field-compact {
+    width: 250px; /* 図書IDの入力欄を左寄せでコンパクトな幅に固定 */
+    flex-shrink: 0;
+}

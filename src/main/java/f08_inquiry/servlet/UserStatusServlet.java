@@ -34,7 +34,7 @@ public class UserStatusServlet extends HttpServlet {
 		// ② もし上の「userId」が空っぽだった場合のみ、バックアップとしてログイン情報等から取得する
 		if (userId == null || userId.trim().isEmpty()) {
 			HttpSession session = request.getSession();
-			// ※セッションに保存されているログインユーザーIDの属性名（"userId" や "loginUser" など）に合わせてください
+			
 			userId = (String) session.getAttribute("userId"); 
 		}
 		

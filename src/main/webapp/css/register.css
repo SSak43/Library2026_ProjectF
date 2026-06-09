@@ -1,0 +1,57 @@
+@charset "UTF-8";
+
+/* =========================================
+   入力・確認画面 共通レイアウトスタイル
+   ========================================= */
+
+/* メインコンテンツのパディング調整 */
+.register-main-content {
+    padding-top: 60px;
+}
+
+/* ラジオボタン（区分）のコンテナ */
+.category-options {
+    border: 1px solid #000;
+    padding: 3px 15px;
+    background: none;
+    display: flex;
+    gap: 15px;
+}
+
+/* エラーメッセージ表示エリア */
+.register-error-message {
+    visibility: hidden;
+    min-height: 1.5em;
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+    color: red;
+}
+
+/* 確認モーダル内のボタンコンテナ（右寄せ） */
+.modal-buttons-right {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* モーダル用のアクションボタン共通 */
+.modal-action-button {
+    border: 1px solid #2f5597;
+    background-color: white;
+    padding: 5px 20px;
+    width: 100px;
+    text-align: center;
+    cursor: pointer;
+}
+
+/* 入力欄・確認欄の横幅100%固定 */
+.w-full {
+    width: 100%;
+}
+
+/* パスワード用：文字を少し小さくし、1行に収めてはみ出しを防ぐ */
+.password-label {
+    font-size: 0.9rem;
+    white-space: nowrap;
+}

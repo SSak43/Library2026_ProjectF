@@ -46,7 +46,7 @@
                         <th style="width: 15%;">書名</th>
                         <td>
                             <div style="display: flex; gap: 15px; width: 100%; align-items: center;">
-                                <input type="text" class="input-field" id="reg-title" name="bookTitle" placeholder="図書IDで検索するか、入力してください">
+                                <input type="text" class="input-field" id="reg-title" name="bookTitle" placeholder="">
                                 <button type="button" class="btn" onclick="clearField('reg-title');" style="padding: 6px 20px; font-size: 1.1rem; flex-shrink: 0;">リセット</button>
                             </div>
                         </td>
@@ -56,7 +56,7 @@
                         <th>著者</th>
                         <td>
                             <div style="display: flex; gap: 15px; width: 100%; align-items: center;">
-                                <input type="text" class="input-field" id="reg-author" name="bookAuthor" placeholder="図書IDで検索するか、入力してください">
+                                <input type="text" class="input-field" id="reg-author" name="bookAuthor" placeholder="">
                                 <button type="button" class="btn" onclick="clearField('reg-author');" style="padding: 6px 20px; font-size: 1.1rem; flex-shrink: 0;">リセット</button>
                             </div>
                         </td>
@@ -66,7 +66,7 @@
                         <th>出版社</th>
                         <td>
                             <div style="display: flex; gap: 15px; width: 100%; align-items: center;">
-                                <input type="text" class="input-field" id="reg-publisher" name="bookPublisher" placeholder="図書IDで検索するか、入力してください">
+                                <input type="text" class="input-field" id="reg-publisher" name="bookPublisher" placeholder="">
                                 <button type="button" class="btn" onclick="clearField('reg-publisher');" style="padding: 6px 20px; font-size: 1.1rem; flex-shrink: 0;">リセット</button>
                             </div>
                         </td>
@@ -76,7 +76,7 @@
                         <th>分類</th>
                         <td>
                             <div style="display: flex; gap: 15px; width: 100%; align-items: center;">
-                                <input type="text" class="input-field" id="reg-classification" name="bookClassification" placeholder="図書IDで検索するか、入力してください">
+                                <input type="text" class="input-field" id="reg-classification" name="bookClassification" placeholder="">
                                 <button type="button" class="btn" onclick="clearField('reg-classification');" style="padding: 6px 20px; font-size: 1.1rem; flex-shrink: 0;">リセット</button>
                             </div>
                         </td>
@@ -86,7 +86,7 @@
                         <th>蔵書状態</th>
                         <td>
                             <div style="display: flex; gap: 15px; width: 100%; align-items: center;">
-                                <input type="text" class="input-field" id="reg-status" name="bookStatus" placeholder="図書IDで検索するか、入力してください">
+                                <input type="text" class="input-field" id="reg-status" name="bookStatus" placeholder="">
                                 <button type="button" class="btn" onclick="clearField('reg-status');" style="padding: 6px 20px; font-size: 1.1rem; flex-shrink: 0;">リセット</button>
                             </div>
                         </td>

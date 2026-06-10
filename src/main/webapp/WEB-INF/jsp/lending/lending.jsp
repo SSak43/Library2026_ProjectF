@@ -5,40 +5,13 @@
 <head>
     <meta charset="UTF-8">
     <title>図書システム - 貸出入力画面</title>
-    <style>
-        /* 簡単なレイアウト用のCSS */
-        body { font-family: sans-serif; background-color: #b0c4de; margin: 0; padding: 200px 20px 20px 20px; }
-        .header { position: absolute; top: 0; left: 0; width: 100%; height: 50px; background: #e0e0e0; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #666; }
-        .main-box { background: #d3d3d3; border: 2px solid #666; padding: 20px; position: relative; min-height: 450px; }
-        .error { color: red; font-weight: bold; text-align: center; margin-bottom: 10px; }
-        .success { color: green; font-weight: bold; text-align: center; margin-bottom: 10px; }
-        table { width: 80%; border-collapse: collapse; margin-bottom: 20px; background: white; }
-        table, th, td { border: 1px solid #666; }
-        th, td { padding: 10px; text-align: left; }
-        th { background: #e0e0e0; width: 20%; }
-        .btn-right { position: absolute; bottom: 20px; right: 20px; padding: 10px 30px; font-size: 16px; }
-        
-        /* ★ポップアップ（モーダル）のCSS */
-        .modal-overlay {
-            display: none; /* 最初は非表示 */
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.5); /* 背景を暗く半透明に */
-            z-index: 1000; justify-content: center; align-items: center;
-        }
-        .modal-content {
-            background: #d3d3d3; border: 3px solid #666; padding: 20px; width: 500px;
-            box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
-        }
-        .modal-title { text-align: center; font-weight: bold; margin-bottom: 15px; font-size: 18px; }
-        .modal-buttons { display: flex; justify-content: space-around; margin-top: 20px; }
-        .modal-buttons button { padding: 8px 25px; font-size: 14px; }
-    </style>
+    <link rel="stylesheet" href="/Library2026_ProjectF/css/lending/lending.css">
 </head>
 <body>
 
     <div class="header">
-        <div style="margin-left: 20px; font-weight: bold;">貸出入力画面</div>
-        <button type="button" style="margin-right: 20px;" onclick="location.href='menu.jsp'">メニュー</button>
+        <h1 class="header-title">貸出入力画面</h1>
+        <button class="menu-button header-blue-button" type="button" onclick="location.href='/Library2026_ProjectF/home/admin_home.jsp'">メニュー</button>
     </div>
 
     <div class="main-box">
@@ -51,8 +24,8 @@
             <input type="hidden" id="actionField" name="action" value="">
 
             <div style="margin-bottom: 10px;">
-                <input type="text" id="inputUserId" placeholder="利用者ID入力" value="${selectedUser != null ? selectedUser.userId : ''}">
-                <button type="button" onclick="submitSearch('searchUser')">表示</button>
+                <input type="text" id="inputUserId" placeholder="利用者ID入力" value="${selectedUser != null ? selectedUser.userId : ''}" class="input-field" autofocus required>
+                <button type="button" onclick="submitSearch('searchUser')" class="menu-button">表示</button>
             </div>
             <table>
                 <tr>
@@ -70,8 +43,8 @@
             </table>
 
             <div style="margin-bottom: 10px;">
-                <input type="text" id="inputBookId" placeholder="図書ID入力" value="${selectedBook != null ? selectedBook.bookId : ''}">
-                <button type="button" onclick="submitSearch('searchBook')">表示</button>
+                <input type="text" id="inputBookId" placeholder="図書ID入力" value="${selectedBook != null ? selectedBook.bookId : ''}" class="input-field" required>
+                <button type="button" onclick="submitSearch('searchBook')" class="menu-button">表示</button>
             </div>
             <table>
                 <tr>

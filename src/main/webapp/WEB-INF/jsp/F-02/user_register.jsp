@@ -87,7 +87,7 @@
                 </table>
       
                 <div class="modal-buttons-right">
-                    <button type="button" class="cancel-button modal-action-button" onclick="hideConfirmModal()">戻る</button>
+                    <button type="button" class="btn-back-management" onclick="location.href='${pageContext.request.contextPath}/home/userManagement.jsp'">戻る</button>
                     <button type="button" class="submit-button modal-action-button" onclick="submitForm()">登録</button>
                 </div>
             </div>
@@ -126,37 +126,43 @@
         const nameInput = document.getElementById('input-name');
         
         // 氏名のリアルタイム入力制御
-        nameInput.addEventListener('input', function(e) {
-            let cleanVal = this.value.replace(/[^a-zA-Z0-9\sぁ-んァ-ヶ一-龠々ーａ-ｚＡ-Ｚ]/g, ''); 
-            cleanVal = cleanVal.replace(/[0-9０-９]/g, '');
-            this.value = cleanVal;
-        });
+        if (nameInput) {
+            nameInput.addEventListener('input', function(e) {
+                let cleanVal = this.value.replace(/[^a-zA-Z0-9\sぁ-んァ-ヶ一-龠々ーａ-ｚＡ-Ｚ]/g, ''); 
+                cleanVal = cleanVal.replace(/[0-9０-９]/g, '');
+                this.value = cleanVal;
+            });
+        }
 
         // 電話番号のリアルタイム入力制御（数字とハイフン自動挿入）
-        telInput.addEventListener('input', function(e) {
-            let val = this.value.replace(/[０-９]/g, function(s) {
-                return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+        if (telInput) {
+            telInput.addEventListener('input', function(e) {
+                let val = this.value.replace(/[０-９]/g, function(s) {
+                    return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+                });
+                
+                let rawStr = val.replace(/[^0-9]/g, '');
+                let formatted = '';
+                if (rawStr.length > 7) {
+                    formatted = rawStr.substring(0, 3) + '-' + rawStr.substring(3, 7) + '-' + rawStr.substring(7, 11);
+                } else if (rawStr.length > 3) {
+                    formatted = rawStr.substring(0, 3) + '-' + rawStr.substring(3);
+                } else {
+                    formatted = rawStr;
+                }
+                
+                this.value = formatted;
             });
-            
-            let rawStr = val.replace(/[^0-9]/g, '');
-
-            let formatted = '';
-            if (rawStr.length > 7) {
-                formatted = rawStr.substring(0, 3) + '-' + rawStr.substring(3, 7) + '-' + rawStr.substring(7, 11);
-            } else if (rawStr.length > 3) {
-                formatted = rawStr.substring(0, 3) + '-' + rawStr.substring(3);
-            } else {
-                formatted = rawStr;
-            }
-            
-            this.value = formatted;
-        });
+        }
     });
 
     // 各項目のクリア機能
     function clearInput(id) {
-        document.getElementById(id).value = '';
-        document.getElementById(id).focus();
+        const element = document.getElementById(id);
+        if (element) {
+            element.value = '';
+            element.focus();
+        }
     }
 
     // 登録確認ボタンが押されたときのバリデーション
@@ -165,6 +171,7 @@
         const form = document.getElementById('registForm');
         const errorMessage = document.getElementById('error-message');
 
+        if (!errorMessage) return;
         errorMessage.style.visibility = 'hidden';
 
         // 1. 必須入力（未入力）チェック
@@ -187,7 +194,7 @@
             return;
         }
 
-        // 3. 電話番号の形式チェック
+        // 3. 電話番号の形式チェック（数字とハイフンのみか）
         const telRegex = /^[0-9-]+$/;
         if (!telRegex.test(tel)) {
             errorMessage.innerText = "電話番号は数字（ハイフン含む）のみで入力してください。";
@@ -195,7 +202,16 @@
             return;
         }
 
-        // 4. パスワードのチェック（全角文字に加え、トラブルになりやすい「スペース」も禁止に改良）
+        // 4. 利用者登録の電話番号桁数（文字数）チェック
+        const telDigits = tel.replace(/[^0-9]/g, '');
+        if (telDigits.length < 10 || telDigits.length > 11) {
+            errorMessage.innerText = "電話番号の桁数が足りないか、正しくありません（10桁または11桁で入力してください）。";
+            errorMessage.style.visibility = 'visible';
+            document.getElementById('input-tel').focus();
+            return;
+        }
+
+        // 5. パスワードのチェック
         const invalidRegex = /[^\x21-\x7E]/;
         if (invalidRegex.test(pass)) {
             errorMessage.innerText = "パスワードに利用できない文字（全角文字やスペース）が含まれています。使用可能文字：半角の英数字・記号";
@@ -204,7 +220,9 @@
         } 
         
         // 確認画面（モーダル）へ値をセットして表示
-        document.getElementById('confirm-cla').value = claInput.parentElement.textContent.trim();
+        if (claInput) {
+            document.getElementById('confirm-cla').value = claInput.parentElement.textContent.trim();
+        }
         document.getElementById('confirm-name').value = name;
         document.getElementById('confirm-tel').value = tel;
         document.getElementById('confirm-pass').value = pass;

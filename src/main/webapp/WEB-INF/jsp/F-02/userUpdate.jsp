@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/register.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/update.css">
     <style>
-        /* ⭕「パスワード」という文字が確認画面で一行に収まるように小さく調整 */
+        /* 確認画面で「パスワード」ラベルが一行に収まるように小さく調整 */
         .confirm-password-label {
             font-size: 0.85rem !important;
             white-space: nowrap;
@@ -28,21 +28,25 @@
 
     <div class="main-content-base layout-top-padding register-main-content">
         
-        <div class="register-error-message" id="error-message" style="min-height: 1.5em; visibility: ${not empty errorMessage ? 'visible' : 'hidden'};">
-            <c:out value="${errorMessage}" />
-        </div>
-
-        <form method="GET" action="${pageContext.request.contextPath}/UsersUpdate" id="searchForm">
-            <div class="id-search-group" style="display: flex; gap: 10px; margin-bottom: 20px; justify-content: center;">
-                <input type="text" class="input-field" id="search-id" name="userId" value="${param.userId}" placeholder="利用者ID入力" required style="width: 200px;">
-                <button type="submit" class="header-blue-button">表示</button>
-            </div>
-        </form>
-
+        <c:set var="isSearch" value="${not empty param.searchKey}" />
         <c:set var="isFound" value="${not empty usersList}" />
         <c:if test="${isFound}">
             <c:set var="u" value="${usersList[0]}" />
         </c:if>
+            
+        <div class="register-error-message" id="error-message" style="min-height: 1.5em; visibility: ${isSearch && !isFound ? 'visible' : 'hidden' || not empty errorMessage ? 'visible' : 'hidden'};">
+            <c:choose>
+                <c:when test="${isSearch && !isFound}">該当する利用者は存在しません</c:when>
+                <c:otherwise><c:out value="${errorMessage}" /></c:otherwise>
+            </c:choose>
+        </div>
+
+        <form method="GET" action="${pageContext.request.contextPath}/UsersUpdate" id="searchForm">
+            <div class="id-search-group" style="display: flex; gap: 10px; margin-bottom: 20px; justify-content: center;">
+                <input type="text" class="input-field" id="search-key" name="searchKey" value="${param.searchKey}" placeholder="利用者IDまたは氏名入力" required style="width: 250px;">
+                <button type="submit" class="header-blue-button">表示</button>
+            </div>
+        </form>
             
         <form action="${pageContext.request.contextPath}/UsersUpdate" method="post" id="updateForm">
             <input type="hidden" name="userId" value="${u.userId}">
@@ -58,30 +62,30 @@
                     <th>区分</th>
                     <td>
                         <div class="category-options">
-                            <label><input type="radio" name="cla" value="0" ${u.userClass == '0' ? 'checked' : ''} ${!isFound ? 'disabled' : ''}> 管理者</label>
-                            <label><input type="radio" name="cla" value="1" ${u.userClass == '1' ? 'checked' : ''} ${!isFound ? 'disabled' : ''}> 司書</label>
-                            <label><input type="radio" name="cla" value="2" ${u.userClass == '2' ? 'checked' : ''} ${!isFound ? 'disabled' : ''}> 利用者</label>
+                            <label><input type="radio" name="cla" value="0" ${isFound && u.userClass == '0' ? 'checked' : ''} ${!isFound ? 'disabled' : ''}> 管理者</label>
+                            <label><input type="radio" name="cla" value="1" ${isFound && u.userClass == '1' ? 'checked' : ''} ${!isFound ? 'disabled' : ''}> 司書</label>
+                            <label><input type="radio" name="cla" value="2" ${isFound && u.userClass == '2' ? 'checked' : ''} ${!isFound ? 'disabled' : ''}> 利用者</label>
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <th>氏名</th>
                     <td>
-                        <input type="text" class="input-field ${!isFound ? 'input-field-locked' : 'input-field-active'}" id="input-name" name="userName" value="${isFound ? u.userName : ''}" placeholder="${!isFound ? 'IDを入力してください' : ''}" required ${!isFound ? 'disabled' : ''}>
+                        <input type="text" class="input-field ${!isFound ? 'input-field-locked' : 'input-field-active'}" id="input-name" name="userName" value="${isFound ? u.userName : ''}" placeholder="${!isFound ? 'IDまたは氏名を入力してください' : ''}" required ${!isFound ? 'disabled' : ''}>
                         <button type="button" class="clear-button" onclick="clearInput('input-name')" tabindex="-1" ${!isFound ? 'disabled' : ''}>クリア</button>
                     </td>
                 </tr>
                 <tr>
                     <th>電話番号</th>
                     <td>
-                        <input type="text" class="input-field ${!isFound ? 'input-field-locked' : 'input-field-active'}" id="input-tel" name="Tel" value="${isFound ? u.tel : ''}" placeholder="${!isFound ? 'IDを入力してください' : ''}" required ${!isFound ? 'disabled' : ''}>
+                        <input type="text" class="input-field ${!isFound ? 'input-field-locked' : 'input-field-active'}" id="input-tel" name="Tel" value="${isFound ? u.tel : ''}" placeholder="${!isFound ? 'IDまたは氏名を入力してください' : ''}" required ${!isFound ? 'disabled' : ''}>
                         <button type="button" class="clear-button" onclick="clearInput('input-tel')" tabindex="-1" ${!isFound ? 'disabled' : ''}>クリア</button>
                     </td>
                 </tr>
                 <tr>
                     <th>パスワード</th>
                     <td>
-                        <input type="password" class="input-field ${!isFound ? 'input-field-locked' : 'input-field-active'}" id="input-pass" name="Password" placeholder="${isFound ? '変更する場合のみ入力' : 'IDを入力してください'}" ${!isFound ? 'disabled' : ''}>
+                        <input type="password" class="input-field ${!isFound ? 'input-field-locked' : 'input-field-active'}" id="input-pass" name="Password" placeholder="${isFound ? '変更する場合のみ入力' : 'IDまたは氏名を入力してください'}" ${!isFound ? 'disabled' : ''}>
                         <button type="button" class="clear-button" onclick="clearInput('input-pass')" tabindex="-1" ${!isFound ? 'disabled' : ''}>クリア</button>
                     </td>
                 </tr>
@@ -89,14 +93,15 @@
                     <th>状態</th>
                     <td>
                         <div class="category-options">
-                            <label><input type="radio" name="status" value="0" ${u.userStatus == '0' ? 'checked' : ''} ${!isFound ? 'disabled' : ''}> 有効</label>
-                            <label><input type="radio" name="status" value="1" ${u.userStatus == '1' ? 'checked' : ''} ${!isFound ? 'disabled' : ''}> 無効</label>
+                            <label><input type="radio" name="status" value="0" ${isFound && u.userStatus == '0' ? 'checked' : ''} ${!isFound ? 'disabled' : ''}> 有効</label>
+                            <label><input type="radio" name="status" value="1" ${isFound && u.userStatus == '1' ? 'checked' : ''} ${!isFound ? 'disabled' : ''}> 無効</label>
                         </div>
                     </td>
                 </tr>
             </table>
 
             <div class="bottom-button-container">
+            <button type="button" class="btn-back-management" onclick="location.href='${pageContext.request.contextPath}/home/userManagement.jsp'">戻る</button>
                 <button type="button" class="update-submit-button" onclick="showConfirmModal()" ${!isFound ? 'disabled' : ''}>変更確認</button>
             </div>
 
@@ -145,6 +150,16 @@
         document.addEventListener("DOMContentLoaded", function() {
             const telInput = document.getElementById('input-tel');
             const nameInput = document.getElementById('input-name');
+            const searchInput = document.getElementById('search-key');
+
+         // 検索バーの全角数字 ➡️ 半角自動置換
+            if (searchInput) {
+        searchInput.addEventListener('input', function(e) {
+            searchInput.value = searchInput.value.replace(/[０-９]/g, function(s) {
+                return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+            });
+        });
+    }
             
             if (nameInput) {
                 nameInput.addEventListener('input', function(e) {
@@ -184,6 +199,7 @@
             const form = document.getElementById('updateForm');
             const errorMessage = document.getElementById('error-message');
 
+            // JavaScript側での初期化時はvisibilityを固定せず、JSTL側のエラー文言があれば残す
             errorMessage.style.visibility = 'hidden';
 
             if (!form.checkValidity()) {
@@ -208,6 +224,16 @@
             if (!telRegex.test(tel)) {
                 errorMessage.innerText = "電話番号は数字（ハイフン含む）のみで入力してください。";
                 errorMessage.style.visibility = 'visible';
+                return;
+            }
+			const telDigits = tel.replace(/[^0-9]/g, ''); 
+            
+            // 数字が10桁未満、または12桁以上の場合はエラー（一般的な固定電話は10桁、携帯は11桁）
+            if (telDigits.length < 10 || telDigits.length > 11) {
+                errorMessage.innerText = "電話番号の桁数が足りないか、正しくありません（10桁または11桁で入力してください）。";
+                errorMessage.style.visibility = 'visible';
+                // 入力欄にフォーカスを当てて、どこがダメだったか分かりやすくする
+                document.getElementById('input-tel').focus();
                 return;
             }
 

@@ -4,77 +4,111 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>図書システム - 予約登録</title>
-    <style>
-        body { font-family: sans-serif; background-color: #b0c4de; margin: 0; padding: 200px 20px 20px 20px; }
-        .header { position: absolute; top: 0; left: 0; width: 100%; height: 50px; background: #e0e0e0; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #666; }
-        .main-box { background: #d3d3d3; border: 2px solid #666; padding: 20px; position: relative; min-height: 450px; }
-        .error { color: red; font-weight: bold; text-align: center; margin-bottom: 10px; }
-        .success { color: green; font-weight: bold; text-align: center; margin-bottom: 10px; }
-        table { width: 80%; border-collapse: collapse; margin-bottom: 20px; background: white; }
-        table, th, td { border: 1px solid #666; }
-        th, td { padding: 10px; text-align: left; }
-        th { background: #e0e0e0; width: 20%; }
-        .input-group { margin-bottom: 10px; }
-        .readonly-input { width: 90%; background-color: #c0c0c0; border: 1px solid #666; padding: 5px; color: #555; pointer-events: none; }
-        .btn-right { position: absolute; bottom: 20px; right: 20px; padding: 10px 30px; font-size: 16px; }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>図書予約登録画面</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/home.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/F-02.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/register.css">
 </head>
 <body>
 
     <div class="header">
-        <div style="margin-left: 20px; font-weight: bold;">予約登録入力画面</div>
-        <button type="button" style="margin-right: 20px;" onclick="location.href='menu.jsp'">メニュー</button>
+        <h1 class="header-title">図書予約登録画面</h1>
+        <button class="menu-button" type="button" onclick="location.href='${pageContext.request.contextPath}/home/admin_home.jsp'">メニュー</button>
     </div>
 
-    <div class="main-box">
-        <div class="error"><c:out value="${errorMessage}" /></div>
-        <div class="success"><c:out value="${successMessage}" /></div>
+    <form action="${pageContext.request.contextPath}/reserveBook" method="post" id="reserveForm">
+        <input type="hidden" name="action" id="actionField" value="">
 
-        <form id="reserveForm" action="reserveBook" method="post">
-            <input type="hidden" id="actionField" name="action" value="">
-
-            <div class="input-group">
-                <input type="text" name="userId" placeholder="利用者IDを入力" value="${inputUserId}">
-                <button type="button" onclick="submitAction('searchUser')">表示</button>
+        <div class="main-content-base layout-top-padding register-main-content">
+    
+            <div class="register-error-message" id="error-message" style="min-height: 1.5em; <c:if test='${not empty errorMessage}'>visibility: visible;</c:if>">
+                <c:out value="${errorMessage}" />
             </div>
-            <table>
+            <c:if test="${not empty successMessage}">
+                <div style="color: green; font-weight: bold; text-align: center; margin-bottom: 15px;">
+                    <c:out value="${successMessage}" />
+                </div>
+            </c:if>
+
+            <table class="form-table">
+                <tr>
+                    <th>利用者ID</th>
+                    <td>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <input type="text" class="input-field" name="userId" id="input-user-id" placeholder="利用者IDを入力" value="${inputUserId}" style="width: 200px;" required>
+                            <button type="button" class="clear-button" style="padding: 5px 20px; font-size: 1rem;" onclick="submitAction('searchUser')">表示</button>
+                        </div>
+                    </td>
+                </tr>
                 <tr>
                     <th>氏名</th>
-                    <td><input type="text" class="readonly-input" value="${selectedUser != null ? selectedUser.userName : ''}" readonly></td>
+                    <td>
+                        <input type="text" class="input-field w-full" value="${selectedUser != null ? selectedUser.userName : ''}" style="background-color: #f5f5f5;" readonly>
+                    </td>
                 </tr>
-            </table>
 
-            <br>
-
-            <div class="input-group">
-                <input type="text" name="bookId" placeholder="図書IDを入力" value="${inputBookId}">
-                <button type="button" onclick="submitAction('searchBook')">表示</button>
-            </div>
-            <table>
+                <tr>
+                    <th>図書ID</th>
+                    <td>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <input type="text" class="input-field" name="bookId" id="input-book-id" placeholder="図書IDを入力" value="${inputBookId}" style="width: 200px;" required>
+                            <button type="button" class="clear-button" style="padding: 5px 20px; font-size: 1rem;" onclick="submitAction('searchBook')">表示</button>
+                        </div>
+                    </td>
+                </tr>
                 <tr>
                     <th>書名</th>
-                    <td><input type="text" class="readonly-input" value="${selectedBook != null ? selectedBook.title : ''}" readonly></td>
+                    <td>
+                        <input type="text" class="input-field w-full" value="${selectedBook != null ? selectedBook.title : ''}" style="background-color: #f5f5f5;" readonly>
+                    </td>
                 </tr>
                 <tr>
                     <th>著者名</th>
-                    <td><input type="text" class="readonly-input" value="${selectedBook != null ? selectedBook.writerName : ''}" readonly></td>
+                    <td>
+                        <input type="text" class="input-field w-full" value="${selectedBook != null ? selectedBook.writerName : ''}" style="background-color: #f5f5f5;" readonly>
+                    </td>
                 </tr>
                 <tr>
                     <th>貸出状態</th>
-                    <td><input type="text" class="readonly-input" value="${displayBookStatus}" readonly></td>
+                    <td>
+                        <input type="text" class="input-field w-full" value="${displayBookStatus}" style="background-color: #f5f5f5;" readonly>
+                    </td>
                 </tr>
             </table>
 
-            <button type="button" class="btn-right" onclick="submitAction('register')">登録</button>
-        </form>
-    </div>
+            <div class="bottom-button-container" style="gap: 20px; margin-top: 30px;">
+                <button type="button" class="clear-button" style="width: 140px; padding: 8px 0;" onclick="location.href='${pageContext.request.contextPath}/ReserveManagement'">戻る</button>
+                
+                <button type="button" class="register-button" 
+                        onclick="submitAction('register')" 
+                        ${(selectedUser == null || selectedBook == null) ? 'disabled style="background-color: #cccccc; border-color: #999999; color: #777777; cursor: not-allowed;"' : ''}>
+                    登録
+                </button>
+            </div>
+        </div>
+    </form>
 
     <script>
         function submitAction(actionType) {
             document.getElementById('actionField').value = actionType;
             document.getElementById('reserveForm').submit();
         }
+
+        // 全角数字から半角への自動変換
+        document.addEventListener("DOMContentLoaded", function() {
+            const ids = ['input-user-id', 'input-book-id'];
+            ids.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.addEventListener('input', function(e) {
+                        element.value = element.value.replace(/[０-９]/g, function(s) {
+                            return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+                        });
+                    });
+                }
+            });
+        });
     </script>
 </body>
 </html>

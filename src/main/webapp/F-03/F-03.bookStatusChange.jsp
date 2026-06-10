@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>状態変更画面</title>
-    <!-- 共通のスタイルシートを読み込み -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/F-03.css">
+    <!-- 絶対パス表記、キャッシュバスターパラメータ付き -->
+   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/F-03.css">
 </head>
 <body>
 
@@ -16,7 +16,7 @@
         <button type="button" class="menu-button">メニュー</button>
     </div>
 
-    <!-- メインコンテンツエリア (上下左右中央配置のために layout-center クラスを適用) -->
+    <!-- メインコンテンツエリア (登録画面などと同じく、上下左右中央配置のために layout-center クラスを適用) -->
     <div class="main-content-base layout-center">
         
         <!-- 中央寄せ用のコンテナ (横の比率 95%, 最大1000px をしっかり維持) -->
@@ -26,36 +26,41 @@
                 この図書IDは存在しません
             </div>
 
-            <!-- 送信フォーム -->
+            <!-- ① 上部：図書ID検索バー (ラベルなし・左寄せ・背景透過の独立デザイン) -->
+            <div class="id-search-bar">
+                <div class="id-search-input-wrapper">
+                    <!-- id-search-field-compact を適用して、250px幅のスマートな左寄せ配置に -->
+                    <input type="text" class="input-field id-search-field-compact" id="search-id" name="searchId" placeholder="図書IDを入力してください (例: B0001)">
+                    <button type="button" class="btn" style="padding: 6px 30px; font-size: 1.1rem; flex-shrink: 0;" onclick="searchBook();">表示</button>
+                </div>
+            </div>
+
+            <!-- 送信フォーム (中央寄せ用レイアウトにフィットするよう調整) -->
             <form method="POST" action="F-3.bookStatusChange.jsp" id="bookStatusForm" style="display: flex; flex-direction: column;" onsubmit="return false;">
                 
+                <!-- ② 中央：4項目になった横長フォームテーブル -->
                 <table class="form-table" style="width: 100%; margin-bottom: 25px;">
-                    <!-- 1行目: 図書IDと表示ボタン -->
+                    <!-- 1行目: 書名 (右側にだけリセットボタンを配置) -->
                     <tr>
-                        <th style="width: 15%;">図書ID</th>
+                        <th style="width: 15%;">書名</th>
                         <td>
                             <div style="display: flex; gap: 15px; width: 100%; align-items: center;">
-                                <input type="text" class="input-field" id="search-id" name="searchId" style="width: 250px; flex-shrink: 0;" placeholder="図書ID入力">
-                                <button type="button" class="btn" style="padding: 6px 30px; font-size: 1.1rem; flex-shrink: 0;" onclick="searchBook();">表示</button>
+                                <input type="text" class="input-field-update" id="input-title" name="bookTitle" readonly placeholder="">
+                                <button type="button" class="btn" onclick="clearField('input-title');" style="padding: 6px 20px; font-size: 1.1rem; flex-shrink: 0;">リセット</button>
                             </div>
                         </td>
                     </tr>
-                    <!-- 2行目: 書名 -->
-                    <tr>
-                        <th>書名</th>
-                        <td><input type="text" class="input-field-update" id="input-title" name="bookTitle" readonly placeholder="図書IDを表示してください"></td>
-                    </tr>
-                    <!-- 3行目: 貸出状況 -->
+                    <!-- 2行目: 貸出状況 -->
                     <tr>
                         <th>貸出状況</th>
-                        <td><input type="text" class="input-field-update" id="input-loan-status" name="bookLoanStatus" readonly placeholder="図書IDを表示してください"></td>
+                        <td><input type="text" class="input-field-update" id="input-loan-status" name="bookLoanStatus" readonly placeholder=""></td>
                     </tr>
-                    <!-- 4行目: 予約状況 -->
+                    <!-- 3行目: 予約状況 -->
                     <tr>
                         <th>予約状況</th>
-                        <td><input type="text" class="input-field-update" id="input-reserve-status" name="bookReserveStatus" readonly placeholder="図書IDを表示してください"></td>
+                        <td><input type="text" class="input-field-update" id="input-reserve-status" name="bookReserveStatus" readonly placeholder=""></td>
                     </tr>
-                    <!-- 5行目: 本の状態 (プルダウンのみ) -->
+                    <!-- 4行目: 本の状態 -->
                     <tr>
                         <th>本の状態</th>
                         <td>
@@ -69,8 +74,8 @@
                     </tr>
                 </table>
 
-                <!-- 共通デザインに合わせた、コンテナ右下の「変更」ボタン -->
-                <div style="display: flex; justify-content: flex-end;">
+                <!-- ③ 下部：共通デザインに合わせた右下の「変更」ボタン -->
+                <div style="display: flex; justify-content: flex-end; padding-top: 15px;">
                     <button type="button" class="btn btn-register" id="btn-submit" onclick="showConfirmModal()" disabled style="padding: 10px 50px;">変更</button>
                 </div>
 
@@ -137,6 +142,12 @@
             "B0005": { title: "容疑者Xの献身", loan: "貸出中", reserve: "なし", status: "貸出不可" }
         };
 
+        // 各行の個別フィールド用リセット関数
+        function clearField(fieldId) {
+            document.getElementById(fieldId).value = '';
+            document.getElementById('error-message').style.display = 'none';
+        }
+
         // 【表示】ボタンを押した時の動作
         function searchBook() {
             const searchId = document.getElementById('search-id').value.trim().toUpperCase();
@@ -156,7 +167,6 @@
                 return;
             }
 
-            // 該当データがあるかチェック
             const bookData = bookDatabaseMock[searchId];
             if (bookData) {
                 errorMessage.style.display = 'none';
@@ -220,7 +230,7 @@
             document.getElementById('completeModal').style.display = 'flex';
         }
         
-        // メニュー画面に戻る（遷移シミュレート）
+        // メニュー画面に戻る
         function goToMenu() {
             window.location.href = 'F-3.bookManagement.jsp';
         }

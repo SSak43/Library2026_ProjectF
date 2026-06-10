@@ -1,0 +1,103 @@
+/* ==========================================================================
+   利用者データ更新画面：ボタン・テーブル背景の追加スタイル
+   ========================================================================== */
+
+/* 確認・完了モーダル内のボタンコンテナ（右寄せ） */
+.modal-buttons-right {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* モーダル用のアクションボタン共通 */
+.modal-action-button {
+    border: 1px solid #2f5597;
+    background-color: white;
+    color: #2f5597;
+    padding: 5px 20px;
+    width: 100px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s;
+}
+
+/* 触れたら少し灰色（#e9ecef）になり、文字や枠の青は残す */
+.modal-action-button:hover {
+    background-color: #e9ecef;
+    color: #2f5597;
+}
+
+/* 画面上部のメニューボタンや「表示」ボタン共通 */
+.header-blue-button {
+    border: 1px solid #2f5597;
+    background-color: white;
+    color: #2f5597;
+    padding: 5px 20px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s;
+}
+
+/* 触れたら少し灰色（#e9ecef）になり、文字や枠の青は残す */
+.header-blue-button:hover {
+    background-color: #e9ecef;
+    color: #2f5597;
+}
+
+/* 下部の大きな「変更確認」ボタン */
+.update-submit-button {
+    border: 1px solid #2f5597;
+    background-color: white;
+    color: #2f5597;
+    padding: 8px 30px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+/* 触れたら少し灰色（#e9ecef）になり、文字や枠の青は残す */
+.update-submit-button:hover:not(:disabled) {
+    background-color: #e9ecef;
+    color: #2f5597;
+}
+
+/* 変更確認ボタンの非活性（disabled）状態 */
+.update-submit-button:disabled {
+    border: 1px solid #ccc;
+    color: #aaa;
+    cursor: not-allowed;
+}
+
+/* 利用者ID入力欄（常に読み込み専用の薄グレー） */
+.input-readonly-id {
+    background-color: #e9ecef;
+    color: #495057;
+    font-weight: bold;
+    border-color: #ced4da;
+}
+
+/* 検索前のフォームテーブル全体と入力フィールドの共通ロック背景 */
+.form-table-locked {
+    background-color: #e9ecef !important;
+}
+
+.input-field-locked {
+    background-color: #e9ecef !important;
+}
+
+/* 検索後のアクティブ背景（白） */
+.form-table-active {
+    background-color: #ffffff;
+    transition: background-color 0.3s;
+}
+
+.input-field-active {
+    background-color: #ffffff;
+}
+
+/* モーダル内の確認用項目（すべて読み込み専用グレー） */
+.confirm-modal-field {
+    background-color: #e9ecef;
+}

@@ -5,8 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>更新画面</title>
-    <!-- キャッシュバスターを更新 -->
-     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/F-03.css">
+   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/F-03.css">
 </head>
 <body>
 
@@ -26,9 +25,8 @@
                 入力されていない必須項目があります
             </div>
 
-            <!-- ① 上部：図書ID検索バー (入力欄を左寄せコンパクトに制御) -->
+            <!-- ① 上部：図書ID検索バー (完全に背景透過仕様にアップデート) -->
             <div class="id-search-bar">
-                <span class="id-search-label">図書ID</span>
                 <div class="id-search-input-wrapper">
                     <!-- id-search-field-compact クラスを適用して、幅をスリムに左寄せ配置 -->
                     <input type="text" class="input-field id-search-field-compact" id="search-book-id" placeholder="図書IDを入力してください (例: B0001)">
@@ -46,7 +44,7 @@
                         <th style="width: 15%;">書名</th>
                         <td>
                             <div style="display: flex; gap: 15px; width: 100%; align-items: center;">
-                                <input type="text" class="input-field" id="reg-title" name="bookTitle" placeholder="">
+                                <input type="text" class="input-field" id="reg-title" name="bookTitle" placeholder=>
                                 <button type="button" class="btn" onclick="clearField('reg-title');" style="padding: 6px 20px; font-size: 1.1rem; flex-shrink: 0;">リセット</button>
                             </div>
                         </td>
@@ -56,7 +54,7 @@
                         <th>著者</th>
                         <td>
                             <div style="display: flex; gap: 15px; width: 100%; align-items: center;">
-                                <input type="text" class="input-field" id="reg-author" name="bookAuthor" placeholder="">
+                                <input type="text" class="input-field" id="reg-author" name="bookAuthor" placeholder=>
                                 <button type="button" class="btn" onclick="clearField('reg-author');" style="padding: 6px 20px; font-size: 1.1rem; flex-shrink: 0;">リセット</button>
                             </div>
                         </td>
@@ -66,7 +64,7 @@
                         <th>出版社</th>
                         <td>
                             <div style="display: flex; gap: 15px; width: 100%; align-items: center;">
-                                <input type="text" class="input-field" id="reg-publisher" name="bookPublisher" placeholder="">
+                                <input type="text" class="input-field" id="reg-publisher" name="bookPublisher" placeholder=>
                                 <button type="button" class="btn" onclick="clearField('reg-publisher');" style="padding: 6px 20px; font-size: 1.1rem; flex-shrink: 0;">リセット</button>
                             </div>
                         </td>
@@ -76,7 +74,7 @@
                         <th>分類</th>
                         <td>
                             <div style="display: flex; gap: 15px; width: 100%; align-items: center;">
-                                <input type="text" class="input-field" id="reg-classification" name="bookClassification" placeholder="">
+                                <input type="text" class="input-field" id="reg-classification" name="bookClassification" placeholder=>
                                 <button type="button" class="btn" onclick="clearField('reg-classification');" style="padding: 6px 20px; font-size: 1.1rem; flex-shrink: 0;">リセット</button>
                             </div>
                         </td>
@@ -86,7 +84,7 @@
                         <th>蔵書状態</th>
                         <td>
                             <div style="display: flex; gap: 15px; width: 100%; align-items: center;">
-                                <input type="text" class="input-field" id="reg-status" name="bookStatus" placeholder="">
+                                <input type="text" class="input-field" id="reg-status" name="bookStatus" placeholder=>
                                 <button type="button" class="btn" onclick="clearField('reg-status');" style="padding: 6px 20px; font-size: 1.1rem; flex-shrink: 0;">リセット</button>
                             </div>
                         </td>

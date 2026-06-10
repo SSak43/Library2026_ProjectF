@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>検索入力画面</title>
-    <!-- 絶対パス表記に刷新し、キャッシュバスターパラメータ付きに更新 -->
-     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/F-03.css">
+    <!-- 絶対パス表記に刷新し、キャッシュバスターパラメータを付与 -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/F-03.css">
 </head>
 <body>
 
@@ -143,8 +143,8 @@
                 });
             }
 
-            // 総件数表示のアップデート
-            document.getElementById("resultsHeaderInfo").innerText = `検索結果: ${currentResults.length}件の図書が見つかりました`;
+            // JSP EL干渉対策：文字列結合法に書き換え
+            document.getElementById("resultsHeaderInfo").innerText = "検索結果: " + currentResults.length + "件の図書が見つかりました";
 
             // 1ページ目にリセットして再描画
             currentPage = 1;
@@ -157,13 +157,11 @@
             resultsBody.innerHTML = "";
 
             if (currentResults.length === 0) {
-                resultsBody.innerHTML = `
-                    <tr>
-                        <td colspan="8" class="no-data-row" style="text-align: center; vertical-align: middle; height: 260px;">
-                            該当する図書が見つかりませんでした。
-                        </td>
-                    </tr>
-                `;
+                resultsBody.innerHTML = '<tr>' +
+                    '<td colspan="8" class="no-data-row" style="text-align: center; vertical-align: middle; height: 260px;">' +
+                        '該当する図書が見つかりませんでした。' +
+                    '</td>' +
+                '</tr>';
                 updatePaginationControls(0);
                 return;
             }
@@ -173,22 +171,22 @@
             const endIndex = startIndex + itemsPerPage;
             const pageItems = currentResults.slice(startIndex, endIndex);
 
-            // 切り出したデータを行として挿入
+            // JSP ELの自動クリア干渉を回避するため、完全に文字列結合法に修正
             pageItems.forEach((book, index) => {
                 const row = document.createElement("tr");
                 const globalNo = startIndex + index + 1; // ページをまたいでも正しい通し番号を出力
-                row.innerHTML = `
-                    <td class="cell-no">${globalNo}</td>
-                    <td>${book.id}</td>
-                    <td>${book.title}</td>
-                    <td>${book.author}</td>
-                    <td>${book.publisher}</td>
-                    <td>${book.classification}</td>
-                    <td>${book.status}</td>
-                    <td class="cell-action">
-                        <button type="button" class="btn-detail-view" onclick="viewDetail('${book.id}')">詳細</button>
-                    </td>
-                `;
+                
+                row.innerHTML = 
+                    '<td class="cell-no">' + globalNo + '</td>' +
+                    '<td>' + book.id + '</td>' +
+                    '<td>' + book.title + '</td>' +
+                    '<td>' + book.author + '</td>' +
+                    '<td>' + book.publisher + '</td>' +
+                    '<td>' + book.classification + '</td>' +
+                    '<td>' + book.status + '</td>' +
+                    '<td class="cell-action">' +
+                        '<button type="button" class="btn-detail-view" onclick="viewDetail(\'' + book.id + '\')">詳細</button>' +
+                    '</td>';
                 resultsBody.appendChild(row);
             });
 
@@ -232,13 +230,12 @@
             document.getElementById("resultsHeaderInfo").innerText = "検索結果: 0件の図書が見つかりました";
             
             const resultsBody = document.getElementById("resultsBody");
-            resultsBody.innerHTML = `
-                <tr id="empty-message-row">
-                    <td colspan="8" class="no-data-row" style="text-align: center; vertical-align: middle; height: 260px;">
-                        検索条件を入力して「検索」を押してください。
-                    </td>
-                </tr>
-            `;
+            resultsBody.innerHTML = 
+                '<tr id="empty-message-row">' +
+                    '<td colspan="8" class="no-data-row" style="text-align: center; vertical-align: middle; height: 260px;">' +
+                        '検索条件を入力して「検索」を押してください。' +
+                    '</td>' +
+                '</tr>';
 
             updatePaginationControls(0);
         }

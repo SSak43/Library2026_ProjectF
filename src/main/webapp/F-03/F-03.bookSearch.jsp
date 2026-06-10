@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>検索入力画面</title>
-    <!-- 絶対パス表記に刷新し、キャッシュバスターパラメータを付与 -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/F-03.css">
+    <!-- 絶対パス表記、キャッシュバスターパラメータを付与 -->
+   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/F-03.css">
 </head>
 <body>
 
@@ -19,25 +19,34 @@
     <!-- メインコンテンツベース -->
     <div class="main-content-base layout-top-padding">
         
-        <!-- 上部：横長1行スリムカプセル型フォーム -->
-        <div class="search-box-container">
-            <form method="POST" action="F-3.searchInput.jsp" id="searchForm" onsubmit="performSearch(); return false;">
-                <div class="search-form-row">
-                    <!-- 1. 検索項目のプルダウン -->
-                    <select class="search-select" id="searchCategory" name="searchCategory">
-                        <option value="all">すべての項目</option>
-                        <option value="title">書名</option>
-                        <option value="author">著者名</option>
-                        <option value="publisher">出版社</option>
-                    </select>
+        <!-- 上部：横長1行スリムカプセル型フォーム (上下中央寄せを徹底させるためインラインでレイアウトを上書き) -->
+        <div class="search-box-container" style="display: flex; align-items: center; min-height: 85px; padding: 5px 25px;">
+            <form method="POST" action="F-3.searchInput.jsp" id="searchForm" onsubmit="performSearch(); return false;" style="width: 100%; display: flex; align-items: center;">
+                
+                <!-- すべての要素の高さと位置を完全に固定化し、カプセル内で一列かつ上下中央に配置 -->
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 15px; width: 100%; height: 100%;">
                     
-                    <!-- 2. 検索キーワード入力欄 -->
-                    <input type="text" class="search-input" id="searchKeyword" name="searchKeyword" placeholder="検索キーワードを入力してください">
+                    <!-- 1. 検索項目のプルダウン (直上に「検索項目」ラベル、親要素と合わせて中央寄せ) -->
+                    <div style="display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; justify-content: center; height: auto;">
+                        <span style="font-size: 0.95rem; color: #111; font-weight: normal; margin-left: 1px; display: block; line-height: 1;">検索項目</span>
+                        <select class="search-select" id="searchCategory" name="searchCategory" style="margin: 0; vertical-align: middle;">
+                            <option value="all">すべての項目</option>
+                            <option value="title">書名</option>
+                            <option value="author">著者名</option>
+                            <option value="publisher">出版社</option>
+                        </select>
+                    </div>
                     
-                    <!-- 3. アクションボタンのグループ -->
-                    <div class="search-btn-group">
-                        <button type="button" class="search-btn" onclick="clearSearch();">リセット</button>
-                        <button type="submit" class="search-btn search-btn-primary">検索</button>
+                    <!-- 2. 検索キーワード入力欄 (直上に「検索値」ラベル、親要素と合わせて中央寄せ) -->
+                    <div style="display: flex; flex-direction: column; gap: 4px; flex-grow: 1; justify-content: center; height: auto; width: 100%;">
+                        <span style="font-size: 0.95rem; color: #111; font-weight: normal; margin-left: 1px; display: block; line-height: 1;">検索値</span>
+                        <input type="text" class="search-input" id="searchKeyword" name="searchKeyword" placeholder="検索キーワードを入力してください" style="width: 100%; margin: 0; vertical-align: middle;">
+                    </div>
+                    
+                    <!-- 3. アクションボタンのグループ (リセットと検索の位置を逆に変更しました) -->
+                    <div style="display: flex; gap: 10px; flex-shrink: 0; align-items: center; margin-top: 18px; height: auto;">
+                        <button type="submit" class="search-btn search-btn-primary" style="margin: 0; vertical-align: middle;">検索</button>
+                        <button type="button" class="search-btn" onclick="clearSearch();" style="margin: 0; vertical-align: middle;">リセット</button>
                     </div>
                 </div>
             </form>

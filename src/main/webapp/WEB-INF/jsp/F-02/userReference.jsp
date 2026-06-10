@@ -9,6 +9,7 @@
     <title>利用者データ参照画面</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/home.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/F-02.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/update.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/register.css">
 </head>
 <body>
@@ -31,8 +32,8 @@
         </div>
 
         <form method="GET" action="${pageContext.request.contextPath}/UsersSearch" id="searchForm">
-            <div class="id-search-group" style="display: flex; gap: 10px; margin-bottom: 20px; justify-content: center;">
-                <input type="text" class="input-field" id="search-key" name="searchKey" value="${param.searchKey}" placeholder="利用者IDまたは氏名入力" required style="width: 250px;">
+            <div class="id-search-group" style="margin-bottom: 20px;">
+                <input type="text" class="input-field" id="search-key" name="searchKey" value="${param.searchKey}" placeholder="利用者IDまたは氏名入力" required autofocus>
                 <button type="submit" class="header-blue-button">表示</button>
             </div>
         </form>
@@ -69,7 +70,7 @@
                 </tr>
             </table>
 
-            <div class="bottom-actions" style="margin-top: 20px;">
+            <div class="bottom-actions" style="margin-top: 30px; display: flex; justify-content: space-between; align-items: center; width: 100%;">
                 <div class="category-group" style="margin-bottom: 0;">
                     <div class="category-label">利用</div>
                     <div class="category-options">
@@ -77,7 +78,6 @@
                         <label><input type="radio" name="status" value="1" ${isFound && u.userStatus == '1' ? 'checked' : ''} disabled> 不可</label>
                     </div>
                 </div>
-                <button type="button" class="btn-back-management" onclick="location.href='${pageContext.request.contextPath}/home/userManagement.jsp'">戻る</button>
             </div>
         </div>
 

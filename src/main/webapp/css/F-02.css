@@ -175,17 +175,3 @@
 }
 
 
-.btn-back-management {
-                        border: 1px solid #2f5597 !important;
-                        background-color: white !important;
-                        color: #2f5597 !important;
-                        padding: 6px 25px;
-                        font-size: 1rem;
-                        cursor: pointer;
-                        margin-right: 20px; /* ⭕ 登録ボタンとの間に少し空白を空ける */
-                        border-radius: 4px;
-                        transition: all 0.2s;
-                    }
-                    .btn-back-management:hover {
-                        background-color: #e9ecef !important; /* マウスを乗せると薄いグレーに */
-                    }

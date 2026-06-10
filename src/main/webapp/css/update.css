@@ -1,6 +1,8 @@
+@charset "UTF-8";
+
 /* ==========================================================================
-   利用者データ更新画面：ボタン・テーブル背景の追加スタイル
-   ========================================================================== */
+   利用者データ更新画面：ボタン・テーブル背景の追加スタイル (update.css)
+   ========================================================================= */
 
 /* 確認・完了モーダル内のボタンコンテナ（右寄せ） */
 .modal-buttons-right {
@@ -10,94 +12,153 @@
     margin-top: 20px;
 }
 
-/* モーダル用のアクションボタン共通 */
+/* モーダル用のアクションボタン共通（長さを130pxに一斉統一） */
 .modal-action-button {
     border: 1px solid #2f5597;
     background-color: white;
-    color: #2f5597;
-    padding: 5px 20px;
-    width: 100px;
+    color: #000;
+    padding: 6px 0;
+    width: 130px;
     text-align: center;
     cursor: pointer;
     font-size: 1rem;
+    font-family: inherit;
+    box-sizing: border-box;
     transition: all 0.2s;
 }
 
-/* 触れたら少し灰色（#e9ecef）になり、文字や枠の青は残す */
+/* 触れたら少し灰色（#f0f0f0） */
 .modal-action-button:hover {
-    background-color: #e9ecef;
-    color: #2f5597;
+    background-color: #f0f0f0;
 }
 
-/* 画面上部のメニューボタンや「表示」ボタン共通 */
+/* 検索フォームの「表示」ボタン用（主要ボタンサイズ 140px に統一） */
 .header-blue-button {
     border: 1px solid #2f5597;
     background-color: white;
-    color: #2f5597;
-    padding: 5px 20px;
+    color: #000;
+    width: 140px;
+    height: 41px; /* 入力フィールドの高さ(41px)にジャストフィット */
+    line-height: 39px;
+    padding: 0;
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 1.1rem;
+    font-family: inherit;
+    box-sizing: border-box;
     transition: all 0.2s;
 }
 
-/* 触れたら少し灰色（#e9ecef）になり、文字や枠の青は残す */
 .header-blue-button:hover {
-    background-color: #e9ecef;
-    color: #2f5597;
+    background-color: #f0f0f0;
 }
 
-/* 下部の大きな「変更確認」ボタン */
+/* 下部の大きな「登録」ボタン（長さを共通の140pxに統一） */
 .update-submit-button {
     border: 1px solid #2f5597;
     background-color: white;
-    color: #2f5597;
-    padding: 8px 30px;
-    font-size: 1.1rem;
+    color: #000;
+    padding: 8px 0;
+    width: 140px;
+    text-align: center;
+    font-size: 1rem;
     cursor: pointer;
+    font-family: inherit;
+    box-sizing: border-box;
     transition: all 0.2s;
 }
 
-/* 触れたら少し灰色（#e9ecef）になり、文字や枠の青は残す */
+/* 触れたら少し灰色 */
 .update-submit-button:hover:not(:disabled) {
-    background-color: #e9ecef;
-    color: #2f5597;
+    background-color: #f0f0f0;
 }
 
-/* 変更確認ボタンの非活性（disabled）状態 */
+/* 登録ボタンの非活性（disabled）状態 */
 .update-submit-button:disabled {
-    border: 1px solid #ccc;
-    color: #aaa;
+    border: 1px solid #777;
+    background-color: #b0b0b0;
+    color: #555;
     cursor: not-allowed;
 }
 
-/* 利用者ID入力欄（常に読み込み専用の薄グレー） */
-.input-readonly-id {
-    background-color: #e9ecef;
-    color: #495057;
-    font-weight: bold;
-    border-color: #ced4da;
+/* ==========================================================================
+   ID検索欄、エラーメッセージエリアの色・配置定義
+   【修正点】justify-contentをflex-startにして、要素を完全に左寄せにします。
+   ========================================================================= */
+
+/* ID検索グループのコンテナ背景と配置設定 */
+.id-search-group {
+    background-color: #d9d9d9 !important;
+    padding: 10px;
+    border-radius: 4px;
+    display: flex !important;
+    justify-content: flex-start !important; /* 中央寄せから「左寄せ」に変更 */
+    gap: 10px;
 }
 
-/* 検索前のフォームテーブル全体と入力フィールドの共通ロック背景 */
-.form-table-locked {
-    background-color: #e9ecef !important;
+/* エラーメッセージエリアの背景はコンテンツ基本色（#d9d9d9） */
+.register-error-message {
+    background-color: #d9d9d9 !important;
+    color: red;
+    padding: 5px 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
 }
 
-.input-field-locked {
-    background-color: #e9ecef !important;
+/* ==========================================================================
+   入力不可の欄（ロック状態・readonly・disabled）の色設定
+   ========================================================================= */
+
+/* 1. テーブル全体の背景とth, tdの色設定 */
+.form-table-locked,
+.form-table-locked th,
+.form-table-locked td {
+    background-color: #d9d9d9 !important; /* 外側の枠やセルは薄いグレー */
+    color: #000 !important;
 }
 
-/* 検索後のアクティブ背景（白） */
-.form-table-active {
-    background-color: #ffffff;
-    transition: background-color 0.3s;
+/* 検索後・活性（isFound）状態のテーブル（th, tdのみ）の背景定義 */
+.form-table-active th,
+.form-table-active td {
+    background-color: #d9d9d9;
+    color: #000;
 }
 
-.input-field-active {
-    background-color: #ffffff;
+/* 2. 赤枠部分：入力欄（テキストボックス）自体の灰色ロック設定 */
+.input-field-locked,
+.input-readonly-id,
+.input-field:disabled {
+    background-color: #b0b0b0 !important; /* 画像の赤枠部分をしっかり灰色（#b0b0b0）に */
+    color: #555 !important;                /* 文字色（プレースホルダー含む）をダークグレーに */
+    border: 1px solid #777 !important;     /* 枠線を明確化 */
 }
 
-/* モーダル内の確認用項目（すべて読み込み専用グレー） */
+/* 検索前のプレースホルダー（うっすら見える文字）の色調整 */
+.input-field-locked::placeholder {
+    color: #777 !important;
+}
+
+/* 3. ラジオボタンのラベルの色設定 */
+.form-table-locked td label {
+    color: #000 !important;
+}
+
+input[type="radio"]:disabled {
+    cursor: not-allowed;
+}
+
+/* モーダル内の確認用項目（すべて読み込み専用グレーで統一） */
 .confirm-modal-field {
-    background-color: #e9ecef;
+    background-color: #b0b0b0 !important;
+    color: #555 !important;
+    border: 1px solid #777 !important;
+}
+
+/* ==========================================================================
+   検索用テキストボックスのサイズ・配置固定
+   【修正点】170pxから「220px」へ少し幅を広げ、Flexboxの自動伸縮を完全無効化
+   ========================================================================= */
+#search-key {
+    width: 220px !important;     /* 1/3縮小(170px)から、少し長めの220pxに微調整 */
+    max-width: 220px !important; /* 最大幅も一貫して制限 */
+    flex: none !important;       /* 他のCSSによる自動引き伸ばしを強制ストップ */
 }

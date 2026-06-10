@@ -42,8 +42,8 @@
         </div>
 
         <form method="GET" action="${pageContext.request.contextPath}/UsersUpdate" id="searchForm">
-            <div class="id-search-group" style="display: flex; gap: 10px; margin-bottom: 20px; justify-content: center;">
-                <input type="text" class="input-field" id="search-key" name="searchKey" value="${param.searchKey}" placeholder="利用者IDまたは氏名入力" required style="width: 250px;">
+            <div class="id-search-group" style="display: flex; gap: 10px; margin-bottom: 20px; justify-content: center;"">
+                <input type="text" class="input-field" id="search-key" name="searchKey" value="${param.searchKey}" placeholder="利用者IDまたは氏名入力" required autofocus>
                 <button type="submit" class="header-blue-button">表示</button>
             </div>
         </form>
@@ -101,8 +101,8 @@
             </table>
 
             <div class="bottom-button-container">
-            <button type="button" class="btn-back-management" onclick="location.href='${pageContext.request.contextPath}/home/userManagement.jsp'">戻る</button>
-                <button type="button" class="update-submit-button" onclick="showConfirmModal()" ${!isFound ? 'disabled' : ''}>変更確認</button>
+            
+                <button type="button" class="update-submit-button" onclick="showConfirmModal()" ${!isFound ? 'disabled' : ''}>登録</button>
             </div>
 
             <div id="confirmModal" class="modal-overlay">

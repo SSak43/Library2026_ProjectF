@@ -8,7 +8,7 @@
     <!-- 絶対パス表記、キャッシュバスター、極限透過対応版 -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/F-03.css">
     
-    <!-- 【強制透過＆潰れバグ永久追放スタイル上書き】JSP側から完璧にセルの幅を制御するスタイルブロック -->
+    <!-- 【強制透過＆潰れバグ永久追放スタイル上書き】JSP側から完璧にセルの幅と状態変化を制御するスタイルガード -->
     <style type="text/css">
         .main-content-base, .layout-center {
             background-color: #d9d9d9 !important; /* メインコンテンツ全体はグレー背景 */
@@ -53,7 +53,7 @@
         }
         
         /* 共通テキスト入力フィールド自体を確実に100%幅で表示（文字サイズ1.2rem、パディング10px 14px） */
-        .input-flex-container .input-field-update, .input-flex-container .select-field {
+        .input-flex-container .input-field, .input-flex-container .input-field-update, .input-flex-container .select-field {
             flex: 1 1 auto !important; /* 残りのスペースをすべて占有して引き伸ばす */
             width: 100% !important;
             min-width: 0 !important; /* フレックスボックス内で要素が極小に潰れるのを防ぐCSSの最重要ルール */
@@ -65,19 +65,19 @@
         }
         
         /* 入力欄の活性時の白背景 */
-        .input-flex-container .select-field {
+        .input-flex-container .input-field, .input-flex-container .select-field {
             background-color: #fff !important;
         }
 
         /* 入力できない非活性（disabled/readonly）時のボックスをグレーの塗りつぶし状態にするガード */
-        .input-flex-container .input-field-update, .input-flex-container .select-field:disabled {
+        .input-flex-container .input-field:disabled, .input-flex-container .input-field-update, .input-flex-container .select-field:disabled {
             background-color: #b0b0b0 !important;
             color: #555 !important;
             border: 1.5px solid #777 !important;
             cursor: not-allowed;
         }
         
-      
+        /* ボタンが絶対に縮まないように保護 */
         .input-flex-container .btn {
             flex-shrink: 0 !important;
             padding: 10px 20px !important;
@@ -108,7 +108,7 @@
             <!-- ① 上部：図書ID検索バー (白枠問題を物理的に解決するため、競合するクラス名を完全排除して直接透過レイアウトを適用) -->
             <div style="padding: 0 !important; display: flex !important; gap: 20px !important; align-items: center !important; width: 100% !important; margin-bottom: 25px !important; flex-shrink: 0 !important; background: transparent !important; background-color: transparent !important; border: none !important; box-shadow: none !important;">
                 <div style="display: flex !important; gap: 20px !important; align-items: center !important; width: 100% !important; background: transparent !important; background-color: transparent !important; border: none !important;">
-                    <input type="text" class="input-field id-search-field-compact" id="search-id" name="searchId" placeholder="図書IDを入力してください" style="width: 350px !important; flex-shrink: 0 !important; padding: 10px 14px !important; font-size: 1.2rem !important;">
+                    <input type="text" class="input-field id-search-field-compact" id="search-id" name="searchId" placeholder="図書IDを入力してください " style="width: 350px !important; flex-shrink: 0 !important; padding: 10px 14px !important; font-size: 1.2rem !important;">
                     <button type="button" class="btn" style="padding: 10px 30px; font-size: 1.15rem; flex-shrink: 0; background-color: #fff !important; border: 1.5px solid #666 !important;" onclick="searchBook();">表示</button>
                 </div>
             </div>
@@ -116,19 +116,19 @@
             <!-- 送信フォーム (中央寄せ用レイアウトにフィット) -->
             <form method="POST" action="F-3.bookStatusChange.jsp" id="bookStatusForm" style="display: flex; flex-direction: column; background: transparent !important; width: 100% !important;" onsubmit="return false;">
                 
-                <!-- ② 中央：4項目になった横長フォームテーブル (リセットあり、スケールアップ適用) -->
+                <!-- ② 中央：4項目になった横長フォームテーブル -->
                 <table class="form-table" style="width: 100%; margin-bottom: 25px; background: transparent !important;">
-                    <!-- 1行目: 書名 (右側にだけリセットボタンを配置) -->
+                    <!-- 1行目: 書名 (右側にリセットボタンを配置。活性・非活性を動的制御できるよう、input-fieldクラスに切り替え) -->
                     <tr>
                         <th style="width: 18%;">書名</th>
                         <td>
                             <div class="input-flex-container">
-                                <input type="text" class="input-field-update" id="input-title" name="bookTitle" readonly placeholder="図書IDを表示してください">
-                                <button type="button" class="btn" onclick="clearField('input-title');">リセット</button>
+                                <input type="text" class="input-field" id="input-title" name="bookTitle" placeholder="図書IDを表示してください" disabled>
+                                <button type="button" class="btn" id="btn-reset-title" onclick="clearField('input-title');" disabled>リセット</button>
                             </div>
                         </td>
                     </tr>
-                    <!-- 2行目: 貸出状況 -->
+                    <!-- 2行目: 貸出状況 (編集不可) -->
                     <tr>
                         <th>貸出状況</th>
                         <td>
@@ -137,7 +137,7 @@
                             </div>
                         </td>
                     </tr>
-                    <!-- 3行目: 予約状況 -->
+                    <!-- 3行目: 予約状況 (編集不可) -->
                     <tr>
                         <th>予約状況</th>
                         <td>
@@ -146,7 +146,7 @@
                             </div>
                         </td>
                     </tr>
-                    <!-- 4行目: 本の状態 -->
+                    <!-- 4行目: 本の状態 (編集可) -->
                     <tr>
                         <th>本の状態</th>
                         <td>
@@ -234,11 +234,13 @@
             document.getElementById('error-message').style.display = 'none';
         }
 
+        // 【表示】ボタンを押した時の動作
         function searchBook() {
             const searchId = document.getElementById('search-id').value.trim().toUpperCase();
             const errorMessage = document.getElementById('error-message');
             
             const inputTitle = document.getElementById('input-title');
+            const btnResetTitle = document.getElementById('btn-reset-title');
             const inputLoanStatus = document.getElementById('input-loan-status');
             const inputReserveStatus = document.getElementById('input-reserve-status');
             const inputStatus = document.getElementById('input-status');
@@ -256,10 +258,17 @@
             if (bookData) {
                 errorMessage.style.display = 'none';
                 
+                // 書名とリセットボタンを活性化
+                inputTitle.disabled = false;
+                btnResetTitle.disabled = false;
+                inputTitle.placeholder = "書名を入力してください";
+                
+                // 値をセット
                 inputTitle.value = bookData.title;
                 inputLoanStatus.value = bookData.loan;
                 inputReserveStatus.value = bookData.reserve;
                 
+                // 本の状態と変更ボタンを活性化
                 inputStatus.disabled = false;
                 btnSubmit.disabled = false;
                 
@@ -275,8 +284,17 @@
             }
         }
 
+        // 入力値をリセットし、初期非活性（ロック）状態にする補助関数
         function resetFields() {
-            document.getElementById('input-title').value = '';
+            const inputTitle = document.getElementById('input-title');
+            const btnResetTitle = document.getElementById('btn-reset-title');
+            
+            // 書名とリセットボタンを非活性化
+            inputTitle.disabled = true;
+            btnResetTitle.disabled = true;
+            inputTitle.value = '';
+            inputTitle.placeholder = "図書IDを表示してください";
+
             document.getElementById('input-loan-status').value = '';
             document.getElementById('input-reserve-status').value = '';
             
@@ -295,8 +313,20 @@
         }
 
         function showConfirmModal() {
+            const title = document.getElementById('input-title').value.trim();
+            const errorMessage = document.getElementById('error-message');
+
+            // 書名が空欄だった場合のバリデーションチェックを追加
+            if (title === '') {
+                errorMessage.innerText = "書名を入力してください";
+                errorMessage.style.display = 'block';
+                return;
+            }
+
+            errorMessage.style.display = 'none';
+
             document.getElementById('confirm-id').value = document.getElementById('search-id').value.trim().toUpperCase();
-            document.getElementById('confirm-title').value = document.getElementById('input-title').value;
+            document.getElementById('confirm-title').value = title;
             document.getElementById('confirm-loan-status').value = document.getElementById('input-loan-status').value;
             document.getElementById('confirm-reserve-status').value = document.getElementById('input-reserve-status').value;
             document.getElementById('confirm-status').value = document.getElementById('input-status').value;

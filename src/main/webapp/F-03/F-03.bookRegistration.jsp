@@ -65,7 +65,7 @@
             outline: none !important;
         }
         
-        /* リセットボタンが絶対に縮まないように保護 */
+       
         .input-flex-container .btn {
             flex-shrink: 0 !important;
             padding: 10px 20px !important;

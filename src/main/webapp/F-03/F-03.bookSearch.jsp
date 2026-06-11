@@ -100,7 +100,7 @@
 
     <!-- 動的なページネーションシミュレーションスクリプト -->
     <script>
-        // 大量のデモ用データベース (ページネーション動作検証のために15件のデータを格納)
+        
         const mockDatabase = [
             { id: "B0001", title: "赤朽葉家の伝説", author: "桜庭一樹", publisher: "講談社", classification: "小説", status: "貸出可能" },
             { id: "B0002", title: "人間失格", author: "太宰治", publisher: "新潮社", classification: "文学", status: "貸出可能" },

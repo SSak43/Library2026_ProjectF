@@ -15,7 +15,7 @@ public class ReserveManagement extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/reserve/reserveManagement.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/F-07/reserveManagement.jsp");
 		dispatcher.forward(request, response);
 	}
 }

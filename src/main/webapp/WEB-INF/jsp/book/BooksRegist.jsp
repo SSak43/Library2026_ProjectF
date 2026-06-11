@@ -118,47 +118,12 @@
 	</div>
 
 	<script>
-		document.addEventListener("DOMContentLoaded", function() {
-			const titleInput = document.getElementById('input-title');
-			const nameInput = document.getElementById('input-writerName');
-			const corpInput = document.getElementById('input-company');
-			const claInput = document.getElementById('input-cla');
-
-			// 氏名の入力制御（ひらがな、カタカナ、漢字、英字、スペースを許可）
-			nameInput.addEventListener('input', function(e) {
-	            let cleanVal = this.value.replace(/[^a-zA-Z0-9\sぁ-んァ-ヶ一-龠々ーａ-ｚＡ-Ｚ]/g, ''); 
-	            cleanVal = cleanVal.replace(/[0-9０-９]/g, '');
-	            this.value = cleanVal;
-			});
-			titleInput.addEventListener('input', function(e) {
-	            let cleanVal = this.value.replace(/[^a-zA-Z0-9\sぁ-んァ-ヶ一-龠々ーａ-ｚＡ-Ｚ]/g, ''); 
-	            cleanVal = cleanVal.replace(/[0-9０-９]/g, '');
-	            this.value = cleanVal;
-			});
-			corpInput.addEventListener('input', function(e) {
-	            let cleanVal = this.value.replace(/[^a-zA-Z0-9\sぁ-んァ-ヶ一-龠々ーａ-ｚＡ-Ｚ]/g, ''); 
-	            cleanVal = cleanVal.replace(/[0-9０-９]/g, '');
-	            this.value = cleanVal;
-			});
-			claInput.addEventListener('input', function(e) {
-	            let cleanVal = this.value.replace(/[^a-zA-Z0-9\sぁ-んァ-ヶ一-龠々ーａ-ｚＡ-Ｚ]/g, ''); 
-	            cleanVal = cleanVal.replace(/[0-9０-９]/g, '');
-	            this.value = cleanVal;
-			});
-		});
-
-		function clearInput(id) {
-			document.getElementById(id).value = '';
-			document.getElementById(id).focus();
-		}
-
 		function showConfirmModal() {
-			const form = document.getElementById('registForm');
 			const errorMessage = document.getElementById('error-message');
-
+			const form = document.getElementById('registForm');
 			errorMessage.style.visibility = 'hidden';
 
-			// 未入力チェック
+			// 未入力チェック（HTMLのrequired属性の検証）
 			if (!form.checkValidity()) {
 				errorMessage.innerText = "未入力の欄があります。すべての項目に記入してください。";
 				errorMessage.style.visibility = 'visible';
@@ -166,20 +131,11 @@
 				return;
 			}
 
-			//             const claInput = document.querySelector('input[name="cla"]:checked');
-			const writerName = document.getElementById('input-writerName').value
-					.trim();
+			// 入力値の取得（文字の種類の制限は行いません）
+			const writerName = document.getElementById('input-writerName').value.trim();
 			const title = document.getElementById('input-title').value.trim();
-			const company = document.getElementById('input-company').value
-					.trim();
+			const company = document.getElementById('input-company').value.trim();
 			const cla = document.getElementById('input-cla').value.trim();
-
-			/*             const nameRegex = /^[ぁ-んァ-ヶ亜-熙纊-鶴々ーa-zA-Zａ-ｚＡ-Ｚ\s ]+$/;
-			 if (!nameRegex.test(name)) {
-			 errorMessage.innerText = "氏名には数字や記号は使用できません。";
-			 errorMessage.style.visibility = 'visible';
-			 return;
-			 } */
 
 			// 値をセットして確認画面を表示
 			document.getElementById('confirm-writerName').value = writerName;

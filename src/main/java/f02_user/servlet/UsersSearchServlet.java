@@ -1,6 +1,7 @@
 package f02_user.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import Model.UsersBean;
@@ -31,35 +32,31 @@ public class UsersSearchServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-		String id = request.getParameter("userId");
-//		String name = request.getParameter("userName");
-		String cla = request.getParameter("cla");
+		
+		// ⭕ 画面の入力欄（name="searchKey"）から値を受け取る
+		String searchKey = request.getParameter("searchKey");
 		
 		UsersBean usersBean = new UsersBean();
 		UsersSearchLogic logic = new UsersSearchLogic();
 		List<UsersBean> usersList = null;
 
-		
-		if (id != null && !id.isEmpty()) {
-	        try {
-	            usersBean.setUserId(Integer.parseInt(id));
-	            usersList = logic.id(usersBean);
-	        } catch (NumberFormatException e) {
-	            // IDに数字以外が入った場合の安全対策として全件表示にする
-	            usersList = logic.all(usersBean);
-	        }
-	    }// 2. クラス欄に入力がある場合（nullではなく、空文字でもない）
-	    else if (cla != null && !cla.isEmpty()) {
-	        usersBean.setUserClass(cla);
-	        usersList = logic.userClass(usersBean);
-	    } 
-	    // 3. どちらも空っぽの場合
-	    else {
-	        usersList = logic.all(usersBean);
-	    }
+		if (searchKey != null && !searchKey.isEmpty()) {
+			// 入力された文字が「すべて数字」ならID検索、それ以外なら氏名検索
+			if (searchKey.matches("^[0-9]+$")) {
+				usersBean.setUserId(Integer.parseInt(searchKey));
+				usersList = logic.id(usersBean);
+			} else {
+				// ⭕ 氏名としてセットしてロジックを呼び出す
+				usersBean.setUserName(searchKey);
+				usersList = logic.name(usersBean); // ②でこのメソッドを有効化します
+			}
+		} else {
+			// 何も入力されていない場合は、全件ではなく空のリスト（初期状態用）
+			usersList = new ArrayList<>();
+		}
+	
 		
 //		if(id == null || name == null || name.isEmpty()) {
 //			usersBean.setUserName(name);

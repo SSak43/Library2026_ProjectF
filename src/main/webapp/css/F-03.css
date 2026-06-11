@@ -1,5 +1,5 @@
 /* =========================================
-   F-3 (蔵書管理系) 専用スタイルシート (お手本スタイル完全統合版)
+   F-3 (蔵書管理系) 専用スタイルシート (お手本スタイル完全統合・限界極大ワイド・セル背景完全透過版)
    ========================================= */
 
 /* 全体のリセットと背景設定 */
@@ -87,7 +87,7 @@ body {
 /* 黒い枠線のカプセル型コンテナ */
 .search-box-container {
     border: 1.5px solid #000;
-    padding: 10px 25px; /* 上下のパディングを抑えスリムに */
+    padding: 12px 25px; /* 上下のパディングを抑えスリムに */
     width: 100%; /* 下部の検索結果エリアと完全に比率を同じにするため100%に変更 */
     max-width: none; /* 最大幅の制限を取り払い綺麗に端まで引き伸ばし */
     margin: 0 auto 15px auto; /* 下部との間隔 */
@@ -107,21 +107,21 @@ body {
 
 /* 検索画面内のフォーム要素 */
 .search-select {
-    padding: 8px 12px; 
-    font-size: 1.2rem; 
+    padding: 10px 14px; /* パディングを拡大 */
+    font-size: 1.3rem; /* 文字サイズをスケールアップ */
     font-family: inherit;
     border: 1px solid #666;
     background-color: #fff;
     cursor: pointer;
-    width: 180px;
+    width: 200px; /* 幅を微増 */
     flex-shrink: 0;
     border-radius: 0;
 }
 .search-input {
     flex-grow: 1; /* 入力欄をカプセルの余白に合わせていっぱいに広げる */
-    padding: 8px 12px;
+    padding: 10px 14px; /* パディングを拡大 */
     border: 1px solid #666;
-    font-size: 1.2rem; 
+    font-size: 1.3rem; /* 文字サイズをスケールアップ */
     font-family: inherit;
     background-color: #fff;
     border-radius: 0;
@@ -135,8 +135,8 @@ body {
 .search-btn {
     background-color: #fff;
     border: 1px solid #666;
-    padding: 8px 25px; 
-    font-size: 1.2rem; 
+    padding: 10px 30px; /* 横余白を拡大 */
+    font-size: 1.3rem; /* 文字サイズをスケールアップ */
     font-family: inherit;
     cursor: pointer;
     border-radius: 0;
@@ -146,7 +146,7 @@ body {
     background-color: #f2f2f2;
 }
 .search-btn-primary {
-    padding: 8px 35px; 
+    padding: 10px 40px; /* 横余白を拡大 */
 }
 
 /* =========================================
@@ -165,8 +165,8 @@ body {
 /* 検索件数お知らせヘッダーエリア */
 .results-header-info {
     background-color: #f2f2f2;
-    padding: 10px 15px;
-    font-size: 1.1rem;
+    padding: 12px 15px; /* 余白微増 */
+    font-size: 1.2rem; /* スケールアップ */
     font-weight: bold;
     color: #333;
     border-bottom: 1.5px solid #2f5597;
@@ -187,9 +187,9 @@ body {
 .results-table th, .results-table td {
     border-bottom: 1.5px solid #2f5597; 
     border-right: 1.5px solid #2f5597;
-    padding: 10px 12px; 
+    padding: 12px 14px; /* パディングを広げて視認性アップ */
     text-align: left;
-    font-size: 1.1rem;
+    font-size: 1.15rem; /* 文字サイズをスケールアップ */
     word-break: break-all;
     vertical-align: middle;
 }
@@ -207,8 +207,8 @@ body {
 
 /* 8カラム of Results Table Widths */
 .results-table th.col-no { width: 7%; text-align: center; white-space: nowrap; }
-.results-table th.col-id { width: 10%; }
-.results-table th.col-title { width: 24%; }
+.results-table th.col-id { width: 11%; }
+.results-table th.col-title { width: 23%; }
 .results-table th.col-author { width: 14%; }
 .results-table th.col-pub { width: 15%; }
 .results-table th.col-class { width: 10%; }
@@ -230,8 +230,8 @@ body {
 .btn-detail-view {
     background-color: #e2e2e2;
     border: 1px solid #000;
-    padding: 4px 12px;
-    font-size: 1rem;
+    padding: 6px 14px; /* 余白拡大 */
+    font-size: 1.05rem; /* 文字サイズスケールアップ */
     cursor: pointer;
     font-family: inherit;
     border-radius: 0;
@@ -245,7 +245,7 @@ body {
     text-align: center !important;
     color: #555;
     background-color: #ffffff;
-    font-size: 1.2rem;
+    font-size: 1.3rem; /* スケールアップ */
 }
 
 /* =========================================
@@ -265,14 +265,14 @@ body {
 .pagination-btn {
     background: none; /* 背景色なし */
     border: none; /* 枠線なし */
-    font-size: 1.35rem; /* 三角記号の大きさ */
+    font-size: 1.45rem; /* 三角記号をさらに見やすく調整 */
     cursor: pointer;
     font-family: inherit;
     color: #000; /* シンプルな黒 */
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 5px 6px; /* パディングを抑えて密着化 */
+    padding: 5px 8px; /* パディングを抑えて密着化 */
     outline: none;
     transition: opacity 0.2s;
 }
@@ -286,58 +286,104 @@ body {
 }
 
 
-/* --- 他画面(登録/更新/状態変更) 共通スタイル保持 --- */
+/* --- 他画面(登録/更新/状態変更) スケールアップ・共通スタイル保持 --- */
 .link-group { display: flex; flex-direction: column; align-items: flex-start; gap: 40px; }
 .link-group a { color: black; text-decoration: underline; font-size: 2.2rem; letter-spacing: 0.1em; }
 .link-group a:hover { color: blue; }
 
-.error-message { color: red; font-size: 1.1rem; margin-bottom: 15px; display: none; }
-.form-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; table-layout: fixed; border: 1px solid #000; }
-.form-table th, .form-table td { border-bottom: 1px solid #000; padding: 10px; text-align: left; font-weight: normal; }
-.form-table th { width: 15%; font-size: 1.4rem; border-right: 1px solid #000; color: #111; } /* 見出し幅の比率をスマートに固定 */
-.form-table td { display: flex; gap: 10px; align-items: center; }
+.error-message { color: red; font-size: 1.2rem; margin-bottom: 20px; display: none; }
 
-/* 共通のテキストフィールド */
+/* 登録・更新・状態変更テーブル：白背景を完全に排除し、後ろのグレー背景と同化 */
+.form-table { 
+    width: 100%; 
+    border-collapse: collapse; 
+    margin-bottom: 25px; 
+    table-layout: fixed; 
+    border: 1.5px solid #000; 
+    background-color: transparent !important; /* テーブル自体の白背景を完全排除 */
+    background: transparent !important;
+}
+.form-table th, .form-table td { 
+    border-bottom: 1.5px solid #000; 
+    padding: 18px 24px; 
+    text-align: left; 
+    font-weight: normal; 
+}
+.form-table th { 
+    width: 18%; 
+    font-size: 1.6rem; 
+    border-right: 1.5px solid #000; 
+    color: #111; 
+    font-weight: bold; 
+    background-color: transparent !important; /* 見出し列も白背景を完全排除し、透明に設定 */
+    background: transparent !important;
+}
+.form-table td { 
+    display: flex; 
+    gap: 20px; 
+    align-items: center; 
+    background-color: transparent !important; /* 入力パーツ周りの白い塗りつぶしを完全排除 */
+    background: transparent !important;
+}
+
+/* 共通のテキストフィールド：入力ボックス自体は白背景のまま浮かび上がらせる */
 .input-field {
     width: 100%;
-    padding: 8px;
-    border: 1px solid #666;
-    font-size: 1.2rem;
+    padding: 14px 18px; /* パディングをさらに厚くしワイドに適応 */
+    border: 1.5px solid #666; 
+    font-size: 1.45rem; /* 入力文字サイズをさらに極大スケールアップ */
     font-family: inherit;
     box-sizing: border-box;
-    background-color: #fff;
+    background-color: #fff !important; /* 入力欄自体は白背景を維持 */
     outline: none;
 }
 .input-field-update {
     width: 100%;
-    padding: 8px;
-    background-color: #b0b0b0;
-    border: 2px solid #6fa8dc;
-    font-size: 1.2rem;
+    padding: 14px 18px; /* パディングをさらに厚く */
+    background-color: #b0b0b0 !important; /* 更新・読取専用フィールド用のグレーを維持 */
+    border: 2.5px solid #6fa8dc; 
+    font-size: 1.45rem; /* 入力文字サイズをさらに極大スケールアップ */
     font-family: inherit;
     color: #333;
     outline: none;
 }
 
-.btn-register { background-color: white; border: 1px solid #2f5597; padding: 10px 40px; font-size: 1.1rem; font-family: inherit; cursor: pointer; }
-.select-field { padding: 8px 10px; font-size: 1.2rem; font-family: inherit; border: 1px solid #666; background-color: #fff; cursor: pointer; border-radius: 0; outline: none; }
-.select-field:disabled { background-color: #e0e0e0; cursor: not-allowed; color: #888; }
+.btn-register { 
+    background-color: white !important; 
+    border: 1.5px solid #2f5597; 
+    padding: 14px 80px; /* パディングをさらに拡大 */
+    font-size: 1.35rem; /* 文字サイズを大きく */
+    font-family: inherit; 
+    cursor: pointer; 
+    font-weight: bold;
+}
+.select-field { 
+    padding: 13px 18px; /* パディングを拡大 */
+    font-size: 1.45rem; /* 文字サイズを拡大 */
+    font-family: inherit; 
+    border: 1.5px solid #666; 
+    background-color: #fff !important; /* セレクトボックス自体は白背景を維持 */
+    cursor: pointer; 
+    border-radius: 0; 
+    outline: none; 
+}
+.select-field:disabled { background-color: #e0e0e0 !important; cursor: not-allowed; color: #888; }
 .no-border-row th, .no-border-row td { border-bottom: none; }
 .no-border-row th { border-right: none; }
 .status-td-content { width: 100%; display: flex; justify-content: space-between; align-items: center; }
 
-/* 汎用ボタン（お手本のトーンと融合） */
+/* 汎用ボタン：ボタン自体は白背景を維持 */
 .btn {
-    background-color: #fff;
-    border: 1px solid #666;
-    padding: 5px 15px;
-    font-size: 1rem;
+    background-color: #fff !important;
+    border: 1.5px solid #666;
+    padding: 10px 30px; /* パディングを大きく */
+    font-size: 1.25rem; /* ボタン内フォントをスケールアップ */
     cursor: pointer;
     font-family: inherit;
     color: #111;
 }
 .btn:hover {
-    background-color: #f2f2f2;
+    background-color: #f2f2f2 !important;
 }
 .btn:disabled, .btn-register:disabled {
     background-color: #cccccc !important;
@@ -445,11 +491,11 @@ body {
 }
 .id-search-input-wrapper {
     display: flex;
-    gap: 15px;
+    gap: 20px; /* 余白を拡大 */
     align-items: center;
     width: 100%;
 }
 .id-search-field-compact {
-    width: 250px; /* 図書IDの入力欄を左寄せでコンパクトな幅に固定 */
+    width: 350px; /* ワイドスケール化に伴い入力欄の最適サイズをさらに拡大 */
     flex-shrink: 0;
 }

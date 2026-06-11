@@ -8,7 +8,7 @@
     <!-- 絶対パス表記、キャッシュバスター、極限透過対応版 -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/F-03.css">
     
-    <!-- 【強制透過スタイル上書き】JSP側からセルの白塗りを強制的に破壊するスタイルブロック -->
+    <!-- 【強制透過＆潰れバグ永久追放スタイル上書き】JSP側から完璧にセルの幅を制御するスタイルブロック -->
     <style type="text/css">
         .main-content-base, .layout-center {
             background-color: #d9d9d9 !important; /* メインコンテンツ全体はグレー背景 */
@@ -18,12 +18,68 @@
             background-color: transparent !important; /* テーブルとセル内を完全に透明化 */
             box-shadow: none !important;
         }
+        /* テーブルの幅計算のバグを防ぎ、しっかりと引き伸ばす */
+        .form-table {
+            width: 100% !important;
+            table-layout: fixed !important;
+            border-collapse: collapse !important;
+            border: 1.5px solid #000 !important;
+        }
+        .form-table th {
+            width: 18% !important; /* 見出し列を18%に固定 */
+            font-size: 1.35rem !important; /* 文字をほんの少し小さくして確実に収める */
+            font-weight: bold !important;
+            border-bottom: 1.5px solid #000 !important;
+            border-right: 1.5px solid #000 !important;
+            padding: 12px 15px !important;
+            color: #111 !important;
+        }
+        /* tdを標準のテーブルセルに強制リセットし、残りの82%の幅を確保 */
+        .form-table td {
+            display: table-cell !important;
+            width: 82% !important;
+            vertical-align: middle !important;
+            padding: 12px 15px !important; /* セル内余白を適正化し、縦横の縮み・潰れを物理的に防ぐ */
+            border-bottom: 1.5px solid #000 !important;
+        }
+        
+        /* 入力ボックスとボタンを確実に美しく一列に収める、100%幅フレックスコンテナ */
+        .input-flex-container {
+            display: flex !important;
+            width: 100% !important;
+            align-items: center !important;
+            gap: 15px !important;
+            background: transparent !important;
+        }
+        
+        /* 共通テキスト入力フィールド自体を確実に100%幅で表示（文字サイズを 1.2rem、パディングを 10px 14px に調整） */
+        .input-flex-container .input-field {
+            flex: 1 1 auto !important; /* 残りのスペースをすべて占有して引き伸ばす */
+            width: 100% !important;
+            min-width: 0 !important; /* フレックスボックス内で要素が極小に潰れるのを防ぐCSSの最重要ルール */
+            padding: 10px 14px !important; /* 余白を少しスマートにして確実に収める */
+            font-size: 1.2rem !important;  /* 文字サイズを1.2remに微調整（見やすさは維持） */
+            border: 1.5px solid #666 !important;
+            background-color: #fff !important;
+            box-sizing: border-box !important;
+            outline: none !important;
+        }
+        
         /* 入力できない非活性（disabled）時のボックスをグレーの塗りつぶし状態にするガード */
-        .input-field:disabled {
+        .input-flex-container .input-field:disabled {
             background-color: #b0b0b0 !important;
             color: #555 !important;
             border: 1.5px solid #777 !important;
             cursor: not-allowed;
+        }
+        
+        /* リセットボタンが絶対に縮まないように保護 */
+        .input-flex-container .btn {
+            flex-shrink: 0 !important;
+            padding: 10px 20px !important;
+            font-size: 1.1rem !important;
+            background-color: #fff !important;
+            border: 1.5px solid #666 !important;
         }
     </style>
 </head>
@@ -45,75 +101,82 @@
                 入力されていない必須項目があります
             </div>
 
-            <!-- ① 上部：図書ID検索バー (白枠問題を物理的に解決するため、競合するクラス名を完全排除して直接透過レイアウトを適用) -->
+            <!-- ① 上部：図書ID検索バー (競合するクラス名を完全排除し、直接透過レイアウトを適用。幅を350pxに絶対固定) -->
             <div style="padding: 0 !important; display: flex !important; gap: 20px !important; align-items: center !important; width: 100% !important; margin-bottom: 25px !important; flex-shrink: 0 !important; background: transparent !important; background-color: transparent !important; border: none !important; box-shadow: none !important;">
                 <div style="display: flex !important; gap: 20px !important; align-items: center !important; width: 100% !important; background: transparent !important; background-color: transparent !important; border: none !important;">
-                    <!-- id-search-field-compact のみ適用し、入力欄の幅をスリム(350px)に左寄せ配置 -->
-                    <input type="text" class="input-field id-search-field-compact" id="search-book-id" name="searchBookId" placeholder="図書IDを入力してください ">
-                    <button type="button" class="btn" onclick="searchBookById();" style="padding: 12px 30px; font-size: 1.25rem; flex-shrink: 0;">検索</button>
+                    <!-- 入力欄の幅を 350px に絶対固定して左寄せ配置。縮むのを強力に防ぎます -->
+                    <input type="text" class="input-field id-search-field-compact" id="search-book-id" name="searchBookId" placeholder="図書IDを入力してください " style="width: 350px !important; flex-shrink: 0 !important; padding: 10px 14px !important; font-size: 1.2rem !important;">
+                    <button type="button" class="btn" onclick="searchBookById();" style="padding: 10px 30px; font-size: 1.15rem; flex-shrink: 0; background-color: #fff !important; border: 1.5px solid #666 !important;">検索</button>
                 </div>
             </div>
 
-            <!-- 更新用フォーム (中央寄せ用レイアウトに綺麗にフィット) -->
-            <form method="POST" action="F-3.bookUpdate.jsp" id="bookUpdateForm" style="display: flex; flex-direction: column; background: transparent !important;" onsubmit="return false;">
+            <!-- 更新用フォーム (大元が縮むバグを防ぐため、width: 100% を強制指定) -->
+            <form method="POST" action="F-3.bookUpdate.jsp" id="bookUpdateForm" style="display: flex; flex-direction: column; background: transparent !important; width: 100% !important;" onsubmit="return false;">
                 
                 <!-- ② 中央：すべての行にリセットボタンがある5項目横長フォーム (初期状態はすべて非活性: disabled) -->
+                <!-- つぶれ防止のためのスマート＆絶対安定設計を採用 -->
                 <table class="form-table" style="width: 100%; margin-bottom: 25px; background: transparent !important;">
+                    
                     <!-- 1行目: 書名 -->
                     <tr>
                         <th style="width: 18%;">書名</th>
                         <td>
-                            <div style="display: flex; gap: 20px; width: 100%; align-items: center; background: transparent !important;">
+                            <div class="input-flex-container">
                                 <input type="text" class="input-field" id="reg-title" name="bookTitle" placeholder="図書IDで検索してください" disabled>
-                                <button type="button" class="btn" id="btn-reset-title" onclick="clearField('reg-title');" style="padding: 12px 30px; font-size: 1.25rem; flex-shrink: 0;" disabled>リセット</button>
+                                <button type="button" class="btn" id="btn-reset-title" onclick="clearField('reg-title');" disabled>リセット</button>
                             </div>
                         </td>
                     </tr>
+                    
                     <!-- 2行目: 著者 -->
                     <tr>
                         <th>著者</th>
                         <td>
-                            <div style="display: flex; gap: 20px; width: 100%; align-items: center; background: transparent !important;">
+                            <div class="input-flex-container">
                                 <input type="text" class="input-field" id="reg-author" name="bookAuthor" placeholder="図書IDで検索してください" disabled>
-                                <button type="button" class="btn" id="btn-reset-author" onclick="clearField('reg-author');" style="padding: 12px 30px; font-size: 1.25rem; flex-shrink: 0;" disabled>リセット</button>
+                                <button type="button" class="btn" id="btn-reset-author" onclick="clearField('reg-author');" disabled>リセット</button>
                             </div>
                         </td>
                     </tr>
+                    
                     <!-- 3行目: 出版社 -->
                     <tr>
                         <th>出版社</th>
                         <td>
-                            <div style="display: flex; gap: 20px; width: 100%; align-items: center; background: transparent !important;">
+                            <div class="input-flex-container">
                                 <input type="text" class="input-field" id="reg-publisher" name="bookPublisher" placeholder="図書IDで検索してください" disabled>
-                                <button type="button" class="btn" id="btn-reset-publisher" onclick="clearField('reg-publisher');" style="padding: 12px 30px; font-size: 1.25rem; flex-shrink: 0;" disabled>リセット</button>
+                                <button type="button" class="btn" id="btn-reset-publisher" onclick="clearField('reg-publisher');" disabled>リセット</button>
                             </div>
                         </td>
                     </tr>
+                    
                     <!-- 4行目: 分類 -->
                     <tr>
                         <th>分類</th>
                         <td>
-                            <div style="display: flex; gap: 20px; width: 100%; align-items: center; background: transparent !important;">
+                            <div class="input-flex-container">
                                 <input type="text" class="input-field" id="reg-classification" name="bookClassification" placeholder="図書IDで検索してください" disabled>
-                                <button type="button" class="btn" id="btn-reset-classification" onclick="clearField('reg-classification');" style="padding: 12px 30px; font-size: 1.25rem; flex-shrink: 0;" disabled>リセット</button>
+                                <button type="button" class="btn" id="btn-reset-classification" onclick="clearField('reg-classification');" disabled>リセット</button>
                             </div>
                         </td>
                     </tr>
+                    
                     <!-- 5行目: 蔵書状態 -->
                     <tr>
                         <th>蔵書状態</th>
                         <td>
-                            <div style="display: flex; gap: 20px; width: 100%; align-items: center; background: transparent !important;">
+                            <div class="input-flex-container">
                                 <input type="text" class="input-field" id="reg-status" name="bookStatus" placeholder="図書IDで検索してください" disabled>
-                                <button type="button" class="btn" id="btn-reset-status" onclick="clearField('reg-status');" style="padding: 12px 30px; font-size: 1.25rem; flex-shrink: 0;" disabled>リセット</button>
+                                <button type="button" class="btn" id="btn-reset-status" onclick="clearField('reg-status');" disabled>リセット</button>
                             </div>
                         </td>
                     </tr>
+                    
                 </table>
 
                 <!-- ③ 下部：共通デザインに合わせた右下の「更新」ボタン (初期状態は非活性) -->
                 <div style="display: flex; justify-content: flex-end; padding-top: 15px; background: transparent !important;">
-                    <button type="button" class="btn btn-register" id="btn-submit" onclick="validateAndConfirm();" style="padding: 14px 85px; font-size: 1.35rem;" disabled>更新</button>
+                    <button type="button" class="btn btn-register" id="btn-submit" onclick="validateAndConfirm();" style="padding: 12px 65px; font-size: 1.2rem; background-color: #fff !important;" disabled>更新</button>
                 </div>
 
             </form>

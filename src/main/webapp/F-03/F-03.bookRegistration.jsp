@@ -8,7 +8,7 @@
     <!-- 絶対パス・キャッシュバスター・極限透過対応版 -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/F-03.css">
     
-    <!-- 【強制透過スタイル上書き】JSP側からセルの白塗りを強制的に破壊するスタイルブロック -->
+    <!-- 【強制透過＆潰れバグ永久追放スタイル上書き】JSP側から完璧にセルの幅を制御するスタイルブロック -->
     <style type="text/css">
         .main-content-base, .layout-center {
             background-color: #d9d9d9 !important; /* メインコンテンツ全体はグレー背景 */
@@ -18,8 +18,60 @@
             background-color: transparent !important; /* テーブルとセル内を完全に透明化 */
             box-shadow: none !important;
         }
-        .input-field, .btn, .btn-register {
-            /* 入力ボックスとボタン自体のみ白背景を維持します */
+        /* テーブルの幅計算のバグを防ぎ、しっかりと引き伸ばす */
+        .form-table {
+            width: 100% !important;
+            table-layout: fixed !important;
+            border-collapse: collapse !important;
+            border: 1.5px solid #000 !important;
+        }
+        .form-table th {
+            width: 18% !important; /* 見出し列を18%に固定（更新画面と完全同期） */
+            font-size: 1.35rem !important; /* 文字をほんの少し小さくして確実に収める */
+            font-weight: bold !important;
+            border-bottom: 1.5px solid #000 !important;
+            border-right: 1.5px solid #000 !important;
+            padding: 12px 15px !important;
+            color: #111 !important;
+        }
+        /* tdを標準のテーブルセルに強制リセットし、残りの82%の幅を確保 */
+        .form-table td {
+            display: table-cell !important;
+            width: 82% !important;
+            vertical-align: middle !important;
+            padding: 12px 15px !important; /* セル内余白を適正化し、縦横の縮み・潰れを物理的に防ぐ */
+            border-bottom: 1.5px solid #000 !important;
+        }
+        
+        /* 入力ボックスとボタンを確実に美しく一列に収める、100%幅フレックスコンテナ */
+        .input-flex-container {
+            display: flex !important;
+            width: 100% !important;
+            align-items: center !important;
+            gap: 15px !important;
+            background: transparent !important;
+        }
+        
+        /* 共通テキスト入力フィールド自体を確実に100%幅で表示（文字サイズ1.2rem、パディング10px 14px） */
+        .input-flex-container .input-field {
+            flex: 1 1 auto !important; /* 残りのスペースをすべて占有して引き伸ばす */
+            width: 100% !important;
+            min-width: 0 !important; /* フレックスボックス内で要素が極小に潰れるのを防ぐCSSの最重要ルール */
+            padding: 10px 14px !important; /* 余白を少しスマートにして確実に収める */
+            font-size: 1.2rem !important;  /* 文字サイズを1.2remに微調整（見やすさは維持） */
+            border: 1.5px solid #666 !important;
+            background-color: #fff !important;
+            box-sizing: border-box !important;
+            outline: none !important;
+        }
+        
+        /* リセットボタンが絶対に縮まないように保護 */
+        .input-flex-container .btn {
+            flex-shrink: 0 !important;
+            padding: 10px 20px !important;
+            font-size: 1.1rem !important;
+            background-color: #fff !important;
+            border: 1.5px solid #666 !important;
         }
     </style>
 </head>
@@ -41,17 +93,17 @@
                 入力されていない必須項目があります
             </div>
 
-            <!-- 登録用フォーム -->
-            <form method="POST" action="F-3.bookRegistration.jsp" id="bookRegistrationForm" style="display: flex; flex-direction: column; background: transparent !important;" onsubmit="return false;">
+            <!-- 登録用フォーム (インライン指定で白化バグを永久に遮断) -->
+            <form method="POST" action="F-3.bookRegistration.jsp" id="bookRegistrationForm" style="display: flex; flex-direction: column; background: transparent !important; width: 100% !important;" onsubmit="return false;">
                 
                 <table class="form-table" style="width: 100% !important; margin-bottom: 30px; background: transparent !important;">
                     <!-- 1行目: 書名 & 個別リセット -->
                     <tr>
                         <th style="width: 18%;">書名</th>
                         <td>
-                            <div style="display: flex; gap: 20px; width: 100%; align-items: center; background: transparent !important;">
+                            <div class="input-flex-container">
                                 <input type="text" class="input-field" id="reg-title" name="bookTitle" placeholder="書名を入力してください">
-                                <button type="button" class="btn" onclick="clearField('reg-title');" style="padding: 12px 30px; font-size: 1.25rem; flex-shrink: 0;">リセット</button>
+                                <button type="button" class="btn" onclick="clearField('reg-title');">リセット</button>
                             </div>
                         </td>
                     </tr>
@@ -59,9 +111,9 @@
                     <tr>
                         <th>著者</th>
                         <td>
-                            <div style="display: flex; gap: 20px; width: 100%; align-items: center; background: transparent !important;">
+                            <div class="input-flex-container">
                                 <input type="text" class="input-field" id="reg-author" name="bookAuthor" placeholder="著者名を入力してください">
-                                <button type="button" class="btn" onclick="clearField('reg-author');" style="padding: 12px 30px; font-size: 1.25rem; flex-shrink: 0;">リセット</button>
+                                <button type="button" class="btn" onclick="clearField('reg-author');">リセット</button>
                             </div>
                         </td>
                     </tr>
@@ -69,9 +121,9 @@
                     <tr>
                         <th>出版社</th>
                         <td>
-                            <div style="display: flex; gap: 20px; width: 100%; align-items: center; background: transparent !important;">
+                            <div class="input-flex-container">
                                 <input type="text" class="input-field" id="reg-publisher" name="bookPublisher" placeholder="出版社名を入力してください">
-                                <button type="button" class="btn" onclick="clearField('reg-publisher');" style="padding: 12px 30px; font-size: 1.25rem; flex-shrink: 0;">リセット</button>
+                                <button type="button" class="btn" onclick="clearField('reg-publisher');">リセット</button>
                             </div>
                         </td>
                     </tr>
@@ -79,9 +131,9 @@
                     <tr>
                         <th>分類</th>
                         <td>
-                            <div style="display: flex; gap: 20px; width: 100%; align-items: center; background: transparent !important;">
+                            <div class="input-flex-container">
                                 <input type="text" class="input-field" id="reg-classification" name="bookClassification" placeholder="分類を入力してください">
-                                <button type="button" class="btn" onclick="clearField('reg-classification');" style="padding: 12px 30px; font-size: 1.25rem; flex-shrink: 0;">リセット</button>
+                                <button type="button" class="btn" onclick="clearField('reg-classification');">リセット</button>
                             </div>
                         </td>
                     </tr>
@@ -89,7 +141,7 @@
 
                 <!-- 右端には「登録」ボタンだけを配置 -->
                 <div style="display: flex; justify-content: flex-end; background: transparent !important;">
-                    <button type="button" class="btn btn-register" id="btn-submit" onclick="validateAndConfirm();" style="padding: 14px 85px; font-size: 1.35rem;">登録</button>
+                    <button type="button" class="btn btn-register" id="btn-submit" onclick="validateAndConfirm();" style="padding: 12px 65px; font-size: 1.2rem; background-color: #fff !important;">登録</button>
                 </div>
 
             </form>
@@ -143,11 +195,13 @@
 
     <!-- 画面操作スクリプト -->
     <script>
+        // 各行の個別フィールド用リセット関数
         function clearField(fieldId) {
             document.getElementById(fieldId).value = '';
             document.getElementById('error-message').style.display = 'none';
         }
 
+        // バリデーションチェック & 確認モーダルの表示
         function validateAndConfirm() {
             const title = document.getElementById('reg-title').value.trim();
             const author = document.getElementById('reg-author').value.trim();
@@ -155,25 +209,31 @@
             const classification = document.getElementById('reg-classification').value.trim();
             const errorMessage = document.getElementById('error-message');
 
+            // すべての入力項目が必須となる簡易バリデーション
             if (title === '' || author === '' || publisher === '' || classification === '') {
                 errorMessage.style.display = 'block';
                 return;
             }
 
+            // エラーを非表示に
             errorMessage.style.display = 'none';
 
+            // 確認画面に入力値を複製
             document.getElementById('confirm-title').value = title;
             document.getElementById('confirm-author').value = author;
             document.getElementById('confirm-publisher').value = publisher;
             document.getElementById('confirm-classification').value = classification;
 
+            // 確認モーダルを表示
             document.getElementById('confirmModal').style.display = 'flex';
         }
 
+        // 確認モーダルを閉じる
         function hideConfirmModal() {
             document.getElementById('confirmModal').style.display = 'none';
         }
 
+        // 完了モーダルを表示
         function showCompleteModal() {
             document.getElementById('confirmModal').style.display = 'none';
             const randomId = "B" + Math.floor(1000 + Math.random() * 9000);
@@ -182,10 +242,12 @@
             document.getElementById('completeModal').style.display = 'flex';
         }
 
+        // メニュー画面に戻る
         function goToMenu() {
             window.location.href = 'F-3.bookManagement.jsp';
         }
 
+        // 続けて登録するための初期化
         function resetAndContinue() {
             document.getElementById('completeModal').style.display = 'none';
             document.getElementById('bookRegistrationForm').reset();

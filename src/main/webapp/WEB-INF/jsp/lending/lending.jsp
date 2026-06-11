@@ -25,7 +25,7 @@
 
             <div style="margin-bottom: 10px;">
                 <input type="text" id="inputUserId" placeholder="利用者ID入力" value="${selectedUser != null ? selectedUser.userId : ''}" class="input-field" autofocus required>
-                <button type="button" onclick="submitSearch('searchUser')" class="menu-button">表示</button>
+                <button type="button" onclick="submitSearch('searchUser')" style="padding: 5px 20px; font-size: 1rem; background-color: #fff; border:1px solid;">表示</button>
             </div>
             <table>
                 <tr>
@@ -44,7 +44,7 @@
 
             <div style="margin-bottom: 10px;">
                 <input type="text" id="inputBookId" placeholder="図書ID入力" value="${selectedBook != null ? selectedBook.bookId : ''}" class="input-field" required>
-                <button type="button" onclick="submitSearch('searchBook')" class="menu-button">表示</button>
+                <button type="button" onclick="submitSearch('searchBook')" style="padding: 5px 20px; font-size: 1rem; background-color: #fff; border:1px solid;">表示</button>
             </div>
             <table>
                 <tr>

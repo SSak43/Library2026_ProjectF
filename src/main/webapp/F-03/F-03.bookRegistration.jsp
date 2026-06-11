@@ -5,8 +5,75 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>登録画面</title>
-    <!-- キャッシュバスターを更新 -->
-    <link class="style-link" rel="stylesheet" href="F-03.css?v=20260608_registration_border_fix">
+    <!-- 絶対パス・キャッシュバスター・極限透過対応版 -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/F-03.css">
+    
+    <!-- 【強制透過＆潰れバグ永久追放スタイル上書き】JSP側から完璧にセルの幅を制御するスタイルブロック -->
+    <style type="text/css">
+        .main-content-base, .layout-center {
+            background-color: #d9d9d9 !important; /* メインコンテンツ全体はグレー背景 */
+        }
+        form, .form-table, .form-table tr, .form-table th, .form-table td {
+            background: transparent !important;
+            background-color: transparent !important; /* テーブルとセル内を完全に透明化 */
+            box-shadow: none !important;
+        }
+        /* テーブルの幅計算のバグを防ぎ、しっかりと引き伸ばす */
+        .form-table {
+            width: 100% !important;
+            table-layout: fixed !important;
+            border-collapse: collapse !important;
+            border: 1.5px solid #000 !important;
+        }
+        .form-table th {
+            width: 18% !important; /* 見出し列を18%に固定（更新画面と完全同期） */
+            font-size: 1.35rem !important; /* 文字をほんの少し小さくして確実に収める */
+            font-weight: bold !important;
+            border-bottom: 1.5px solid #000 !important;
+            border-right: 1.5px solid #000 !important;
+            padding: 12px 15px !important;
+            color: #111 !important;
+        }
+        /* tdを標準のテーブルセルに強制リセットし、残りの82%の幅を確保 */
+        .form-table td {
+            display: table-cell !important;
+            width: 82% !important;
+            vertical-align: middle !important;
+            padding: 12px 15px !important; /* セル内余白を適正化し、縦横の縮み・潰れを物理的に防ぐ */
+            border-bottom: 1.5px solid #000 !important;
+        }
+        
+        /* 入力ボックスとボタンを確実に美しく一列に収める、100%幅フレックスコンテナ */
+        .input-flex-container {
+            display: flex !important;
+            width: 100% !important;
+            align-items: center !important;
+            gap: 15px !important;
+            background: transparent !important;
+        }
+        
+        /* 共通テキスト入力フィールド自体を確実に100%幅で表示（文字サイズ1.2rem、パディング10px 14px） */
+        .input-flex-container .input-field {
+            flex: 1 1 auto !important; /* 残りのスペースをすべて占有して引き伸ばす */
+            width: 100% !important;
+            min-width: 0 !important; /* フレックスボックス内で要素が極小に潰れるのを防ぐCSSの最重要ルール */
+            padding: 10px 14px !important; /* 余白を少しスマートにして確実に収める */
+            font-size: 1.2rem !important;  /* 文字サイズを1.2remに微調整（見やすさは維持） */
+            border: 1.5px solid #666 !important;
+            background-color: #fff !important;
+            box-sizing: border-box !important;
+            outline: none !important;
+        }
+        
+       
+        .input-flex-container .btn {
+            flex-shrink: 0 !important;
+            padding: 10px 20px !important;
+            font-size: 1.1rem !important;
+            background-color: #fff !important;
+            border: 1.5px solid #666 !important;
+        }
+    </style>
 </head>
 <body>
 
@@ -16,27 +83,27 @@
         <button type="button" class="menu-button">メニュー</button>
     </div>
 
-    <!-- メインコンテンツエリア (上下左右中央配置) -->
+    <!-- メインコンテンツエリア (上下左右完全に中央配置) -->
     <div class="main-content-base layout-center">
         
-        <!-- 横幅を極限まで引き伸ばしたコンテナ（画像2枚目を完全に再現） -->
-        <div style="width: 95%; max-width: 1000px; padding: 10px; display: flex; flex-direction: column;">
+        <!-- 横幅を極限まで引き伸ばしたコンテナ (max-width: 1300px の限界ワイド仕様) -->
+        <div style="width: 95% !important; max-width: 1300px !important; padding: 10px; display: flex; flex-direction: column; background: transparent !important; border: none !important;">
             
             <div class="error-message" id="error-message" style="margin-bottom: 25px; text-align: center;">
                 入力されていない必須項目があります
             </div>
 
-            <!-- 登録用フォーム -->
-            <form method="POST" action="F-3.bookRegistration.jsp" id="bookRegistrationForm" style="display: flex; flex-direction: column;" onsubmit="return false;">
+            <!-- 登録用フォーム (インライン指定で白化バグを永久に遮断) -->
+            <form method="POST" action="F-3.bookRegistration.jsp" id="bookRegistrationForm" style="display: flex; flex-direction: column; background: transparent !important; width: 100% !important;" onsubmit="return false;">
                 
-                <table class="form-table" style="width: 100%; margin-bottom: 30px;">
+                <table class="form-table" style="width: 100% !important; margin-bottom: 30px; background: transparent !important;">
                     <!-- 1行目: 書名 & 個別リセット -->
                     <tr>
-                        <th style="width: 15%;">書名</th>
+                        <th style="width: 18%;">書名</th>
                         <td>
-                            <div style="display: flex; gap: 15px; width: 100%; align-items: center;">
+                            <div class="input-flex-container">
                                 <input type="text" class="input-field" id="reg-title" name="bookTitle" placeholder="書名を入力してください">
-                                <button type="button" class="btn" onclick="clearField('reg-title');" style="padding: 6px 20px; font-size: 1.1rem; flex-shrink: 0;">リセット</button>
+                                <button type="button" class="btn" onclick="clearField('reg-title');">リセット</button>
                             </div>
                         </td>
                     </tr>
@@ -44,9 +111,9 @@
                     <tr>
                         <th>著者</th>
                         <td>
-                            <div style="display: flex; gap: 15px; width: 100%; align-items: center;">
+                            <div class="input-flex-container">
                                 <input type="text" class="input-field" id="reg-author" name="bookAuthor" placeholder="著者名を入力してください">
-                                <button type="button" class="btn" onclick="clearField('reg-author');" style="padding: 6px 20px; font-size: 1.1rem; flex-shrink: 0;">リセット</button>
+                                <button type="button" class="btn" onclick="clearField('reg-author');">リセット</button>
                             </div>
                         </td>
                     </tr>
@@ -54,27 +121,27 @@
                     <tr>
                         <th>出版社</th>
                         <td>
-                            <div style="display: flex; gap: 15px; width: 100%; align-items: center;">
+                            <div class="input-flex-container">
                                 <input type="text" class="input-field" id="reg-publisher" name="bookPublisher" placeholder="出版社名を入力してください">
-                                <button type="button" class="btn" onclick="clearField('reg-publisher');" style="padding: 6px 20px; font-size: 1.1rem; flex-shrink: 0;">リセット</button>
+                                <button type="button" class="btn" onclick="clearField('reg-publisher');">リセット</button>
                             </div>
                         </td>
                     </tr>
-                    <!-- 4行目: 分類 & 個別リセット (no-border-rowクラスを取り除き、境界線を美しく復活させました) -->
+                    <!-- 4行目: 分類 & 個別リセット -->
                     <tr>
                         <th>分類</th>
                         <td>
-                            <div style="display: flex; gap: 15px; width: 100%; align-items: center;">
+                            <div class="input-flex-container">
                                 <input type="text" class="input-field" id="reg-classification" name="bookClassification" placeholder="分類を入力してください">
-                                <button type="button" class="btn" onclick="clearField('reg-classification');" style="padding: 6px 20px; font-size: 1.1rem; flex-shrink: 0;">リセット</button>
+                                <button type="button" class="btn" onclick="clearField('reg-classification');">リセット</button>
                             </div>
                         </td>
                     </tr>
                 </table>
 
                 <!-- 右端には「登録」ボタンだけを配置 -->
-                <div style="display: flex; justify-content: flex-end;">
-                    <button type="button" class="btn btn-register" id="btn-submit" onclick="validateAndConfirm();" style="padding: 10px 50px;">登録</button>
+                <div style="display: flex; justify-content: flex-end; background: transparent !important;">
+                    <button type="button" class="btn btn-register" id="btn-submit" onclick="validateAndConfirm();" style="padding: 12px 65px; font-size: 1.2rem; background-color: #fff !important;">登録</button>
                 </div>
 
             </form>
@@ -116,8 +183,7 @@
         <div class="modal-overlay" id="completeModal">
             <div class="modal-content">
                 <div class="complete-message">登録が完了しました</div>
-                <!-- 新規登録された図書IDのダミー表示 -->
-                <div class="book-id-display" id="generated-id-display">図書ID: B0016</div>
+                <div class="book-id-display" id="generated-id-display" style="font-size: 1.45rem; text-align: center; margin-bottom: 20px; font-weight: bold; color: #111;">図書ID: B0016</div>
                 <div class="modal-actions">
                     <button type="button" class="btn" onclick="goToMenu()">メニュー</button>
                     <button type="button" class="btn" onclick="resetAndContinue()">続けて登録</button>
@@ -170,14 +236,13 @@
         // 完了モーダルを表示
         function showCompleteModal() {
             document.getElementById('confirmModal').style.display = 'none';
-            // ダミーの図書ID（例: B0016）を自動生成シミュレート
             const randomId = "B" + Math.floor(1000 + Math.random() * 9000);
             document.getElementById('generated-id-display').innerText = "図書ID: " + randomId;
 
             document.getElementById('completeModal').style.display = 'flex';
         }
 
-        // メニュー画面に戻る（遷移シミュレート）
+        // メニュー画面に戻る
         function goToMenu() {
             window.location.href = 'F-3.bookManagement.jsp';
         }

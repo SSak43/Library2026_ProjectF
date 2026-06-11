@@ -11,14 +11,14 @@
 
     <div class="header">
         <h1 class="header-title">利用者管理</h1>
-        <button class="menu-button" type="button" onclick="location.href='${pageContext.request.contextPath}/admin_home.jsp'">メニュー</button>
+        <button class="menu-button header-blue-button" type="button" onclick="location.href='${pageContext.request.contextPath}/home/admin_home.jsp'">メニュー</button>
     </div>
 
     <div class="main-content-base layout-center">
         <div class="link-group">
             <a href="${pageContext.request.contextPath}/UsersRegist">利用者登録</a>
-            <a href="${pageContext.request.contextPath}/#">更新</a>
-            <a href="${pageContext.request.contextPath}/#">利用者情報参照</a>
+            <a href="${pageContext.request.contextPath}/UsersUpdate">更新</a>
+            <a href="${pageContext.request.contextPath}/UsersSearch">利用者情報参照</a>
         </div>
     </div>
 

@@ -86,10 +86,11 @@ public class UsersSearchDAO extends DAOBase {
 			throw new IllegalStateException("JDBCドライバを読み込めません");
 		}
 		try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
+			// ⭕ 氏名の部分一致（LIKE）で検索するSQL
 			String sql = "SELECT * FROM USERS WHERE USER_NAME LIKE ?";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 			pStmt.setString(1, "%" + usersBean.getUserName() + "%");
-
+			
 			try (ResultSet rs = pStmt.executeQuery()) {
 				while (rs.next()) {
 					UsersBean u = new UsersBean();
@@ -99,11 +100,8 @@ public class UsersSearchDAO extends DAOBase {
 					u.setPassword(rs.getString("PASSWORD"));
 					u.setUserClass(rs.getString("USER_CLASS"));
 					u.setUserStatus(rs.getString("USER_STATUS"));
-					u.setUserRegist(rs.getDate("USER_REGIST"));
-					u.setUserUpdate(rs.getDate("USER_UPDATE"));
 					usersList.add(u);
 				}
-
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

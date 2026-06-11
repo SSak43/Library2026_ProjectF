@@ -1,164 +1,258 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>更新入力画面</title>
-    <!-- 外部の共通CSSファイルを読み込む -->
-    <link rel="stylesheet" href="F-02.css">
+    <title>利用者データ更新入力画面</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/home.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/F-02.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/register.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/update.css">
+    <style>
+        /* 確認画面で「パスワード」ラベルが一行に収まるように小さく調整 */
+        .confirm-password-label {
+            font-size: 0.85rem !important;
+            white-space: nowrap;
+        }
+    </style>
 </head>
 <body>
 
     <div class="header">
-        <h1 class="header-title">更新入力画面</h1>
-        <button type="button" class="menu-button">メニュー</button>
+        <h1 class="header-title">利用者データ更新入力画面</h1>
+        <button class="menu-button header-blue-button" type="button" onclick="location.href='${pageContext.request.contextPath}/home/admin_home.jsp'">メニュー</button>
     </div>
 
-    <!-- 共通ベースクラス(main-content-base) ＋ 上詰め・余白ありレイアウトクラス(layout-top-padding) -->
-    <div class="main-content-base layout-top-padding">
+    <div class="main-content-base layout-top-padding register-main-content">
         
-        <div class="error-message" id="error-message">
-            この利用者IDは存在しません
+        <c:set var="isSearch" value="${not empty param.searchKey}" />
+        <c:set var="isFound" value="${not empty usersList}" />
+        <c:if test="${isFound}">
+            <c:set var="u" value="${usersList[0]}" />
+        </c:if>
+            
+        <div class="register-error-message" id="error-message" style="min-height: 1.5em; visibility: ${isSearch && !isFound ? 'visible' : 'hidden' || not empty errorMessage ? 'visible' : 'hidden'};">
+            <c:choose>
+                <c:when test="${isSearch && !isFound}">該当する利用者は存在しません</c:when>
+                <c:otherwise><c:out value="${errorMessage}" /></c:otherwise>
+            </c:choose>
         </div>
 
-        <!-- ▼ 検索(表示)用フォーム ▼ -->
-        <form method="POST" action="F-3.userUpdate.jsp" id="searchForm" onsubmit="searchUser(); return false;">
-            <div class="id-search-group">
-                <input type="text" class="input-field" id="search-id" name="searchId" placeholder="利用者ID入力">
-                <!-- 検索などの実行ボタンは submit -->
-                <button type="submit" class="btn">表示</button>
+        <form method="GET" action="${pageContext.request.contextPath}/UsersUpdate" id="searchForm">
+            <div class="id-search-group" style="display: flex; gap: 10px; margin-bottom: 20px; justify-content: center;"">
+                <input type="text" class="input-field" id="search-key" name="searchKey" value="${param.searchKey}" placeholder="利用者IDまたは氏名入力" required autofocus>
+                <button type="submit" class="header-blue-button">表示</button>
             </div>
         </form>
-
-        <!-- ▼ 更新データの送信フォーム ▼ -->
-        <form method="POST" action="F-3.userUpdate.jsp" id="inputForm" style="display: flex; flex-direction: column; flex-grow: 1;">
             
-            <div class="category-group">
-                <div class="category-label">区分</div>
-                <div class="category-options">
-                    <label><input type="radio" name="category" value="admin"> 管理者</label>
-                    <label><input type="radio" name="category" value="librarian"> 司書</label>
-                    <label><input type="radio" name="category" value="user" checked> 利用者</label>
-                </div>
-            </div>
+        <form action="${pageContext.request.contextPath}/UsersUpdate" method="post" id="updateForm">
+            <input type="hidden" name="userId" value="${u.userId}">
 
-            <table class="form-table">
+            <table class="form-table ${!isFound ? 'form-table-locked' : 'form-table-active'}">
+                <tr>
+                    <th>利用者ID</th>
+                    <td>
+                        <input type="text" class="input-field input-readonly-id" id="input-id" value="${isFound ? u.userId : ''}" readonly placeholder="IDを表示します">
+                    </td>
+                </tr>
+                <tr>
+                    <th>区分</th>
+                    <td>
+                        <div class="category-options">
+                            <label><input type="radio" name="cla" value="0" ${isFound && u.userClass == '0' ? 'checked' : ''} ${!isFound ? 'disabled' : ''}> 管理者</label>
+                            <label><input type="radio" name="cla" value="1" ${isFound && u.userClass == '1' ? 'checked' : ''} ${!isFound ? 'disabled' : ''}> 司書</label>
+                            <label><input type="radio" name="cla" value="2" ${isFound && u.userClass == '2' ? 'checked' : ''} ${!isFound ? 'disabled' : ''}> 利用者</label>
+                        </div>
+                    </td>
+                </tr>
                 <tr>
                     <th>氏名</th>
                     <td>
-                        <input type="text" class="input-field-update" id="input-name" name="userName">
+                        <input type="text" class="input-field ${!isFound ? 'input-field-locked' : 'input-field-active'}" id="input-name" name="userName" value="${isFound ? u.userName : ''}" placeholder="${!isFound ? 'IDまたは氏名を入力してください' : ''}" required ${!isFound ? 'disabled' : ''}>
+                        <button type="button" class="clear-button" onclick="clearInput('input-name')" tabindex="-1" ${!isFound ? 'disabled' : ''}>クリア</button>
                     </td>
                 </tr>
                 <tr>
                     <th>電話番号</th>
                     <td>
-                        <input type="text" class="input-field-update" id="input-tel" name="userTel">
+                        <input type="text" class="input-field ${!isFound ? 'input-field-locked' : 'input-field-active'}" id="input-tel" name="Tel" value="${isFound ? u.tel : ''}" placeholder="${!isFound ? 'IDまたは氏名を入力してください' : ''}" required ${!isFound ? 'disabled' : ''}>
+                        <button type="button" class="clear-button" onclick="clearInput('input-tel')" tabindex="-1" ${!isFound ? 'disabled' : ''}>クリア</button>
                     </td>
                 </tr>
                 <tr>
                     <th>パスワード</th>
                     <td>
-                        <input type="text" class="input-field-update" id="input-pass" name="userPass">
+                        <input type="password" class="input-field ${!isFound ? 'input-field-locked' : 'input-field-active'}" id="input-pass" name="Password" placeholder="${isFound ? '変更する場合のみ入力' : 'IDまたは氏名を入力してください'}" ${!isFound ? 'disabled' : ''}>
+                        <button type="button" class="clear-button" onclick="clearInput('input-pass')" tabindex="-1" ${!isFound ? 'disabled' : ''}>クリア</button>
+                    </td>
+                </tr>
+                <tr>
+                    <th>状態</th>
+                    <td>
+                        <div class="category-options">
+                            <label><input type="radio" name="status" value="0" ${isFound && u.userStatus == '0' ? 'checked' : ''} ${!isFound ? 'disabled' : ''}> 有効</label>
+                            <label><input type="radio" name="status" value="1" ${isFound && u.userStatus == '1' ? 'checked' : ''} ${!isFound ? 'disabled' : ''}> 無効</label>
+                        </div>
                     </td>
                 </tr>
             </table>
 
-            <!-- 画面下部のアクションエリア（「利用」ラジオボタンと「登録」ボタン） -->
-            <div class="bottom-actions">
-                <div class="category-group" style="margin-bottom: 0;">
-                    <div class="category-label">利用</div>
-                    <div class="category-options">
-                        <label><input type="radio" name="status" value="available" checked> 可</label>
-                        <label><input type="radio" name="status" value="unavailable"> 不可</label>
+            <div class="bottom-button-container">
+            
+                <button type="button" class="update-submit-button" onclick="showConfirmModal()" ${!isFound ? 'disabled' : ''}>登録</button>
+            </div>
+
+            <div id="confirmModal" class="modal-overlay">
+                <div class="modal-content">
+                    <div class="modal-title">更新確認</div>
+            
+                    <table class="form-table">
+                        <tr><th>利用者ID</th><td><input type="text" class="input-field w-full confirm-modal-field" id="confirm-id" readonly></td></tr>
+                        <tr><th>区分</th><td><input type="text" class="input-field w-full confirm-modal-field" id="confirm-cla" readonly></td></tr>
+                        <tr><th>氏名</th><td><input type="text" class="input-field w-full confirm-modal-field" id="confirm-name" readonly></td></tr>
+                        <tr><th>電話番号</th><td><input type="text" class="input-field w-full confirm-modal-field" id="confirm-tel" readonly></td></tr>
+                        <tr><th class="confirm-password-label">パスワード</th><td><input type="text" class="input-field w-full confirm-modal-field" id="confirm-pass" readonly></td></tr>
+                        <tr><th>状態</th><td><input type="text" class="input-field w-full confirm-modal-field" id="confirm-status" readonly></td></tr>
+                    </table>
+          
+                    <div class="modal-buttons-right">
+                        <button type="button" class="modal-action-button" onclick="hideConfirmModal()">戻る</button>
+                        <button type="button" class="modal-action-button" onclick="submitForm()">更新</button>
                     </div>
                 </div>
-                
-                <!-- 確認モーダルを開くトリガー -->
-                <button type="button" class="btn btn-register" onclick="showConfirmModal()">登録</button>
             </div>
         </form>
+    </div>
 
+    <c:if test="${isSuccess == true}">
+        <div id="completeModal" class="modal-overlay" style="display: flex;">
+            <div class="modal-content" style="height: 300px; display: flex; flex-direction: column; justify-content: center; position: relative;">
+                <div style="text-align: center; font-size: 1.8rem; letter-spacing: 0.1em;">
+                    更新が完了しました。
+                </div>
 
-        <!-- 1. 確認画面モーダル -->
-        <div class="modal-overlay" id="confirmModal">
-            <div class="modal-content">
-                <h2 class="modal-title">確認画面</h2>
-                
-                <!-- ▼ 実際に更新処理(実行)を行うボタンのフォーム ▼ -->
-                <form method="POST" action="F-3.userUpdate.jsp" id="executeForm" onsubmit="showCompleteModal(); return false;">
-                    <table class="confirm-table">
-                        <tr>
-                            <th>氏名</th>
-                            <td><input type="text" class="confirm-input" id="confirm-name" name="confirmName" readonly></td>
-                        </tr>
-                        <tr>
-                            <th>電話番号</th>
-                            <td><input type="text" class="confirm-input" id="confirm-tel" name="confirmTel" readonly></td>
-                        </tr>
-                        <tr>
-                            <th>パスワード</th>
-                            <td><input type="text" class="confirm-input" id="confirm-pass" name="confirmPass" readonly></td>
-                        </tr>
-                    </table>
-                    
-                    <div class="modal-actions">
-                        <button type="button" class="btn" onclick="hideConfirmModal()">戻る</button>
-                        <!-- 更新を実行する確定ボタンは submit -->
-                        <button type="submit" class="btn">確定</button>
-                    </div>
-                </form>
-
-            </div>
-        </div>
-
-        <!-- 2. 完了画面モーダル -->
-        <div class="modal-overlay" id="completeModal">
-            <div class="modal-content">
-                <div class="complete-message">登録が完了しました</div>
-                <div class="modal-actions">
-                    <button type="button" class="btn" onclick="hideCompleteModal()">メニュー</button>
-                    <button type="button" class="btn" onclick="hideCompleteModal()">続けて登録</button>
+                <div class="modal-buttons-right" style="position: absolute; bottom: 20px; right: 20px; margin-top: 0;">
+                    <button type="button" class="modal-action-button" onclick="location.href='${pageContext.request.contextPath}/home/admin_home.jsp'">
+                        メニュー
+                    </button>
+                    <button type="button" class="modal-action-button" style="width: 120px;" onclick="location.href='${pageContext.request.contextPath}/UsersUpdate'">
+                        続けて更新
+                    </button>
                 </div>
             </div>
         </div>
+    </c:if>
 
-    </div>
-
-    <!-- 画面切り替え用のJavaScript -->
     <script>
-        // 【モック用】「表示」ボタンを押したときの挙動
-        function searchUser() {
-            const searchId = document.getElementById('search-id').value;
-            const errorMessage = document.getElementById('error-message');
+        document.addEventListener("DOMContentLoaded", function() {
+            const telInput = document.getElementById('input-tel');
+            const nameInput = document.getElementById('input-name');
+            const searchInput = document.getElementById('search-key');
+
+         // 検索バーの全角数字 ➡️ 半角自動置換
+            if (searchInput) {
+        searchInput.addEventListener('input', function(e) {
+            searchInput.value = searchInput.value.replace(/[０-９]/g, function(s) {
+                return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+            });
+        });
+    }
             
-            if (!searchId || searchId.trim() === '') {
-                // IDが空の場合はエラーメッセージを表示
-                errorMessage.style.display = 'block';
-                // 入力欄をクリア
-                document.getElementById('input-name').value = '';
-                document.getElementById('input-tel').value = '';
-                document.getElementById('input-pass').value = '';
-            } else {
-                // 何か入力されている場合はエラーを隠してダミーデータを表示
-                errorMessage.style.display = 'none';
-                document.getElementById('input-name').value = '鑓野　雄大';
-                document.getElementById('input-tel').value = '080-6285-3965';
-                document.getElementById('input-pass').value = 'Rki +81 9463-4985';
+            if (nameInput) {
+                nameInput.addEventListener('input', function(e) {
+                    let cleanVal = this.value.replace(/[^a-zA-Z0-9\sぁ-んァ-ヶ一-龠々ーａ-ｚＡ-Ｚ]/g, ''); 
+                    cleanVal = cleanVal.replace(/[0-9０-９]/g, '');
+                    this.value = cleanVal;
+                });
             }
+
+            if (telInput) {
+                telInput.addEventListener('input', function(e) {
+                    let val = this.value.replace(/[０-９]/g, function(s) {
+                        return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+                    });
+                    let rawStr = val.replace(/[^0-9]/g, '');
+                    let formatted = '';
+                    if (rawStr.length > 7) {
+                        formatted = rawStr.substring(0, 3) + '-' + rawStr.substring(3, 7) + '-' + rawStr.substring(7, 11);
+                    } else if (rawStr.length > 3) {
+                        formatted = rawStr.substring(0, 3) + '-' + rawStr.substring(3);
+                    } else {
+                        formatted = rawStr;
+                    }
+                    this.value = formatted;
+                });
+            }
+        });
+
+        function clearInput(id) {
+            document.getElementById(id).value = '';
+            document.getElementById(id).focus();
         }
 
         function showConfirmModal() {
-            // 入力された値を取得して確認画面へセット
-            const inputName = document.getElementById('input-name').value;
-            const inputTel = document.getElementById('input-tel').value;
-            const inputPass = document.getElementById('input-pass').value;
+            const claInput = document.querySelector('input[name="cla"]:checked');
+            const statusInput = document.querySelector('input[name="status"]:checked');
+            const form = document.getElementById('updateForm');
+            const errorMessage = document.getElementById('error-message');
 
-            document.getElementById('confirm-name').value = inputName;
-            document.getElementById('confirm-tel').value = inputTel;
-            document.getElementById('confirm-pass').value = inputPass;
+            // JavaScript側での初期化時はvisibilityを固定せず、JSTL側のエラー文言があれば残す
+            errorMessage.style.visibility = 'hidden';
 
-            // モーダルを表示
+            if (!form.checkValidity()) {
+                errorMessage.innerText = "未入力の欄があります。すべての項目に記入してください。";
+                errorMessage.style.visibility = 'visible';
+                form.reportValidity();
+                return;
+            }
+
+            const name = document.getElementById('input-name').value.trim();
+            const tel = document.getElementById('input-tel').value.trim();
+            const pass = document.getElementById('input-pass').value.trim();
+
+            const nameRegex = /^[ぁ-んァ-ヶ一-龠々ーa-zA-Zａ-ｚＡ-Ｚ\s ]+$/;
+            if (!nameRegex.test(name)) {
+                errorMessage.innerText = "氏名には数字や記号は使用できません。";
+                errorMessage.style.visibility = 'visible';
+                return;
+            }
+
+            const telRegex = /^[0-9-]+$/;
+            if (!telRegex.test(tel)) {
+                errorMessage.innerText = "電話番号は数字（ハイフン含む）のみで入力してください。";
+                errorMessage.style.visibility = 'visible';
+                return;
+            }
+			const telDigits = tel.replace(/[^0-9]/g, ''); 
+            
+            // 数字が10桁未満、または12桁以上の場合はエラー（一般的な固定電話は10桁、携帯は11桁）
+            if (telDigits.length < 10 || telDigits.length > 11) {
+                errorMessage.innerText = "電話番号の桁数が足りないか、正しくありません（10桁または11桁で入力してください）。";
+                errorMessage.style.visibility = 'visible';
+                // 入力欄にフォーカスを当てて、どこがダメだったか分かりやすくする
+                document.getElementById('input-tel').focus();
+                return;
+            }
+
+            if (pass.length > 0) {
+                const invalidRegex = /[^\x21-\x7E]/;
+                if (invalidRegex.test(pass)) {
+                    errorMessage.innerText = "パスワードに利用できない文字（全角文字やスペース）が含まれています。";
+                    errorMessage.style.visibility = 'visible';
+                    return; 
+                } 
+            }
+            
+            document.getElementById('confirm-id').value = document.getElementById('input-id').value;
+            document.getElementById('confirm-cla').value = claInput.parentElement.textContent.trim();
+            document.getElementById('confirm-name').value = name;
+            document.getElementById('confirm-tel').value = tel;
+            document.getElementById('confirm-pass').value = pass === "" ? "（変更なし）" : "********";
+            document.getElementById('confirm-status').value = statusInput.parentElement.textContent.trim();
+
             document.getElementById('confirmModal').style.display = 'flex';
         }
 
@@ -166,13 +260,8 @@
             document.getElementById('confirmModal').style.display = 'none';
         }
         
-        function showCompleteModal() {
-            document.getElementById('confirmModal').style.display = 'none';
-            document.getElementById('completeModal').style.display = 'flex';
-        }
-        
-        function hideCompleteModal() {
-            document.getElementById('completeModal').style.display = 'none';
+        function submitForm() {
+            document.getElementById('updateForm').submit();
         }
     </script>
 </body>

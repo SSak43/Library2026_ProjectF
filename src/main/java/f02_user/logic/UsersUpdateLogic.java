@@ -21,4 +21,10 @@ public class UsersUpdateLogic {
 		return dao.hashPassword(pass);
 	}
 	
+	public List<UsersBean> name(UsersBean usersBean){
+		// 
+		f02_user.dao.UsersSearchDAO searchDao = new f02_user.dao.UsersSearchDAO();
+		return searchDao.findByName(usersBean);
+	}
+	
 }

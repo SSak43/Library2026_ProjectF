@@ -43,7 +43,7 @@ public class ReserveServlet extends HttpServlet {
         BooksBean selectedBook = null;
         String displayBookStatus = "";
 
-        // ① 利用者情報の検索・保持
+        // 利用者情報の検索・保持
         if (userIdStr != null && !userIdStr.trim().isEmpty()) {
             try {
                 int userId = Integer.parseInt(userIdStr);
@@ -62,7 +62,7 @@ public class ReserveServlet extends HttpServlet {
             }
         }
 
-        // ② 図書情報の検索・保持
+        // 図書情報の検索・保持
         if (bookIdStr != null && !bookIdStr.trim().isEmpty()) {
             try {
                 int bookId = Integer.parseInt(bookIdStr);
@@ -85,7 +85,7 @@ public class ReserveServlet extends HttpServlet {
             }
         }
 
-        // ③ 「登録」ボタンが押された時の処理
+        // 「登録」ボタンが押された時の処理
         if ("register".equals(action)) {
             if (selectedUser == null) {
                 errorMessage = "利用者を検索して確定させてください。";
@@ -127,7 +127,7 @@ public class ReserveServlet extends HttpServlet {
         request.setAttribute("inputUserId", userIdStr);
         request.setAttribute("inputBookId", bookIdStr);
 
-        // ※配置場所は環境に合わせて
-        request.getRequestDispatcher("/WEB-INF/jsp/reserve/reserve.jsp").forward(request, response);
+     
+        request.getRequestDispatcher("/WEB-INF/jsp/F-07/reserve.jsp").forward(request, response);
     }
 }

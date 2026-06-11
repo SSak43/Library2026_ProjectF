@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>検索入力画面</title>
-    <!-- キャッシュの影響を防ぐためのパラメータ付きCSS指定 -->
-    <link class="style-link" rel="stylesheet" href="F-03.css?v=20260608_pagination">
+    <!-- 絶対パス表記、キャッシュバスターパラメータを付与 -->
+   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/F-03.css">
 </head>
 <body>
 
@@ -19,25 +19,34 @@
     <!-- メインコンテンツベース -->
     <div class="main-content-base layout-top-padding">
         
-        <!-- 上部：横長1行スリムカプセル型フォーム -->
-        <div class="search-box-container">
-            <form method="POST" action="F-3.searchInput.jsp" id="searchForm" onsubmit="performSearch(); return false;">
-                <div class="search-form-row">
-                    <!-- 1. 検索項目のプルダウン -->
-                    <select class="search-select" id="searchCategory" name="searchCategory">
-                        <option value="all">すべての項目</option>
-                        <option value="title">書名</option>
-                        <option value="author">著者名</option>
-                        <option value="publisher">出版社</option>
-                    </select>
+        <!-- 上部：横長1行スリムカプセル型フォーム (上下中央寄せを徹底させるためインラインでレイアウトを上書き) -->
+        <div class="search-box-container" style="display: flex; align-items: center; min-height: 85px; padding: 5px 25px;">
+            <form method="POST" action="F-3.searchInput.jsp" id="searchForm" onsubmit="performSearch(); return false;" style="width: 100%; display: flex; align-items: center;">
+                
+                <!-- すべての要素の高さと位置を完全に固定化し、カプセル内で一列かつ上下中央に配置 -->
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 15px; width: 100%; height: 100%;">
                     
-                    <!-- 2. 検索キーワード入力欄 -->
-                    <input type="text" class="search-input" id="searchKeyword" name="searchKeyword" placeholder="検索キーワードを入力してください">
+                    <!-- 1. 検索項目のプルダウン (直上に「検索項目」ラベル、親要素と合わせて中央寄せ) -->
+                    <div style="display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; justify-content: center; height: auto;">
+                        <span style="font-size: 0.95rem; color: #111; font-weight: normal; margin-left: 1px; display: block; line-height: 1;">検索項目</span>
+                        <select class="search-select" id="searchCategory" name="searchCategory" style="margin: 0; vertical-align: middle;">
+                            <option value="all">すべての項目</option>
+                            <option value="title">書名</option>
+                            <option value="author">著者名</option>
+                            <option value="publisher">出版社</option>
+                        </select>
+                    </div>
                     
-                    <!-- 3. アクションボタンのグループ -->
-                    <div class="search-btn-group">
-                        <button type="button" class="search-btn" onclick="clearSearch();">リセット</button>
-                        <button type="submit" class="search-btn search-btn-primary">検索</button>
+                    <!-- 2. 検索キーワード入力欄 (直上に「検索値」ラベル、親要素と合わせて中央寄せ) -->
+                    <div style="display: flex; flex-direction: column; gap: 4px; flex-grow: 1; justify-content: center; height: auto; width: 100%;">
+                        <span style="font-size: 0.95rem; color: #111; font-weight: normal; margin-left: 1px; display: block; line-height: 1;">検索値</span>
+                        <input type="text" class="search-input" id="searchKeyword" name="searchKeyword" placeholder="検索キーワードを入力してください" style="width: 100%; margin: 0; vertical-align: middle;">
+                    </div>
+                    
+                    <!-- 3. アクションボタンのグループ (リセットと検索の位置を逆に変更しました) -->
+                    <div style="display: flex; gap: 10px; flex-shrink: 0; align-items: center; margin-top: 18px; height: auto;">
+                        <button type="submit" class="search-btn search-btn-primary" style="margin: 0; vertical-align: middle;">検索</button>
+                        <button type="button" class="search-btn" onclick="clearSearch();" style="margin: 0; vertical-align: middle;">リセット</button>
                     </div>
                 </div>
             </form>
@@ -77,11 +86,12 @@
                 </table>
             </div>
 
-            <!-- ③ 下部に常に固定されるページ切替用のフッターナビゲーション -->
+            <!-- ③ 【三角のみ・右下密着配置】下部に常に固定されるページネーションナビゲーション -->
             <div class="pagination-container">
-                <button type="button" class="pagination-btn" id="prevPageBtn" onclick="changePage(-1);" disabled>&lt;</button>
-                <span class="pagination-info" id="pageInfo">1 / 1 ページ</span>
-                <button type="button" class="pagination-btn" id="nextPageBtn" onclick="changePage(1);" disabled>&gt;</button>
+                <!-- ◀ ボタン（枠なし・右寄せ・間隔なし） -->
+                <button type="button" class="pagination-btn" id="prevPageBtn" onclick="changePage(-1);" disabled>&#9664;</button>
+                <!-- ▶ ボタン（枠なし・右寄せ・間隔なし） -->
+                <button type="button" class="pagination-btn" id="nextPageBtn" onclick="changePage(1);" disabled>&#9654;</button>
             </div>
 
         </div>
@@ -90,7 +100,7 @@
 
     <!-- 動的なページネーションシミュレーションスクリプト -->
     <script>
-        // 大量のデモ用データベース (ページネーション動作検証のために15件のデータを格納)
+        
         const mockDatabase = [
             { id: "B0001", title: "赤朽葉家の伝説", author: "桜庭一樹", publisher: "講談社", classification: "小説", status: "貸出可能" },
             { id: "B0002", title: "人間失格", author: "太宰治", publisher: "新潮社", classification: "文学", status: "貸出可能" },
@@ -142,8 +152,8 @@
                 });
             }
 
-            // 総件数表示のアップデート
-            document.getElementById("resultsHeaderInfo").innerText = `検索結果: ${currentResults.length}件の図書が見つかりました`;
+            // JSP EL干渉対策：文字列結合法に書き換え
+            document.getElementById("resultsHeaderInfo").innerText = "検索結果: " + currentResults.length + "件の図書が見つかりました";
 
             // 1ページ目にリセットして再描画
             currentPage = 1;
@@ -156,38 +166,36 @@
             resultsBody.innerHTML = "";
 
             if (currentResults.length === 0) {
-                resultsBody.innerHTML = `
-                    <tr>
-                        <td colspan="8" class="no-data-row" style="text-align: center; vertical-align: middle; height: 260px;">
-                            該当する図書が見つかりませんでした。
-                        </td>
-                    </tr>
-                `;
+                resultsBody.innerHTML = '<tr>' +
+                    '<td colspan="8" class="no-data-row" style="text-align: center; vertical-align: middle; height: 260px;">' +
+                        '該当する図書が見つかりませんでした。' +
+                    '</td>' +
+                '</tr>';
                 updatePaginationControls(0);
                 return;
             }
 
-            // 現在のページの切り出し範囲を算出 (例: 1ページ目なら 0〜9番目のアイテム)
+            // 現在のページの切り出し範囲を算出
             const startIndex = (currentPage - 1) * itemsPerPage;
             const endIndex = startIndex + itemsPerPage;
             const pageItems = currentResults.slice(startIndex, endIndex);
 
-            // 切り出したデータを行として挿入
+            // JSP ELの自動クリア干渉を回避するため、完全に文字列結合法に修正
             pageItems.forEach((book, index) => {
                 const row = document.createElement("tr");
                 const globalNo = startIndex + index + 1; // ページをまたいでも正しい通し番号を出力
-                row.innerHTML = `
-                    <td class="cell-no">${globalNo}</td>
-                    <td>${book.id}</td>
-                    <td>${book.title}</td>
-                    <td>${book.author}</td>
-                    <td>${book.publisher}</td>
-                    <td>${book.classification}</td>
-                    <td>${book.status}</td>
-                    <td class="cell-action">
-                        <button type="button" class="btn-detail-view" onclick="viewDetail('${book.id}')">詳細</button>
-                    </td>
-                `;
+                
+                row.innerHTML = 
+                    '<td class="cell-no">' + globalNo + '</td>' +
+                    '<td>' + book.id + '</td>' +
+                    '<td>' + book.title + '</td>' +
+                    '<td>' + book.author + '</td>' +
+                    '<td>' + book.publisher + '</td>' +
+                    '<td>' + book.classification + '</td>' +
+                    '<td>' + book.status + '</td>' +
+                    '<td class="cell-action">' +
+                        '<button type="button" class="btn-detail-view" onclick="viewDetail(\'' + book.id + '\')">詳細</button>' +
+                    '</td>';
                 resultsBody.appendChild(row);
             });
 
@@ -198,8 +206,6 @@
         function updatePaginationControls(totalItems) {
             const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
             
-            document.getElementById("pageInfo").innerText = `${currentPage} / ${totalPages} ページ`;
-
             const prevBtn = document.getElementById("prevPageBtn");
             const nextBtn = document.getElementById("nextPageBtn");
 
@@ -233,13 +239,12 @@
             document.getElementById("resultsHeaderInfo").innerText = "検索結果: 0件の図書が見つかりました";
             
             const resultsBody = document.getElementById("resultsBody");
-            resultsBody.innerHTML = `
-                <tr id="empty-message-row">
-                    <td colspan="8" class="no-data-row" style="text-align: center; vertical-align: middle; height: 260px;">
-                        検索条件を入力して「検索」を押してください。
-                    </td>
-                </tr>
-            `;
+            resultsBody.innerHTML = 
+                '<tr id="empty-message-row">' +
+                    '<td colspan="8" class="no-data-row" style="text-align: center; vertical-align: middle; height: 260px;">' +
+                        '検索条件を入力して「検索」を押してください。' +
+                    '</td>' +
+                '</tr>';
 
             updatePaginationControls(0);
         }

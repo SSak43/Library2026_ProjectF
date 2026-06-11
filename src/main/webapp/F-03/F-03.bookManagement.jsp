@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>蔵書管理</title>
     <!-- F-3用のCSSファイルを読み込む -->
-    <link rel="stylesheet" href="F-03.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/F-03.css">
 </head>
 <body>
 

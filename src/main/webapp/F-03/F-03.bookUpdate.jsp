@@ -5,8 +5,83 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>更新画面</title>
-    <!-- キャッシュバスターを更新 -->
-    <link class="style-link" rel="stylesheet" href="F-03.css?v=20260608_id_search_left_aligned">
+    <!-- 絶対パス表記、キャッシュバスター、極限透過対応版 -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/F-03.css">
+    
+    <!-- 【強制透過＆潰れバグ永久追放スタイル上書き】JSP側から完璧にセルの幅を制御するスタイルブロック -->
+    <style type="text/css">
+        .main-content-base, .layout-center {
+            background-color: #d9d9d9 !important; /* メインコンテンツ全体はグレー背景 */
+        }
+        form, .form-table, .form-table tr, .form-table th, .form-table td {
+            background: transparent !important;
+            background-color: transparent !important; /* テーブルとセル内を完全に透明化 */
+            box-shadow: none !important;
+        }
+        /* テーブルの幅計算のバグを防ぎ、しっかりと引き伸ばす */
+        .form-table {
+            width: 100% !important;
+            table-layout: fixed !important;
+            border-collapse: collapse !important;
+            border: 1.5px solid #000 !important;
+        }
+        .form-table th {
+            width: 18% !important; /* 見出し列を18%に固定 */
+            font-size: 1.35rem !important; /* 文字をほんの少し小さくして確実に収める */
+            font-weight: bold !important;
+            border-bottom: 1.5px solid #000 !important;
+            border-right: 1.5px solid #000 !important;
+            padding: 12px 15px !important;
+            color: #111 !important;
+        }
+        /* tdを標準のテーブルセルに強制リセットし、残りの82%の幅を確保 */
+        .form-table td {
+            display: table-cell !important;
+            width: 82% !important;
+            vertical-align: middle !important;
+            padding: 12px 15px !important; /* セル内余白を適正化し、縦横の縮み・潰れを物理的に防ぐ */
+            border-bottom: 1.5px solid #000 !important;
+        }
+        
+        /* 入力ボックスとボタンを確実に美しく一列に収める、100%幅フレックスコンテナ */
+        .input-flex-container {
+            display: flex !important;
+            width: 100% !important;
+            align-items: center !important;
+            gap: 15px !important;
+            background: transparent !important;
+        }
+        
+        /* 共通テキスト入力フィールド自体を確実に100%幅で表示（文字サイズを 1.2rem、パディングを 10px 14px に調整） */
+        .input-flex-container .input-field {
+            flex: 1 1 auto !important; /* 残りのスペースをすべて占有して引き伸ばす */
+            width: 100% !important;
+            min-width: 0 !important; /* フレックスボックス内で要素が極小に潰れるのを防ぐCSSの最重要ルール */
+            padding: 10px 14px !important; /* 余白を少しスマートにして確実に収める */
+            font-size: 1.2rem !important;  /* 文字サイズを1.2remに微調整（見やすさは維持） */
+            border: 1.5px solid #666 !important;
+            background-color: #fff !important;
+            box-sizing: border-box !important;
+            outline: none !important;
+        }
+        
+        /* 入力できない非活性（disabled）時のボックスをグレーの塗りつぶし状態にするガード */
+        .input-flex-container .input-field:disabled {
+            background-color: #b0b0b0 !important;
+            color: #555 !important;
+            border: 1.5px solid #777 !important;
+            cursor: not-allowed;
+        }
+        
+      
+        .input-flex-container .btn {
+            flex-shrink: 0 !important;
+            padding: 10px 20px !important;
+            font-size: 1.1rem !important;
+            background-color: #fff !important;
+            border: 1.5px solid #666 !important;
+        }
+    </style>
 </head>
 <body>
 
@@ -16,86 +91,92 @@
         <button type="button" class="menu-button">メニュー</button>
     </div>
 
-    <!-- メインコンテンツエリア (グレー背景＋青枠) -->
-    <div class="main-content-base layout-top-padding">
+    <!-- メインコンテンツエリア (上下左右中央配置) -->
+    <div class="main-content-base layout-center">
         
-        <!-- 横幅を極限まで引き伸ばした中央寄りのレイアウト全体コンテナ -->
-        <div style="width: 95%; max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; flex-grow: 1;">
+        <!-- コンテナの最大幅上限を 1300px に引き上げ、圧倒的なワイドサイズを実現 -->
+        <div style="width: 95%; max-width: 1300px; padding: 10px; display: flex; flex-direction: column;">
             
             <div class="error-message" id="error-message" style="margin-bottom: 20px; text-align: center;">
                 入力されていない必須項目があります
             </div>
 
-            <!-- ① 上部：図書ID検索バー (入力欄を左寄せコンパクトに制御) -->
-            <div class="id-search-bar">
-                <span class="id-search-label">図書ID</span>
-                <div class="id-search-input-wrapper">
-                    <!-- id-search-field-compact クラスを適用して、幅をスリムに左寄せ配置 -->
-                    <input type="text" class="input-field id-search-field-compact" id="search-book-id" placeholder="図書IDを入力してください (例: B0001)">
-                    <button type="button" class="btn" onclick="searchBookById();" style="padding: 6px 30px; font-size: 1.1rem; flex-shrink: 0;">検索</button>
+            <!-- ① 上部：図書ID検索バー (競合するクラス名を完全排除し、直接透過レイアウトを適用。幅を350pxに絶対固定) -->
+            <div style="padding: 0 !important; display: flex !important; gap: 20px !important; align-items: center !important; width: 100% !important; margin-bottom: 25px !important; flex-shrink: 0 !important; background: transparent !important; background-color: transparent !important; border: none !important; box-shadow: none !important;">
+                <div style="display: flex !important; gap: 20px !important; align-items: center !important; width: 100% !important; background: transparent !important; background-color: transparent !important; border: none !important;">
+                    <!-- 入力欄の幅を 350px に絶対固定して左寄せ配置。縮むのを強力に防ぎます -->
+                    <input type="text" class="input-field id-search-field-compact" id="search-book-id" name="searchBookId" placeholder="図書IDを入力してください " style="width: 350px !important; flex-shrink: 0 !important; padding: 10px 14px !important; font-size: 1.2rem !important;">
+                    <button type="button" class="btn" onclick="searchBookById();" style="padding: 10px 30px; font-size: 1.15rem; flex-shrink: 0; background-color: #fff !important; border: 1.5px solid #666 !important;">検索</button>
                 </div>
             </div>
 
-            <!-- 更新用フォーム (最下部までflexで引き伸ばしてボタンを右下に固定配置) -->
-            <form method="POST" action="F-3.bookUpdate.jsp" id="bookUpdateForm" style="display: flex; flex-direction: column; flex-grow: 1;" onsubmit="return false;">
+            <!-- 更新用フォーム (大元が縮むバグを防ぐため、width: 100% を強制指定) -->
+            <form method="POST" action="F-3.bookUpdate.jsp" id="bookUpdateForm" style="display: flex; flex-direction: column; background: transparent !important; width: 100% !important;" onsubmit="return false;">
                 
-                <!-- ② 中央：5項目になった横長入力フォームテーブル -->
-                <table class="form-table" style="width: 100%; margin-bottom: 25px;">
+                <!-- ② 中央：すべての行にリセットボタンがある5項目横長フォーム (初期状態はすべて非活性: disabled) -->
+                <!-- つぶれ防止のためのスマート＆絶対安定設計を採用 -->
+                <table class="form-table" style="width: 100%; margin-bottom: 25px; background: transparent !important;">
+                    
                     <!-- 1行目: 書名 -->
                     <tr>
-                        <th style="width: 15%;">書名</th>
+                        <th style="width: 18%;">書名</th>
                         <td>
-                            <div style="display: flex; gap: 15px; width: 100%; align-items: center;">
-                                <input type="text" class="input-field" id="reg-title" name="bookTitle" placeholder="図書IDで検索するか、入力してください">
-                                <button type="button" class="btn" onclick="clearField('reg-title');" style="padding: 6px 20px; font-size: 1.1rem; flex-shrink: 0;">リセット</button>
+                            <div class="input-flex-container">
+                                <input type="text" class="input-field" id="reg-title" name="bookTitle" placeholder="図書IDで検索してください" disabled>
+                                <button type="button" class="btn" id="btn-reset-title" onclick="clearField('reg-title');" disabled>リセット</button>
                             </div>
                         </td>
                     </tr>
+                    
                     <!-- 2行目: 著者 -->
                     <tr>
                         <th>著者</th>
                         <td>
-                            <div style="display: flex; gap: 15px; width: 100%; align-items: center;">
-                                <input type="text" class="input-field" id="reg-author" name="bookAuthor" placeholder="図書IDで検索するか、入力してください">
-                                <button type="button" class="btn" onclick="clearField('reg-author');" style="padding: 6px 20px; font-size: 1.1rem; flex-shrink: 0;">リセット</button>
+                            <div class="input-flex-container">
+                                <input type="text" class="input-field" id="reg-author" name="bookAuthor" placeholder="図書IDで検索してください" disabled>
+                                <button type="button" class="btn" id="btn-reset-author" onclick="clearField('reg-author');" disabled>リセット</button>
                             </div>
                         </td>
                     </tr>
+                    
                     <!-- 3行目: 出版社 -->
                     <tr>
                         <th>出版社</th>
                         <td>
-                            <div style="display: flex; gap: 15px; width: 100%; align-items: center;">
-                                <input type="text" class="input-field" id="reg-publisher" name="bookPublisher" placeholder="図書IDで検索するか、入力してください">
-                                <button type="button" class="btn" onclick="clearField('reg-publisher');" style="padding: 6px 20px; font-size: 1.1rem; flex-shrink: 0;">リセット</button>
+                            <div class="input-flex-container">
+                                <input type="text" class="input-field" id="reg-publisher" name="bookPublisher" placeholder="図書IDで検索してください" disabled>
+                                <button type="button" class="btn" id="btn-reset-publisher" onclick="clearField('reg-publisher');" disabled>リセット</button>
                             </div>
                         </td>
                     </tr>
+                    
                     <!-- 4行目: 分類 -->
                     <tr>
                         <th>分類</th>
                         <td>
-                            <div style="display: flex; gap: 15px; width: 100%; align-items: center;">
-                                <input type="text" class="input-field" id="reg-classification" name="bookClassification" placeholder="図書IDで検索するか、入力してください">
-                                <button type="button" class="btn" onclick="clearField('reg-classification');" style="padding: 6px 20px; font-size: 1.1rem; flex-shrink: 0;">リセット</button>
+                            <div class="input-flex-container">
+                                <input type="text" class="input-field" id="reg-classification" name="bookClassification" placeholder="図書IDで検索してください" disabled>
+                                <button type="button" class="btn" id="btn-reset-classification" onclick="clearField('reg-classification');" disabled>リセット</button>
                             </div>
                         </td>
                     </tr>
+                    
                     <!-- 5行目: 蔵書状態 -->
                     <tr>
                         <th>蔵書状態</th>
                         <td>
-                            <div style="display: flex; gap: 15px; width: 100%; align-items: center;">
-                                <input type="text" class="input-field" id="reg-status" name="bookStatus" placeholder="図書IDで検索するか、入力してください">
-                                <button type="button" class="btn" onclick="clearField('reg-status');" style="padding: 6px 20px; font-size: 1.1rem; flex-shrink: 0;">リセット</button>
+                            <div class="input-flex-container">
+                                <input type="text" class="input-field" id="reg-status" name="bookStatus" placeholder="図書IDで検索してください" disabled>
+                                <button type="button" class="btn" id="btn-reset-status" onclick="clearField('reg-status');" disabled>リセット</button>
                             </div>
                         </td>
                     </tr>
+                    
                 </table>
 
-                <!-- ③ 下部：共通デザインに合わせた最右下固定の「更新」ボタン -->
-                <div style="display: flex; justify-content: flex-end; margin-top: auto; padding-top: 15px;">
-                    <button type="button" class="btn btn-register" id="btn-submit" onclick="validateAndConfirm();" style="padding: 10px 50px;">更新</button>
+                <!-- ③ 下部：共通デザインに合わせた右下の「更新」ボタン (初期状態は非活性) -->
+                <div style="display: flex; justify-content: flex-end; padding-top: 15px; background: transparent !important;">
+                    <button type="button" class="btn btn-register" id="btn-submit" onclick="validateAndConfirm();" style="padding: 12px 65px; font-size: 1.2rem; background-color: #fff !important;" disabled>更新</button>
                 </div>
 
             </form>
@@ -145,7 +226,7 @@
         <div class="modal-overlay" id="completeModal">
             <div class="modal-content">
                 <div class="complete-message">更新が完了しました</div>
-                <div class="book-id-display" id="generated-id-display">図書ID: B0001</div>
+                <div class="book-id-display" id="generated-id-display" style="font-size: 1.45rem; text-align: center; margin-bottom: 20px; font-weight: bold; color: #111;">図書ID: B0001</div>
                 <div class="modal-actions">
                     <button type="button" class="btn" onclick="goToMenu()">メニュー</button>
                     <button type="button" class="btn" onclick="resetAndContinue()">続けて更新</button>
@@ -157,7 +238,6 @@
 
     <!-- 画面操作スクリプト -->
     <script>
-        // デモ用のデータベース
         const bookDatabaseMock = {
             "B0001": { title: "赤朽葉家の伝説", author: "桜庭一樹", publisher: "講談社", classification: "小説", status: "貸出可能" },
             "B0002": { title: "人間失格", author: "太宰治", publisher: "新潮社", classification: "文学", status: "貸出可能" },
@@ -166,19 +246,56 @@
             "B0005": { title: "容疑者Xの献身", author: "東野圭吾", publisher: "小学館", classification: "ミステリー", status: "貸出不可" }
         };
 
-        // 図書IDで本を検索してフォームに自動入力する関数
+        // 入力フォーム全体の活性/非活性状態を切り替える補助関数
+        function setFormDisabledState(disabled) {
+            // 各入力欄
+            document.getElementById('reg-title').disabled = disabled;
+            document.getElementById('reg-author').disabled = disabled;
+            document.getElementById('reg-publisher').disabled = disabled;
+            document.getElementById('reg-classification').disabled = disabled;
+            document.getElementById('reg-status').disabled = disabled;
+
+            // プレースホルダーの文字も優しく切り替え
+            const placeholderText = disabled ? "図書IDで検索してください" : "情報を入力してください";
+            document.getElementById('reg-title').placeholder = placeholderText;
+            document.getElementById('reg-author').placeholder = placeholderText;
+            document.getElementById('reg-publisher').placeholder = placeholderText;
+            document.getElementById('reg-classification').placeholder = disabled ? "図書IDで検索してください" : "分類を入力してください";
+            document.getElementById('reg-status').placeholder = placeholderText;
+
+            // 各リセットボタン
+            document.getElementById('btn-reset-title').disabled = disabled;
+            document.getElementById('btn-reset-author').disabled = disabled;
+            document.getElementById('btn-reset-publisher').disabled = disabled;
+            document.getElementById('btn-reset-classification').disabled = disabled;
+            document.getElementById('btn-reset-status').disabled = disabled;
+
+            // 更新ボタン
+            document.getElementById('btn-submit').disabled = disabled;
+        }
+
         function searchBookById() {
-            const searchId = document.getElementById('search-book-id').value.trim().toUpperCase();
+            const searchInput = document.getElementById('search-book-id');
+            if (!searchInput) {
+                console.error("入力エレメント(search-book-id)が見つかりません");
+                return;
+            }
+            
+            const searchId = searchInput.value.trim().toUpperCase();
             const errorMessage = document.getElementById('error-message');
 
             if (searchId === '') {
                 errorMessage.innerText = "図書IDを入力してください";
                 errorMessage.style.display = 'block';
+                setFormDisabledState(true); // 空欄検索時はロック
                 return;
             }
 
             const bookData = bookDatabaseMock[searchId];
             if (bookData) {
+                // ロックを解除して値をセット
+                setFormDisabledState(false);
+                
                 document.getElementById('reg-title').value = bookData.title;
                 document.getElementById('reg-author').value = bookData.author;
                 document.getElementById('reg-publisher').value = bookData.publisher;
@@ -190,16 +307,15 @@
                 errorMessage.innerText = "該当する図書が見つかりませんでした (デモ対応ID: B0001 〜 B0005)";
                 errorMessage.style.display = 'block';
                 clearAllFields();
+                setFormDisabledState(true); // 検索失敗時は再びロック
             }
         }
 
-        // 各行の個別フィールド用リセット関数
         function clearField(fieldId) {
             document.getElementById(fieldId).value = '';
             document.getElementById('error-message').style.display = 'none';
         }
 
-        // 全フィールドクリア
         function clearAllFields() {
             document.getElementById('reg-title').value = '';
             document.getElementById('reg-author').value = '';
@@ -208,9 +324,9 @@
             document.getElementById('reg-status').value = '';
         }
 
-        // バリデーションチェック & 確認モーダルの表示
         function validateAndConfirm() {
-            const searchId = document.getElementById('search-book-id').value.trim().toUpperCase();
+            const searchInput = document.getElementById('search-book-id');
+            const searchId = searchInput ? searchInput.value.trim().toUpperCase() : '';
             const title = document.getElementById('reg-title').value.trim();
             const author = document.getElementById('reg-author').value.trim();
             const publisher = document.getElementById('reg-publisher').value.trim();
@@ -232,7 +348,6 @@
 
             errorMessage.style.display = 'none';
 
-            // 確認画面に入力値を複製
             document.getElementById('confirm-id').value = searchId;
             document.getElementById('confirm-title').value = title;
             document.getElementById('confirm-author').value = author;
@@ -240,33 +355,31 @@
             document.getElementById('confirm-classification').value = classification;
             document.getElementById('confirm-status').value = status;
 
-            // 確認モーダルを表示
             document.getElementById('confirmModal').style.display = 'flex';
         }
 
-        // 確認モーダルを閉じる
         function hideConfirmModal() {
             document.getElementById('confirmModal').style.display = 'none';
         }
 
-        // 完了モーダルを表示
         function showCompleteModal() {
-            const searchId = document.getElementById('search-book-id').value.trim().toUpperCase();
+            const searchInput = document.getElementById('search-book-id');
+            const searchId = searchInput ? searchInput.value.trim().toUpperCase() : 'B0001';
             document.getElementById('confirmModal').style.display = 'none';
             document.getElementById('generated-id-display').innerText = "図書ID: " + searchId;
             document.getElementById('completeModal').style.display = 'flex';
         }
 
-        // メニュー画面に戻る
         function goToMenu() {
             window.location.href = 'F-3.bookManagement.jsp';
         }
 
-        // 続けて更新するための初期化
         function resetAndContinue() {
             document.getElementById('completeModal').style.display = 'none';
-            document.getElementById('search-book-id').value = '';
+            const searchInput = document.getElementById('search-book-id');
+            if (searchInput) searchInput.value = '';
             clearAllFields();
+            setFormDisabledState(true); // 初期ロック状態に戻す
         }
     </script>
 </body>

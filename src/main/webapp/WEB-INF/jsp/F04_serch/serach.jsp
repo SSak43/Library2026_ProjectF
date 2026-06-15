@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%-- JSTLを使用するための宣言（Jakarta EE用） --%>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>表デザイン</title>
+<title>図書検索画面</title>
 <style>
 /* ページの背景色（ご指定の薄い青色） */
   body {
@@ -270,37 +272,53 @@
 <body>
 <div class="page-header">
   <div class="page-title">検索画面</div>
-  <button type="button" class="menu-btn">メニュー</button>
-</div>
-<!-- 新しく追加した検索エリア -->
-<div class="search-container">
-  <table class="search-table">
-    <tr>
-      <th class="search-col-item border-bottom-gap">検索項目</th>
-      <th class="search-col-value border-bottom">検索値</th>
-      <td rowspan="2" class="search-col-buttons">
-        <button type="button" class="action-btn">検索</button>
-        <button type="button" class="action-btn">リセット</button>
-      </td>
-    </tr>
-    <tr>
-      <td class="search-col-item border-bottom-gap"> <select class="search-select">
-          <option>すべての項目▼</option>
-          <option>図書ID</option>
-          <option>書名</option>
-          <option>著者</option>
-          <option>出版社</option>
-        </select>
-      </td>
-      <td class="search-col-value border-bottom"> <input type="text" class="search-input" autocomplete="off">
-      </td>
-    </tr>
-  </table>
+  
+  <button class="menu-button" type="button" onclick="location.href='${pageContext.request.contextPath}/home/admin_home.jsp'">メニュー</button>
+  
 </div>
 
-<!-- 既存の表エリア -->
+<div class="search-container">
+  <form action="booksSearch" method="post" id="searchForm">
+    <input type="hidden" name="page" id="pageInput" value="${currentPage != null ? currentPage : 1}">
+    
+    <table class="search-table">
+      <tr>
+        <th class="search-col-item border-bottom-gap">検索項目</th>
+        <th class="search-col-value border-bottom">検索値</th>
+        <td rowspan="2" class="search-col-buttons">
+          <button type="submit" class="action-btn" onclick="document.getElementById('pageInput').value=1;">検索</button>
+          <button type="button" class="action-btn" onclick="location.href='booksSearch'">リセット</button>
+        </td>
+      </tr>
+      <tr>
+        <td class="search-col-item border-bottom-gap"> 
+          <select class="search-select" name="searchType">
+            <option value="all" ${searchType == 'all' ? 'selected' : ''}>すべての項目▼</option>
+            <option value="bookId" ${searchType == 'bookId' ? 'selected' : ''}>図書ID</option>
+            <option value="title" ${searchType == 'title' ? 'selected' : ''}>書名</option>
+            <option value="writer" ${searchType == 'writer' ? 'selected' : ''}>著者</option>
+            <option value="company" ${searchType == 'company' ? 'selected' : ''}>出版社</option>
+          </select>
+        </td>
+        <td class="search-col-value border-bottom"> 
+          <input type="text" class="search-input" name="keyword" value="<c:out value='${keyword}'/>" autocomplete="off">
+        </td>
+      </tr>
+    </table>
+  </form>
+</div>
+
 <div class="table-container">
-  <p class="result-message">1件の貸出図書が見つかりました。</p>
+  <p class="result-message">
+    <c:choose>
+      <c:when test="${bookList.size() > 0}">
+        ${currentPage}ページ目：${bookList.size()}件の図書を表示しています。
+      </c:when>
+      <c:otherwise>
+        条件に一致する図書が見つかりませんでした。
+      </c:otherwise>
+    </c:choose>
+  </p>
   
   <table class="custom-table">
     <thead>
@@ -316,34 +334,71 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>1</td>
-        <td>00001</td>
-        <td>重要なことは問い続けること...</td>
-        <td>小室一優</td>
-        <td>情専</td>
-        <td>哲学</td>
-        <td>貸出　可</td>
-        <td></td>
-      </tr>
-      <tr><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-      <tr><td>3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-      <tr><td>4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-      <tr><td>5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-      <tr><td>6</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-      <tr><td>7</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-      <tr><td>8</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-      <tr><td>9</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-      <tr><td>10</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <!-- Servletから受け取った図書リストをループで表示 -->
+      <c:forEach var="book" items="${bookList}" varStatus="status">
+        <tr>
+          <td>${(currentPage - 1) * 10 + status.count}</td>
+          <td>${book.bookId}</td>
+          <td><c:out value="${book.title}" /></td>
+          <td><c:out value="${book.writerName}" /></td>
+          <td><c:out value="${book.company}" /></td>
+          <td><c:out value="${book.bookClass}" /></td>
+          
+          <!-- 蔵書状態を数値から文字に変換して表示 -->
+          <td>
+            <c:choose>
+              <c:when test="${book.bookStatus == '0'}">貸出可能</c:when>
+              <c:when test="${book.bookStatus == '1'}">貸出中</c:when>
+              <c:when test="${book.bookStatus == '2'}">貸出不可</c:when>
+              <c:otherwise><c:out value="${book.bookStatus}" /></c:otherwise>
+            </c:choose>
+          </td>
+          
+          <td></td> <!-- 操作ボタン等を置く場合はここ -->
+        </tr>
+      </c:forEach>
+      
+      <!-- 取得件数が10件未満の場合、デザイン維持のために空行を追加 -->
+      <c:if test="${empty bookList || bookList.size() < 10}">
+        <c:forEach begin="${empty bookList ? 1 : bookList.size() + 1}" end="10" var="i">
+          <tr>
+            <td>${(currentPage != null ? currentPage - 1 : 0) * 10 + i}</td>
+            <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+          </tr>
+        </c:forEach>
+      </c:if>
     </tbody>
   </table>
 
   <div class="pagination-area">
     <div class="pagination-buttons">
-      <button type="button">◀</button>
-      <button type="button">▶</button>
+      <c:choose>
+        <c:when test="${hasPrevPage}">
+          <button type="button" onclick="changePage(${currentPage - 1})">◀</button>
+        </c:when>
+        <c:otherwise>
+          <button type="button" disabled style="color:#ccc; cursor:default;">◀</button>
+        </c:otherwise>
+      </c:choose>
+      
+      <c:choose>
+        <c:when test="${hasNextPage}">
+          <button type="button" onclick="changePage(${currentPage + 1})">▶</button>
+        </c:when>
+        <c:otherwise>
+          <button type="button" disabled style="color:#ccc; cursor:default;">▶</button>
+        </c:otherwise>
+      </c:choose>
     </div>
   </div>
 </div>
+
+<script>
+function changePage(page) {
+  // 隠しフィールドにページ番号をセットして検索フォームを送信
+  document.getElementById('pageInput').value = page;
+  document.getElementById('searchForm').submit();
+}
+</script>
 </body>
 </html>

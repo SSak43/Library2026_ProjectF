@@ -257,3 +257,19 @@
   .pagination-buttons button:hover {
     background-color: #dddddd; /* ボタンにマウスを乗せたときの背景色を少し暗いグレーにする */
   }
+  
+  
+  .menu-button {
+    margin-left: auto;
+    background-color: white;
+    border: 1px solid #2f5597;
+    padding: 8px 0;
+    width: 140px;
+    text-align: center;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+
+  

@@ -28,8 +28,8 @@
             <a href="${pageContext.request.contextPath}/BooksMain" class="menu-link" style="font-size: 40px;">蔵書管理</a>
             <a href="${pageContext.request.contextPath}/#" class="menu-link" style="font-size: 40px;">延滞一覧</a>
             <a href="${pageContext.request.contextPath}/UserManagement" class="menu-link" style="font-size: 40px;">利用者管理</a>
-            <a href="${pageContext.request.contextPath}/#" class="menu-link" style="font-size: 40px;">ダッシュボード</a>
-            <a href="${pageContext.request.contextPath}/#" class="menu-link" style="font-size: 40px;">マスタ管理　</a>
+<%--             <a href="${pageContext.request.contextPath}/#" class="menu-link" style="font-size: 40px;">ダッシュボード</a> --%>
+<%--             <a href="${pageContext.request.contextPath}/#" class="menu-link" style="font-size: 40px;">マスタ管理　</a> --%>
         </div>
     </main>
 </body>

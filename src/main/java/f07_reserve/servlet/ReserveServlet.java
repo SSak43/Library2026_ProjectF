@@ -93,27 +93,33 @@ public class ReserveServlet extends HttpServlet {
                 errorMessage = "図書を検索して確定させてください。";
             } else {
                 ReserveDAO reserveDAO = new ReserveDAO();
-                ReserveBean reserve = new ReserveBean();
-                
-                Date today = Date.valueOf(LocalDate.now());
-                
-                reserve.setUserId(selectedUser.getUserId());
-                reserve.setBookId(selectedBook.getBookId());
-                reserve.setReserveDate(today);
-                // 現在の予約状況から「何番目か」を取得
-                reserve.setReserveNo(reserveDAO.getNextReserveNo(selectedBook.getBookId()));
-                reserve.setReserveStatus("0"); // 0:予約可能として登録
-                reserve.setReserveRegist(today);
-                reserve.setReserveUpdate(today);
 
-                if (reserveDAO.registerReserve(reserve)) {
-                    successMessage = "予約登録が完了しました！（予約順: " + reserve.getReserveNo() + "番目）";
-                    // 完了後は画面をリセット
-                    selectedUser = null;
-                    selectedBook = null;
-                    displayBookStatus = "";
+                // 💡ここに追加：すでに予約済みかチェックする
+                if (reserveDAO.checkDuplicateReserve(selectedUser.getUserId(), selectedBook.getBookId())) {
+                    errorMessage = "すでにこの本は予約済みです。";
                 } else {
-                    errorMessage = "予約登録に失敗しました。";
+                    // まだ予約していない場合のみ、登録処理へ進む
+                    ReserveBean reserve = new ReserveBean();
+                    Date today = Date.valueOf(LocalDate.now());
+                    
+                    reserve.setUserId(selectedUser.getUserId());
+                    reserve.setBookId(selectedBook.getBookId());
+                    reserve.setReserveDate(today);
+                    // 現在の予約状況から「何番目か」を取得
+                    reserve.setReserveNo(reserveDAO.getNextReserveNo(selectedBook.getBookId()));
+                    reserve.setReserveStatus("0"); // 0:予約可能として登録
+                    reserve.setReserveRegist(today);
+                    reserve.setReserveUpdate(today);
+
+                    if (reserveDAO.registerReserve(reserve)) {
+                        successMessage = "予約登録が完了しました！（予約順: " + reserve.getReserveNo() + "番目）";
+                        // 完了後は画面をリセット
+                        selectedUser = null;
+                        selectedBook = null;
+                        displayBookStatus = "";
+                    } else {
+                        errorMessage = "予約登録に失敗しました。";
+                    }
                 }
             }
         }

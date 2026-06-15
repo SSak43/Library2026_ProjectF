@@ -29,10 +29,10 @@
                     <th>区分</th>
                     <td>
                         <div class="category-options">
-                            <label><input type="radio" name="cla" value="管理者" required> 管理者</label>
-                            <label><input type="radio" name="cla" value="司書"> 司書</label>
-                            <label><input type="radio" name="cla" value="利用者"> 利用者</label>
-                        </div>
+    					<label><input type="radio" name="cla" value="1"> 管理者</label>
+   						 <label><input type="radio" name="cla" value="2"> 司書</label>
+    					<label><input type="radio" name="cla" value="0"> 利用者</label>
+					</div>
                     </td>
                 </tr>
                 <tr>
@@ -95,11 +95,22 @@
     <div id="completeModal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-title">登録完了</div>
-            <div style="text-align: center; margin: 20px 0;">
-                登録が完了しました。
+    
+            <div style="text-align: center; margin: 25px 0; font-size: 1.1rem; line-height: 1.6;">
+                <p>利用者登録が完了しました。</p>
+                <p style="color: #2f5597; font-weight: bold; margin-top: 10px;">
+                    登録されたユーザーIDは 「 <c:out value="${registeredUserId}" /> 」 です。
+                </p>
             </div>
-            <div class="modal-buttons" style="justify-content: center;">
-                <button type="button" class="submit-button" style="border: 1px solid #2f5597; background-color: white; padding: 5px 15px;" onclick="location.href='${pageContext.request.contextPath}/home/admin_home.jsp'">メニューへ</button>
+  
+<!--  登録成功モーダル -->
+            <div class="modal-buttons-right">　
+            
+            	<button type="button" class="modal-action-button" style="width: 100px;" 
+                        onclick="location.href='${pageContext.request.contextPath}/home/admin_home.jsp'">メニュー</button>
+                <button type="button" class="modal-action-button" style="width: 100px;　font-size: 0.9rem;" 
+                        onclick="location.href='${pageContext.request.contextPath}/UsersRegist'">続けて登録</button>
+                
             </div>
         </div>
     </div>
@@ -184,7 +195,15 @@
             } 
             
             // 値をセットして確認画面を表示
-            document.getElementById('confirm-cla').value = claInput.value;
+            let claLabel = "";
+				if (claInput.value === "1") {
+				    claLabel = "管理者";
+				} else if (claInput.value === "2") {
+				    claLabel = "司書";
+				} else {
+				    claLabel = "利用者";
+				}
+				document.getElementById('confirm-cla').value = claLabel;
             document.getElementById('confirm-name').value = name;
             document.getElementById('confirm-tel').value = tel;
             document.getElementById('confirm-pass').value = pass;

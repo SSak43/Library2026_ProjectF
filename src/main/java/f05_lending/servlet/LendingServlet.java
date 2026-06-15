@@ -94,12 +94,16 @@ public class LendingServlet extends HttpServlet {
 		}
 
 		// 3. 「登録」ボタンが押されたときの貸出登録処理
-		if ("register".equals(action)) {
+		if("rend".equals(action)){
 			if (selectedUser == null) {
 				errorMessage = "利用者を検索して確定させてください。";
 			} else if (selectedBook == null) {
 				errorMessage = "図書を検索して確定させてください。";
-			} else {
+			}
+		}
+		
+		
+		if ("register".equals(action)) {
 				// 貸出データの作成
 				LendsBean lend = new LendsBean();
 				lend.setUserId(selectedUser.getUserId());
@@ -127,7 +131,6 @@ public class LendingServlet extends HttpServlet {
 				} else {
 					errorMessage = "貸出登録に失敗しました。システム管理者に連絡してください。";
 				}
-			}
 			
 			
 		}

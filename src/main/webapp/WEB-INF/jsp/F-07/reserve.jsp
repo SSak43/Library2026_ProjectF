@@ -27,12 +27,35 @@
             <div class="register-error-message" id="error-message" style="min-height: 1.5em; <c:if test='${not empty errorMessage}'>visibility: visible;</c:if>">
                 <c:out value="${errorMessage}" />
             </div>
-            <c:if test="${not empty successMessage}">
-                <div style="color: green; font-weight: bold; text-align: center; margin-bottom: 15px;">
+            
+<!-- 登録完了モーダル -->
+            <div id="completeModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-title">登録完了</div>
+    
+            <div style="text-align: center; margin: 30px 0; font-size: 1.1rem; line-height: 1.6;">
+                <p style="color: #2f5597; font-weight: bold;">
                     <c:out value="${successMessage}" />
-                </div>
-            </c:if>
+                </p>
+            </div>
+  
+            <div class="modal-buttons-right">
+                
+                <button type="button" class="modal-action-button" style="width: 100px;" 
+                        onclick="location.href='${pageContext.request.contextPath}/ReserveManagement">メニュー</button>
+                <button type="button" class="modal-action-button" style="width: 100px; font-size: 0.9rem;" 
+                        onclick="location.href='${pageContext.request.contextPath}/reserveBook">続けて登録</button>
+            </div>
+        </div>
+    </div>
 
+    <c:if test="${not empty successMessage}">
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                document.getElementById('completeModal').style.display = 'flex';
+            });
+        </script>
+    </c:if>
             <table class="form-table">
                 <tr>
                     <th>利用者ID</th>
@@ -179,7 +202,7 @@
                 }
             });
         });
-    </script>
+   
 </script>
 
 </body>

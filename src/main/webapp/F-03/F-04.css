@@ -1,5 +1,4 @@
-/* ページの背景色（ご指定の薄い青色） */
-  body {
+body {
     background-color: #b4c7e7; /* ページの背景色を薄い青色に設定 */
     padding: 0px; /* 見やすくするための画面端の余白 */
     font-family: sans-serif; /* 全体のフォントをゴシック体（サンセリフ）に設定 */

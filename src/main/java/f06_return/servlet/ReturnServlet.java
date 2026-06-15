@@ -1,4 +1,4 @@
-package f07_reserve.servlet;
+package f06_return.servlet;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -75,6 +75,6 @@ public class ReturnServlet extends HttpServlet {
 		request.setAttribute("successMessage", successMessage);
 		request.setAttribute("inputBookId", bookIdStr);
 
-		request.getRequestDispatcher("/WEB-INF/jsp/F-07/reserveSearch.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/jsp/return/return.jsp").forward(request, response);
 	}
 }

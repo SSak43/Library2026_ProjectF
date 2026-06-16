@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>利用者登録入力画面</title>
+    <title>図書登録入力画面</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/home.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/F-02.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/register.css">
@@ -14,7 +14,7 @@
 <body>
 
     <div class="header">
-        <h1 class="header-title">利用者登録入力画面</h1>
+        <h1 class="header-title">図書登録入力画面</h1>
         <button class="menu-button" type="button" onclick="location.href='${pageContext.request.contextPath}/home/admin_home.jsp'">メニュー</button>
     </div>
 

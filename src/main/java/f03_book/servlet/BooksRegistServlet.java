@@ -38,7 +38,7 @@ public class BooksRegistServlet extends HttpServlet {
 		request.setAttribute("latestId", latestId);
 
 		// 3. 登録画面（JSP）へフォワード
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/book/BooksRegist.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/F-03/book_register.jsp");
 		dispatcher.forward(request, response);
 	}
 

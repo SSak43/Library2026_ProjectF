@@ -1,0 +1,291 @@
+/* =========================================
+   F-06 (返却画面) 専用スタイルシート
+   【完全バグ排除・等幅ワイドスケールアップ版】
+   ========================================= */
+
+/* 全体のリセットと背景設定 */
+* {
+    box-sizing: border-box; /* すべての要素の幅に境界線と余白を含める */
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #b4c7e7;
+    font-family: "Meiryo", "Hiragino Kaku Gothic ProN", "Noto Serif JP", "Yu Mincho", serif;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* 画面全体の余計なスクロールバーを抑止 */
+}
+
+/* =========================================
+   1. 共通基本レイアウト
+   ========================================= */
+/* 共通ヘッダー（グレー背景＋落ち着きのある下境界線、全幅デザイン） */
+.header {
+    background-color: #e2e2e2;
+    border-bottom: 1.5px solid #7a8fa6;
+    padding: 0 30px;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* ボタンを右端に配置 */
+    position: relative;
+    margin-bottom: 30px;
+    width: 100%;
+    flex-shrink: 0;
+}
+
+.header-title {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: normal;
+    white-space: nowrap;
+    color: #333;
+}
+
+.menu-button {
+    background-color: white;
+    border: 1px solid #7a8fa6;
+    padding: 8px 30px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: inherit;
+    z-index: 2;
+    color: #111;
+}
+
+.menu-button:hover {
+    background-color: #f2f2f2;
+}
+
+/* 共通メインコンテンツ領域（グレー背景＋黒枠、左右下に30pxのマージンを設定） */
+.main-content-base {
+    background-color: #d9d9d9 !important;
+    border: 1.5px solid #000000 !important; /* 絶対黒枠 */
+    flex-grow: 1;
+    display: flex;
+    position: relative; 
+    margin: 0 30px 30px 30px; /* 画面の端から30px浮かせるマージン */
+    overflow: hidden; /* 中の子要素のはみ出しを確実に防止 */
+}
+
+.layout-center {
+    justify-content: center;
+    align-items: center;
+}
+
+/* エラーメッセージ（上部に赤文字警告） */
+.error-message {
+    color: red;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    display: none; /* JSで動的に表示 */
+}
+
+/* =========================================
+   2. F-06 入力・返却画面 共通フォーム
+   ========================================= */
+/* テーブル：JSP側のガードと連動し白帯バグを防ぐため完全に透明化 */
+.form-table { 
+    width: 100% !important; 
+    border-collapse: collapse !important; 
+    margin-bottom: 25px !important; 
+    table-layout: fixed !important; 
+    border: 1.5px solid #000000 !important; /* テーブル枠線も黒に統一 */
+    background-color: transparent !important;
+    background: transparent !important;
+}
+
+.form-table th, .form-table td { 
+    border-bottom: 1.5px solid #000000 !important; 
+    padding: 12px 15px !important; /* 潰れを防ぐ美しいコンパクト余白 */
+    text-align: left; 
+}
+
+/* 見出し列（th） */
+.form-table th { 
+    width: 18% !important; 
+    font-size: 1.35rem !important; 
+    border-right: 1.5px solid #000000 !important; 
+    color: #111 !important; 
+    font-weight: bold !important; 
+    background-color: transparent !important;
+    background: transparent !important;
+}
+
+/* 入力セル（td）：標準テーブルセルを保証 */
+.form-table td { 
+    display: table-cell !important;
+    width: 82% !important;
+    vertical-align: middle !important;
+    background-color: transparent !important;
+    background: transparent !important;
+}
+
+/* フレックスコンテナ（絶対にインプットを潰さない二重ガード） */
+.input-flex-container {
+    display: flex !important;
+    width: 100% !important;
+    align-items: center !important;
+    gap: 15px !important;
+    background: transparent !important;
+}
+
+/* 共通のテキストフィールド：白活性時（文字サイズ1.2rem、パディング10px 14px） */
+.input-field {
+    flex: 1 1 auto !important;
+    width: 100% !important;
+    min-width: 0 !important; /* フレックスコンテナ内の極小潰れを防ぐ黄金ルール */
+    padding: 10px 14px !important;
+    border: 1.5px solid #666666 !important; 
+    font-size: 1.2rem !important; 
+    font-family: inherit;
+    box-sizing: border-box !important;
+    background-color: #fff !important; /* 通常時は白 */
+    outline: none !important;
+}
+
+/* 読取専用・非活性（disabled/readonly）時のボックス：グレー塗りつぶし状態 */
+.input-field-update, .input-field:disabled {
+    flex: 1 1 auto !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 10px 14px !important;
+    background-color: #b0b0b0 !important; /* グレー */
+    border: 1.5px solid #777777 !important; 
+    font-size: 1.2rem !important; 
+    font-family: inherit;
+    color: #333333 !important;
+    box-sizing: border-box !important;
+    cursor: not-allowed;
+    outline: none !important;
+}
+
+/* 各種登録・更新・返却用ボタン */
+.btn-register { 
+    background-color: white !important; 
+    border: 1.5px solid #000000 !important; /* 完全に統一感のある「黒枠」へ修正 */
+    padding: 12px 65px !important; 
+    font-size: 1.25rem !important; 
+    font-family: inherit; 
+    cursor: pointer; 
+    font-weight: bold;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+}
+
+.btn {
+    background-color: #fff !important;
+    border: 1.5px solid #000000 !important; /* 黒枠へ修正 */
+    padding: 12px 30px !important;
+    font-size: 1.25rem !important;
+    cursor: pointer;
+    font-family: inherit;
+    color: #111;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+}
+
+.btn:hover, .btn-register:hover {
+    background-color: #f2f2f2 !important;
+}
+
+.btn:disabled, .btn-register:disabled {
+    background-color: #cccccc !important;
+    color: #666666 !important;
+    border-color: #999999 !important;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* =========================================
+   3. 確認・完了画面 モーダル (ポップアップ)
+   ========================================= */
+.modal-overlay {
+    display: none;
+    position: fixed !important; /* absolute から fixed に変更し、フレックス親要素からの影響を完全に遮断 */
+    top: 0; 
+    left: 0; 
+    right: 0; 
+    bottom: 0;
+    width: 100vw !important;
+    height: 100vh !important;
+    background-color: rgba(0, 0, 0, 0.4) !important; /* 背景の暗さを適正に調整 */
+    justify-content: center;
+    align-items: center;
+    z-index: 9999 !important; /* 確実に最前面へ表示 */
+}
+
+.modal-content {
+    background-color: #c0c0c0; /* シルバーグレー */
+    border: 1px solid #999999; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+    padding: 60px 40px 20px 40px; 
+    width: 90%;
+    max-width: 550px; 
+    position: relative;
+    z-index: 10000 !important;
+}
+
+.modal-title {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 25px;
+    font-size: 1.25rem;
+    font-weight: normal;
+    color: #111111;
+}
+
+.confirm-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.confirm-table th, .confirm-table td {
+    border-top: 1px solid #000000;
+    border-bottom: 1px solid #000000;
+    padding: 10px;
+    text-align: left;
+}
+
+.confirm-table th {
+    width: 25%;
+    font-size: 1.3rem;
+    border-right: 1px solid #000000;
+    font-weight: normal;
+    color: #111111;
+}
+
+.confirm-input {
+    width: 100%;
+    padding: 5px;
+    background-color: #b0b0b0;
+    border: 2px solid #6fa8dc;
+    font-size: 1.1rem;
+    color: #333333;
+    font-family: inherit;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.complete-message {
+    text-align: center;
+    font-size: 1.6rem;
+    margin: 40px 0;
+    color: #111111;
+}

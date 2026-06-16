@@ -153,13 +153,21 @@ th {
 
 .modal-buttons {
 	display: flex;
-	justify-content: space-around;
-	margin-top: 20px;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 20px;
+    
 }
 
 .modal-buttons button {
 	padding: 8px 25px;
 	font-size: 14px;
+	border: 1px solid #2f5597;
+    background-color: white;
+    padding: 5px 20px;
+    width: 100px;
+    text-align: center;
+    cursor: pointer;
 }
 
 .w-full {

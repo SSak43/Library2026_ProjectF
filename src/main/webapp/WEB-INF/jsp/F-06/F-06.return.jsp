@@ -48,11 +48,13 @@
                 該当する貸出情報が見つかりませんでした
             </div>
 
-            <!-- ① 上部：図図書ID検索バー (他と完全に等しい高さ・パディングを維持し、横の長さだけを500pxに綺麗に左寄せ) -->
+            <!-- ① 上部：図図書ID検索バー (入力欄と表示ボタンの縦幅を46pxに完全同期させて綺麗に左寄せ) -->
             <div style="padding: 0 !important; display: flex !important; gap: 20px !important; align-items: center !important; width: 100% !important; margin-bottom: 25px !important; flex-shrink: 0 !important; background: transparent !important; background-color: transparent !important; border: none !important; box-shadow: none !important;">
                 <div style="display: flex !important; gap: 20px !important; align-items: center !important; background: transparent !important; background-color: transparent !important; border: none !important;">
-                    <input type="text" id="search-id" name="searchId" placeholder="図書IDを入力してください (例: B0001)" style="width: 500px !important; height: auto !important; padding: 10px 14px !important; font-size: 1.2rem !important; border: 1.5px solid #666 !important; background-color: #fff !important; box-sizing: border-box !important; outline: none !important; flex-shrink: 0 !important;">
-                    <button type="button" class="btn" style="padding: 12px 30px !important; font-size: 1.25rem !important; flex-shrink: 0 !important; background-color: #fff !important; border: 1.5px solid #000000 !important;" onclick="searchLoanBook();">表示</button>
+                    <!-- インラインスタイルで、縦幅を46pxに固定、フォントサイズ(1.2rem)、枠線を他と完全同期の黒枠(1.5px solid #000000)に統一 -->
+                    <input type="text" id="search-id" name="searchId" placeholder="図書IDを入力してください (例: B0001)" style="width: 500px !important; height: 46px !important; padding: 10px 14px !important; font-size: 1.2rem !important; border: 1.5px solid #000000 !important; background-color: #fff !important; box-sizing: border-box !important; outline: none !important; flex-shrink: 0 !important; vertical-align: middle !important;">
+                    <!-- 表示ボタン：入力欄と1pxの狂いもなく縦幅を46pxで完全同期 -->
+                    <button type="button" class="btn" style="height: 46px !important; padding: 0 30px !important; font-size: 1.20rem !important; flex-shrink: 0 !important; background-color: #fff !important; border: 1.5px solid #000000 !important; box-sizing: border-box !important; display: inline-flex !important; align-items: center !important; justify-content: center !important; vertical-align: middle !important;" onclick="searchLoanBook();">表示</button>
                 </div>
             </div>
 
@@ -101,6 +103,7 @@
 
                 <!-- ③ 下部：F-03規格に完全に統一した右下の「返却」ボタン (初期状態は非活性) -->
                 <div style="display: flex; justify-content: flex-end; padding-top: 15px; background: transparent !important;">
+                    <!-- 返却ボタンをF-03規格の大きく押しやすい極上サイズに強制固定、枠線もインラインで黒に完全固定 -->
                     <button type="button" class="btn btn-register" id="btn-submit" onclick="showConfirmModal()" disabled style="padding: 12px 65px !important; font-size: 1.25rem !important; background-color: #fff !important; text-align: center; border: 1.5px solid #000000 !important; font-weight: bold !important; flex-shrink: 0 !important;">返却</button>
                 </div>
 
@@ -111,7 +114,7 @@
         <!-- 1. 確認画面モーダル (ポップアップ) -->
         <div class="modal-overlay" id="confirmModal">
             <div class="modal-content" style="border: 1.5px solid #000000 !important;">
-                <h2 class="modal-title"></h2>
+                <h2 class="modal-title">確認画面</h2>
                 <form method="POST" action="return.jsp" id="executeForm" onsubmit="showCompleteModal(); return false;">
                     <table class="confirm-table" style="border-top: 1.5px solid #000000 !important; border-bottom: 1.5px solid #000000 !important;">
                         <tr>
@@ -146,6 +149,7 @@
         <!-- 2. 完了画面モーダル (ポップアップ) -->
         <div class="modal-overlay" id="completeModal">
             <div class="modal-content" style="border: 1.5px solid #000000 !important;">
+                <!-- 動的に「書名」の完了メッセージへ書き換える領域 -->
                 <div class="complete-message" id="complete-message-text">更新が完了しました</div>
                 <div class="modal-actions">
                     <button type="button" class="btn" style="padding: 12px 30px !important; font-size: 1.15rem !important; text-align: center; border: 1.5px solid #000000 !important;" onclick="goToMenu()">メニュー</button>
@@ -188,6 +192,12 @@
                 const submitBtn = document.getElementById('btn-submit');
                 if (submitBtn) {
                     submitBtn.style.setProperty('border', '1.5px solid #000000', 'important');
+                }
+
+                // 5. 図書ID検索フィールドと表示ボタンのボーダーを強制書き換え
+                const searchIdInput = document.getElementById('search-id');
+                if (searchIdInput) {
+                    searchIdInput.style.setProperty('border', '1.5px solid #000000', 'important');
                 }
             } catch (e) {
                 console.error("黒枠強制適用中にエラーが発生しました", e);

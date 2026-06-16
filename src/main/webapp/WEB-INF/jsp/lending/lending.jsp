@@ -81,24 +81,24 @@
             <table style="width: 100%;">
                 <tr>
                     <th style="width: 30%;">利用者ID</th>
-                    <td><span id="popUserId"></span></td>
+                    <td class="popText"><span id="popUserId"></span></td>
                 </tr>
                 <tr>
                     <th>氏名</th>
-                    <td><span id="popUserName"></span></td>
+                    <td class="popText"><span id="popUserName"></span></td>
                 </tr>
                 <tr>
                     <th>図書ID</th>
-                    <td><span id="popBookId"></span></td>
+                    <td class="popText"><span id="popBookId"></span></td>
                 </tr>
                 <tr>
                     <th>書名</th>
-                    <td><span id="popBookTitle"></span></td>
+                    <td class="popText"><span id="popBookTitle"></span></td>
                 </tr>
             </table>
             <div class="modal-buttons">
                 <button type="button" onclick="closeConfirmationModal()">戻る</button>
-                <button type="button" onclick="submitRegister()" style="background: #fff; font-weight: bold;">確定</button>
+                <button type="button" onclick="submitRegister()">確定</button>
             </div>
         </div>
     </div>
@@ -119,10 +119,13 @@
         function openConfirmationModal() {
             var userName = document.getElementById('txtUserName').innerText.trim();
             var bookTitle = document.getElementById('txtBookTitle').innerText.trim();
+
+
             
             // 両方のデータが正しく表示されているかチェック
             if (userName === "" || bookTitle === "") {
-                alert("利用者と図書をそれぞれ検索して表示させてから、登録を行ってください。");
+             	document.getElementById('actionField').value = 'rend';
+            	document.getElementById('lendForm').submit();
                 return;
             }
             

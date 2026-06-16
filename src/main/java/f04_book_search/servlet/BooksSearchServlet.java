@@ -5,6 +5,7 @@ import java.util.List;
 
 import Model.BooksBean;
 import f04_book_search.dao.BooksSearchDAO;
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -61,14 +62,16 @@ public class BooksSearchServlet extends HttpServlet {
 		boolean hasPrevPage = (page > 1);
 
 		// 4. JSP（画面）に渡すデータを箱（request）に詰める
-		request.setAttribute("bookList", bookList);       // 検索結果のリスト
-		request.setAttribute("searchType", searchType);   // 選択されていたプルダウンの値
-		request.setAttribute("keyword", keyword);         // 入力されていたキーワード
-		request.setAttribute("currentPage", page);        // 現在のページ番号
-		request.setAttribute("hasNextPage", hasNextPage); // 「次へ」ボタンを出すかどうかのフラグ
-		request.setAttribute("hasPrevPage", hasPrevPage); // 「前へ」ボタンを出すかどうかのフラグ
+		request.setAttribute("bookList", bookList);
+		request.setAttribute("currentPage", page);
+		request.setAttribute("hasNextPage", hasNextPage);
+		request.setAttribute("hasPrevPage", hasPrevPage);
+		request.setAttribute("searchType", searchType);
+		request.setAttribute("keyword", keyword);
 
-		// 5. 検索画面（JSP）へ遷移して表示させる
-		request.getRequestDispatcher("/WEB-INF/jsp/serach/serach.jsp").forward(request, response);
+		// 💡 ここから下を追加・確認
+		// JSPへ画面をフォワード（移動）させる（JSPのファイル名やフォルダの場所は環境に合わせてください！）
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/F04_serch/serach.jsp");
+		dispatcher.forward(request, response);
 	}
 }

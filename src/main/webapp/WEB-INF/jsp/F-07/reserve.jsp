@@ -27,12 +27,35 @@
             <div class="register-error-message" id="error-message" style="min-height: 1.5em; <c:if test='${not empty errorMessage}'>visibility: visible;</c:if>">
                 <c:out value="${errorMessage}" />
             </div>
-            <c:if test="${not empty successMessage}">
-                <div style="color: green; font-weight: bold; text-align: center; margin-bottom: 15px;">
+            
+<!-- 登録完了モーダル -->
+            <div id="completeModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-title">登録完了</div>
+    
+            <div style="text-align: center; margin: 30px 0; font-size: 1.1rem; line-height: 1.6;">
+                <p style="color: #2f5597; font-weight: bold;">
                     <c:out value="${successMessage}" />
-                </div>
-            </c:if>
+                </p>
+            </div>
+  
+            <div class="modal-buttons-right">
+                
+                <button type="button" class="modal-action-button" style="width: 100px;" 
+                        onclick="location.href='${pageContext.request.contextPath}/ReserveManagement">メニュー</button>
+                <button type="button" class="modal-action-button" style="width: 100px; font-size: 0.9rem;" 
+                        onclick="location.href='${pageContext.request.contextPath}/reserveBook">続けて登録</button>
+            </div>
+        </div>
+    </div>
 
+    <c:if test="${not empty successMessage}">
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                document.getElementById('completeModal').style.display = 'flex';
+            });
+        </script>
+    </c:if>
             <table class="form-table">
                 <tr>
                     <th>利用者ID</th>
@@ -125,61 +148,61 @@
     </div>
 
     <script>
-    // フォームを送信する関数
-    function submitAction(actionType) {
-        document.getElementById('actionField').value = actionType;
-        document.getElementById('reserveForm').submit();
-    }
-
-    // モーダルを表示し、入力されている値をセットする関数
-    function showConfirmModal() {
-        // --- エラーチェック処理 ---
-        const errorMessage = document.getElementById('error-message');
-        const bookStatus = document.getElementById('book-status').value;
-        
-        // 貸出不可（ステータスが '2'）の場合はエラーを出して処理を止める
-        if (bookStatus === '2') {
-            errorMessage.innerText = "この図書は予約できません。";
-            errorMessage.style.visibility = 'visible';
-            return;
+        // フォームを送信する関数
+        function submitAction(actionType) {
+            document.getElementById('actionField').value = actionType;
+            document.getElementById('reserveForm').submit();
         }
-        errorMessage.style.visibility = 'hidden';
 
-        // --- モーダルへの値のセット処理 ---
-        // すべて input タグ同士なので、.value を使ってコピー
-        document.getElementById('modal-user-id').value = document.getElementById('input-user-id').value;
-        document.getElementById('modal-user-name').value = document.getElementById('input-user-name').value;
-        document.getElementById('modal-book-id').value = document.getElementById('input-book-id').value;
-        document.getElementById('modal-book-title').value = document.getElementById('input-book-title').value;
-        document.getElementById('modal-book-writer').value = document.getElementById('input-book-writer').value;
-        
-        document.getElementById('confirmModal').style.display = 'flex';
-    }
-    
-    // モーダルを閉じる関数
-    function hideConfirmModal() {
-        document.getElementById('confirmModal').style.display = 'none';
-    }
-
-    // モーダルの「登録」ボタンを押したときの処理
-    function submitForm() {
-        submitAction('register');
-    }
-
-    // 全角数字から半角への自動変換
-    document.addEventListener("DOMContentLoaded", function() {
-        const ids = ['input-user-id', 'input-book-id'];
-        ids.forEach(id => {
-            const element = document.getElementById(id);
-            if (element) {
-                element.addEventListener('input', function(e) {
-                    element.value = element.value.replace(/[０-９]/g, function(s) {
-                        return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
-                    });
-                });
+        // モーダルを表示し、入力されている値をセットする関数
+        function showConfirmModal() {
+            // --- エラーチェック処理 ---
+            const errorMessage = document.getElementById('error-message');
+            const bookStatus = document.getElementById('book-status').value;
+            
+            // 貸出不可（ステータスが '2'）の場合はエラーを出して処理を止める
+            if (bookStatus === '2') {
+                errorMessage.innerText = "この図書は予約できません。";
+                errorMessage.style.visibility = 'visible';
+                return;
             }
+            errorMessage.style.visibility = 'hidden';
+
+            // --- モーダルへの値のセット処理 ---
+            document.getElementById('modal-user-id').value = document.getElementById('input-user-id').value;
+            document.getElementById('modal-user-name').value = document.getElementById('input-user-name').value;
+            document.getElementById('modal-book-id').value = document.getElementById('input-book-id').value;
+            document.getElementById('modal-book-title').value = document.getElementById('input-book-title').value;
+            document.getElementById('modal-book-writer').value = document.getElementById('input-book-writer').value;
+            
+            document.getElementById('confirmModal').style.display = 'flex';
+        }
+
+        // モーダルを閉じる関数
+        function hideConfirmModal() {
+            document.getElementById('confirmModal').style.display = 'none';
+        }
+
+        // モーダルの「登録」ボタンを押したときの処理
+        function submitForm() {
+            submitAction('register');
+        }
+
+        // 全角数字から半角への自動変換
+        document.addEventListener("DOMContentLoaded", function() {
+            const ids = ['input-user-id', 'input-book-id'];
+            ids.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.addEventListener('input', function(e) {
+                        element.value = element.value.replace(/[０-９]/g, function(s) {
+                            return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+                        });
+                    });
+                }
+            });
         });
-    });
+   
 </script>
 
 </body>

@@ -1,4 +1,4 @@
-package f06_return.servlet;
+package f07_reserve.servlet;
 
 import java.io.IOException;
 import java.util.List;

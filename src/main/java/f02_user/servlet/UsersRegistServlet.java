@@ -56,9 +56,15 @@ public class UsersRegistServlet extends HttpServlet {
 		request.setAttribute("latestId", latestId);
 		request.setAttribute("isSuccess", isSuccess);
 		
+		//登録されたIDは○○ですの処理
+		
 		if (!isSuccess) {
-			request.setAttribute("errorMessage", "登録に失敗しました。システム管理者にお問い合わせください。");
+		    request.setAttribute("errorMessage", "登録に失敗しました。システム管理者にお問い合わせください。");
+		} else {
+		    
+			request.setAttribute("registeredUserId", latestId);
 		}
+		
 
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/F-02/user_register.jsp");

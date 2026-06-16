@@ -73,4 +73,29 @@ public class ReserveDAO extends DAOBase {
         }
         return result;
     }
+    
+    public boolean checkDuplicateReserve(int userId, int bookId) {
+        boolean isDuplicate = false;
+        // RESERVE_STATUS = '0'（予約中）のデータを数えるSQL
+        String sql = "SELECT COUNT(*) FROM RESERVE WHERE USER_ID = ? AND BOOK_ID = ? AND RESERVE_STATUS = '0'";
+        
+        
+        try (java.sql.Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
+             java.sql.PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setInt(1, userId);
+            pstmt.setInt(2, bookId);
+            
+            try (java.sql.ResultSet rs = pstmt.executeQuery()) {
+                // 1件以上データがあれば「すでに予約済み」とする
+                if (rs.next() && rs.getInt(1) > 0) {
+                    isDuplicate = true; 
+                }
+            }
+        } catch (java.sql.SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return isDuplicate;
+    }
 }

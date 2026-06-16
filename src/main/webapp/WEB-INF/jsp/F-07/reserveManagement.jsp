@@ -9,17 +9,20 @@
 </head>
 <body>
     <header class="header">
-        <div class="header-title">貸出情報照会</div>
-        <form action="/Library2026_ProjectF/logout" method="post" style="margin-left: auto;">
-            <button type="submit" class="btn-logout">メニュー</button>
-        </form>
-    </header>
+    <div class="header-title">予約画面</div>
+    <form style="margin-left: auto;">
+        <button type="button" class="btn-logout" 
+                onclick="location.href='${pageContext.request.contextPath}/home/admin_home.jsp'">
+            メニュー
+        </button>
+    </form>
+</header>
 
     <main class="main-container">
 
         <div class="menu-panel">
             <a href="${pageContext.request.contextPath}/reserveBook" class="menu-link" style="font-size: 40px;">予約登録</a>
-            <a href="${pageContext.request.contextPath}/returnBook" class="menu-link" style="font-size: 40px;">照会・取り消し</a>
+            <a href="${pageContext.request.contextPath}/reserveSearch" class="menu-link" style="font-size: 40px;">照会・取り消し</a>
         </div>
     </main>
 </body>

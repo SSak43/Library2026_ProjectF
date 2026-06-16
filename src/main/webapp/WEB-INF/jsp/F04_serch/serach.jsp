@@ -273,7 +273,11 @@
 <div class="page-header">
   <div class="page-title">検索画面</div>
   
-  <button class="menu-button" type="button" onclick="location.href='${pageContext.request.contextPath}/home/admin_home.jsp'">メニュー</button>
+  <button class="menu-btn" type="button" 
+            onclick="location.href='${pageContext.request.contextPath}/home/admin_home.jsp'"
+            style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); padding: 10px 25px; font-size: 0.95rem; cursor: pointer;">
+        メニュー
+    </button>
   
 </div>
 
@@ -354,7 +358,21 @@
             </c:choose>
           </td>
           
-          <td></td> <!-- 操作ボタン等を置く場合はここ -->
+          <td style="text-align: right; vertical-align: middle; padding: 5px 18px 5px 0;">
+            <c:if test="${book.bookStatus == '0'}">
+              <%-- form を inline-block にして右寄せが効くようにする --%>
+              <form action="${pageContext.request.contextPath}/lending" method="GET" style="display: inline-block; margin: 0; padding: 0; vertical-align: middle;">
+                
+                <input type="hidden" name="bookId" value="${book.bookId}">
+                <input type="hidden" name="userId" value="${sessionScope.loginUser.userId}">
+                
+                <button type="submit" class="register-button" 
+                        style="padding: 6px 16px; width: auto; font-size: 0.7rem; font-weight: bold; cursor: pointer; border-radius: 4px; border: 1px solid #7f7f7f; vertical-align: middle;">
+                    貸出
+                </button>
+              </form>
+            </c:if>
+          </td>
         </tr>
       </c:forEach>
       

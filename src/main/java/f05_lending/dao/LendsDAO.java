@@ -102,10 +102,8 @@ public class LendsDAO extends DAOBase {
     }
 
 
-    // ==========================================
-    // 返却処理用のメソッド（新しく追加された部分）
-    // ==========================================
 
+    
     /**
      * 【返却用】図書IDから「現在貸出中（未返却）」の貸出情報を、書名・氏名付きで取得する
      */
@@ -118,7 +116,7 @@ public class LendsDAO extends DAOBase {
         }
 
         try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
-            // 3つのテーブルを結合して、RETURN_DATE が NULL（未返却）のものを探す
+            // DBからは貸出日(LEND_DATE)までを取得する
             String sql = "SELECT L.LEND_ID, L.USER_ID, L.BOOK_ID, L.LEND_DATE, B.TITLE, U.USER_NAME " +
                          "FROM LENDS L " +
                          "JOIN BOOKS B ON L.BOOK_ID = B.BOOK_ID " +
@@ -134,9 +132,19 @@ public class LendsDAO extends DAOBase {
                     lend.setLendId(rs.getInt("LEND_ID"));
                     lend.setUserId(rs.getInt("USER_ID"));
                     lend.setBookId(rs.getInt("BOOK_ID"));
-                    lend.setLendDate(rs.getDate("LEND_DATE"));
-                    lend.setTitle(rs.getString("TITLE"));        // 書名をセット
-                    lend.setUserName(rs.getString("USER_NAME")); // 利用者氏名をセット
+                    
+                    // 貸出日をセット
+                    java.sql.Date lendDate = rs.getDate("LEND_DATE");
+                    lend.setLendDate(lendDate);
+                    
+                    // ★ 貸出日から14日後を計算して返却期限(ReturnLine)にセット
+                    if (lendDate != null) {
+                        java.time.LocalDate returnDateLocal = lendDate.toLocalDate().plusDays(14);
+                        lend.setReturnLine(java.sql.Date.valueOf(returnDateLocal));
+                    }
+                    
+                    lend.setTitle(rs.getString("TITLE"));
+                    lend.setUserName(rs.getString("USER_NAME"));
                 }
             }
         } catch (SQLException e) {

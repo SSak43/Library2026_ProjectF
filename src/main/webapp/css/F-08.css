@@ -178,6 +178,7 @@
     width: 100%; /* 表の横幅をコンテナいっぱいに広げる */
     border-collapse: collapse; /* セル同士の隙間をなくし、境界線を1本にまとめる */
     table-layout: fixed; /* 列幅を固定して、内容によって幅が変わらないようにする */
+    margin-bottom: 20px;
   }
 
   /* セルの共通設定 */
@@ -191,7 +192,7 @@
     white-space: nowrap; /* セル内の文字を改行させない */
     text-overflow: ellipsis; /* はみ出した文字の末尾を「...」にして省略表示する */
   }
-
+  
   .custom-table th {
     background-color: #9e9e9e; /* 見出しセル（th）の背景色を濃いグレーに設定 */
     color: #000; /* 見出しセル（th）の文字色を黒に設定 */
@@ -214,12 +215,12 @@
   }
 
   /* 各列の幅の比率 */
-  .col-no { width: 3%; } /* 「No.」列の幅を全体の6%に設定 */
+  .col-no { width: 4%; } /* 「No.」列の幅を全体の6%に設定 */
   .col-id { width: 10%; } /* 「図書ID」列の幅を全体の10%に設定 */
-  .col-title { width: 51%; } /* 「書名」列の幅を全体の34%に設定 */
-  .col-author { width: 10%; } /* 「著者」列の幅を全体の12%に設定 */
-  .col-publisher { width: 8%; } /* 「出版社」列の幅を全体の8%に設定 */
-  .col-action { width: 5%; } /* 「操作」列の幅を全体の10%に設定 */
+  .col-title { width: 65%; } /* 「書名」列の幅を全体の34%に設定 */
+  .col-author { width: 6%; } /* 「著者」列の幅を全体の12%に設定 */
+  .col-publisher { width: 6%; } /* 「出版社」列の幅を全体の8%に設定 */
+  .col-action { width: 6%; } /* 「操作」列の幅を全体の10%に設定 */
   
   .col-action-cell {
           text-align: center !important;   /* 横方向の中央揃え */

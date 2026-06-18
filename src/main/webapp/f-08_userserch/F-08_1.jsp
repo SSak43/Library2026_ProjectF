@@ -58,8 +58,8 @@
         <td>1</td>
         <td>00001</td>
         <td>オレンジ</td>
-        <td>2026/05/21</td>
-        <td>森本</td>
+        <td class="col-action-cell">2026/05/21</td>
+        <td class="col-action-cell">森本</td>
         <td class="col-action-cell"><button type="button" class="detail-btn">詳細</button></td>
       </tr>
       <tr><td>2</td><td></td><td></td><td></td><td></td><td></td></tr>

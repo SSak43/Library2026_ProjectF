@@ -67,6 +67,8 @@ function resetForm() {
   <input type="hidden" name="action" id="formAction" value="search">
   <input type="hidden" name="page" id="formPage" value="<%= currentPage %>">
   <input type="hidden" name="cancelTargetId" id="cancelTargetId" value="">
+  
+  
 
 <div class="page-header">
   <div class="page-title">予約状況検索画面</div>
@@ -135,7 +137,7 @@ function resetForm() {
         for (ReserveBean reserve : reserveList) {
             count++;
             
-            // ★ここから：権限とIDを確実に文字列に変換してチェックするロジック
+            // 権限とIDを確実に文字列に変換してチェックするロジック
             boolean showCancelButton = false;
             if (loginUser != null) {
                 String uClass = loginUser.getUserClass();
@@ -161,7 +163,7 @@ function resetForm() {
         <td class="col-title"><%= reserve.getTitle() %></td>
         <td class="col-author"><%= reserve.getWriterName() %></td>
         <td class="col-publisher"><%= reserve.getReserveDate() %></td>
-        <td class="col-status"><%= reserve.getReserveNo() %></td>
+        <td class="col-status"><%= Integer.parseInt(String.valueOf(reserve.getReserveNo()).trim()) + 1 %></td>
         <td class="col-action" style="text-align: center;">
           <% if (showCancelButton) { %>
             <button type="button" class="action-btn" style="color: #ff0000; padding: 2px 8px; font-size: 13px;" onclick="cancelReserve('<%= reserve.getReserveId() %>')">取り消し</button>

@@ -60,14 +60,22 @@ public class BooksRegistServlet extends HttpServlet {
 
 		//データベースへ登録
 		BooksRegistLogic logic = new BooksRegistLogic();
-		boolean Add = logic.add(booksBean);
+		boolean isSuccess = logic.add(booksBean);
 
-		if (Add) {
-			response.sendRedirect("/Library2026_ProjectF/BooksMain");
+		int latestId = logic.getLatestId();
+		
+		request.setAttribute("latestId", latestId);
+		request.setAttribute("isSuccess",isSuccess);
+		
+		
+		if (!isSuccess) {
+		    request.setAttribute("errorMessage", "登録に失敗しました。システム管理者にお問い合わせください。");
 		} else {
-			request.setAttribute("errorMsg", "登録に失敗しました");
+		    
+			request.setAttribute("registeredBookId", latestId);
 		}
-
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/F-03/book_register.jsp");
+		dispatcher.forward(request, response);
 	}
 
 

@@ -34,17 +34,20 @@ public class BooksUpdateServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-		String id = request.getParameter("bookId");
+		String searchKey = request.getParameter("searchKey");
 
 		BooksBean booksBean = new BooksBean();
 		BooksSearchLogic logic = new BooksSearchLogic();
 		List<BooksBean> booksList = null;
 
-		if (id != null && !id.isEmpty()) {
-			//			try {
-			booksBean.setBookId(Integer.parseInt(id));
+		if (searchKey != null && !searchKey.isEmpty()) {
+			if (searchKey.matches("^[0-9]+$")) {
+			booksBean.setBookId(Integer.parseInt(searchKey));
 			booksList = logic.id(booksBean);
-			//			}
+			}else {
+				booksBean.setTitle(searchKey);
+				booksList = logic.title(booksBean);
+			}
 		}
 
 		HttpSession session = request.getSession();
@@ -62,7 +65,7 @@ public class BooksUpdateServlet extends HttpServlet {
 		String title = request.getParameter("title");
 		String name = request.getParameter("writerName");
 		String company = request.getParameter("company");
-		String cla = request.getParameter("cla");
+		String cla = request.getParameter("bookClass");
 		String status = request.getParameter("status");
 		
 		//　受け取ったデータをセット
@@ -76,13 +79,15 @@ public class BooksUpdateServlet extends HttpServlet {
 
 		//データベースへ登録
 		BooksUpdateLogic logic = new BooksUpdateLogic();
-		boolean Add = logic.update(booksBean);
+		boolean isSuccess = logic.update(booksBean);
+		request.setAttribute("isSuccess", isSuccess);
 
-		if (Add) {
-			response.sendRedirect("/Library2026_ProjectF/BooksMain");
-		} else {
-			request.setAttribute("errorMsg", "登録に失敗しました");
+		if (!isSuccess) {
+			request.setAttribute("errorMessage", "データベースの更新に失敗しました。");
 		}
+		
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/F-03/bookUpdate.jsp");
+		dispatcher.forward(request, response);
 
 	}
 

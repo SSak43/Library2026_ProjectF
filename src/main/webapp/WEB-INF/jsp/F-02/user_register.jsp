@@ -106,9 +106,9 @@
 <!--  登録成功モーダル -->
             <div class="modal-buttons-right">　
             
-            	<button type="button" class="modal-action-button" style="width: 100px;" 
+            	<button type="button" class="modal-action-button" style="width: 120px;" 
                         onclick="location.href='${pageContext.request.contextPath}/home/admin_home.jsp'">メニュー</button>
-                <button type="button" class="modal-action-button" style="width: 100px;　font-size: 0.9rem;" 
+                <button type="button" class="modal-action-button" style="width: 120px;　font-size: 0.9rem;" 
                         onclick="location.href='${pageContext.request.contextPath}/UsersRegist'">続けて登録</button>
                 
             </div>

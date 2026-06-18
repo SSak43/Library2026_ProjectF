@@ -10,4 +10,10 @@ public class BooksSearchLogic {
 		BooksSearchDAO dao = new BooksSearchDAO();
 		return dao.findById(booksBean);
 	}
+	
+	public List<BooksBean> title(BooksBean booksBean){
+		BooksSearchDAO dao = new BooksSearchDAO();
+		return dao.findByTitle(booksBean);
+		
+	}
 }

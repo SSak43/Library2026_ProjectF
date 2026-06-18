@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>利用者データ更新入力画面</title>
+    <title>図書データ更新入力画面</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/home.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/F-02.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/register.css">
@@ -22,16 +22,16 @@
 <body>
 
     <div class="header">
-        <h1 class="header-title">利用者データ更新入力画面</h1>
+        <h1 class="header-title">図書データ更新入力画面</h1>
         <button class="menu-button header-blue-button" type="button" onclick="location.href='${pageContext.request.contextPath}/home/admin_home.jsp'">メニュー</button>
     </div>
 
     <div class="main-content-base layout-top-padding register-main-content">
         
         <c:set var="isSearch" value="${not empty param.searchKey}" />
-        <c:set var="isFound" value="${not empty usersList}" />
+        <c:set var="isFound" value="${not empty booksList}" />
         <c:if test="${isFound}">
-            <c:set var="u" value="${usersList[0]}" />
+            <c:set var="b" value="${booksList[0]}" />
         </c:if>
             
         <div class="register-error-message" id="error-message" style="min-height: 1.5em; visibility: ${isSearch && !isFound ? 'visible' : 'hidden' || not empty errorMessage ? 'visible' : 'hidden'};">
@@ -41,60 +41,57 @@
             </c:choose>
         </div>
 
-        <form method="GET" action="${pageContext.request.contextPath}/UsersUpdate" id="searchForm">
+        <form method="GET" action="${pageContext.request.contextPath}/BooksUpdate" id="searchForm">
             <div class="id-search-group" style="display: flex; gap: 10px; margin-bottom: 20px; justify-content: center;"">
-                <input type="text" class="input-field" id="search-key" name="searchKey" value="${param.searchKey}" placeholder="利用者IDまたは氏名入力" required autofocus>
+                <input type="text" class="input-field" id="search-key" name="searchKey" value="${param.searchKey}" placeholder="利用者IDまたは書名入力" required autofocus>
                 <button type="submit" class="header-blue-button">表示</button>
             </div>
         </form>
             
-        <form action="${pageContext.request.contextPath}/UsersUpdate" method="post" id="updateForm">
-            <input type="hidden" name="userId" value="${u.userId}">
+        <form action="${pageContext.request.contextPath}/BooksUpdate" method="post" id="updateForm">
+            <input type="hidden" name="bookId" value="${b.bookId}">
 
             <table class="form-table ${!isFound ? 'form-table-locked' : 'form-table-active'}">
                 <tr>
                     <th>利用者ID</th>
                     <td>
-                        <input type="text" class="input-field input-readonly-id" id="input-id" value="${isFound ? u.userId : ''}" readonly placeholder="IDを表示します">
+                        <input type="text" class="input-field input-readonly-id" id="input-id" value="${isFound ? b.bookId : ''}" readonly placeholder="IDを表示します">
                     </td>
                 </tr>
                 <tr>
-                    <th>区分</th>
+                    <th>書名</th>
                     <td>
-                        <div class="category-options">
-                            <label><input type="radio" name="cla" value="0" ${isFound && u.userClass == '0' ? 'checked' : ''} ${!isFound ? 'disabled' : ''}> 管理者</label>
-                            <label><input type="radio" name="cla" value="1" ${isFound && u.userClass == '1' ? 'checked' : ''} ${!isFound ? 'disabled' : ''}> 司書</label>
-                            <label><input type="radio" name="cla" value="2" ${isFound && u.userClass == '2' ? 'checked' : ''} ${!isFound ? 'disabled' : ''}> 利用者</label>
-                        </div>
+                        <input type="text" class="input-field ${!isFound ? 'input-field-locked' : 'input-field-active'}" id="input-title" name="title" value="${isFound ? b.title : ''}" placeholder="${!isFound ? 'IDまたは書名を入力してください' : ''}" required ${!isFound ? 'disabled' : ''}>
+                        <button type="button" class="clear-button" onclick="clearInput('input-title')" tabindex="-1" ${!isFound ? 'disabled' : ''}>クリア</button>
                     </td>
                 </tr>
                 <tr>
-                    <th>氏名</th>
+                    <th>著者</th>
                     <td>
-                        <input type="text" class="input-field ${!isFound ? 'input-field-locked' : 'input-field-active'}" id="input-name" name="userName" value="${isFound ? u.userName : ''}" placeholder="${!isFound ? 'IDまたは氏名を入力してください' : ''}" required ${!isFound ? 'disabled' : ''}>
-                        <button type="button" class="clear-button" onclick="clearInput('input-name')" tabindex="-1" ${!isFound ? 'disabled' : ''}>クリア</button>
+                        <input type="text" class="input-field ${!isFound ? 'input-field-locked' : 'input-field-active'}" id="input-writerName" name="writerName" value="${isFound ? b.writerName : ''}" placeholder="${!isFound ? 'IDまたは書名を入力してください' : ''}" required ${!isFound ? 'disabled' : ''}>
+                        <button type="button" class="clear-button" onclick="clearInput('input-writerName')" tabindex="-1" ${!isFound ? 'disabled' : ''}>クリア</button>
                     </td>
                 </tr>
                 <tr>
-                    <th>電話番号</th>
+                    <th>会社名</th>
                     <td>
-                        <input type="text" class="input-field ${!isFound ? 'input-field-locked' : 'input-field-active'}" id="input-tel" name="Tel" value="${isFound ? u.tel : ''}" placeholder="${!isFound ? 'IDまたは氏名を入力してください' : ''}" required ${!isFound ? 'disabled' : ''}>
-                        <button type="button" class="clear-button" onclick="clearInput('input-tel')" tabindex="-1" ${!isFound ? 'disabled' : ''}>クリア</button>
+                        <input type="text" class="input-field ${!isFound ? 'input-field-locked' : 'input-field-active'}" id="input-company" name="company" value="${isFound ? b.company : ''}" placeholder="${!isFound ? 'IDまたは書名を入力してください' : ''}" required ${!isFound ? 'disabled' : ''}>
+                        <button type="button" class="clear-button" onclick="clearInput('input-company')" tabindex="-1" ${!isFound ? 'disabled' : ''}>クリア</button>
                     </td>
                 </tr>
                 <tr>
-                    <th>パスワード</th>
+                    <th>分類</th>
                     <td>
-                        <input type="password" class="input-field ${!isFound ? 'input-field-locked' : 'input-field-active'}" id="input-pass" name="Password" placeholder="${isFound ? '変更する場合のみ入力' : 'IDまたは氏名を入力してください'}" ${!isFound ? 'disabled' : ''}>
-                        <button type="button" class="clear-button" onclick="clearInput('input-pass')" tabindex="-1" ${!isFound ? 'disabled' : ''}>クリア</button>
+                        <input type="text" class="input-field ${!isFound ? 'input-field-locked' : 'input-field-active'}" id="input-bookClass" name="bookClass" value="${isFound ? b.bookClass : ''}" placeholder="${!isFound ? 'IDまたは書名を入力してください' : ''}" required ${!isFound ? 'disabled' : ''}>
+                        <button type="button" class="clear-button" onclick="clearInput('input-bookClass')" tabindex="-1" ${!isFound ? 'disabled' : ''}>クリア</button>
                     </td>
-                </tr>
-                <tr>
+                </tr>                <tr>
                     <th>状態</th>
                     <td>
                         <div class="category-options">
-                            <label><input type="radio" name="status" value="0" ${isFound && u.userStatus == '0' ? 'checked' : ''} ${!isFound ? 'disabled' : ''}> 有効</label>
-                            <label><input type="radio" name="status" value="1" ${isFound && u.userStatus == '1' ? 'checked' : ''} ${!isFound ? 'disabled' : ''}> 無効</label>
+                            <label><input type="radio" name="status" value="0" ${isFound && b.bookStatus == '0' ? 'checked' : ''} ${!isFound ? 'disabled' : ''}> 貸出可能</label>
+                            <label><input type="radio" name="status" value="1" ${isFound && b.bookStatus == '1' ? 'checked' : ''} ${!isFound ? 'disabled' : ''}> 貸出中</label>
+                            <label><input type="radio" name="status" value="2" ${isFound && b.bookStatus == '2' ? 'checked' : ''} ${!isFound ? 'disabled' : ''}> 貸出不可</label>
                         </div>
                     </td>
                 </tr>
@@ -110,11 +107,11 @@
                     <div class="modal-title">更新確認</div>
             
                     <table class="form-table">
-                        <tr><th>利用者ID</th><td><input type="text" class="input-field w-full confirm-modal-field" id="confirm-id" readonly></td></tr>
-                        <tr><th>区分</th><td><input type="text" class="input-field w-full confirm-modal-field" id="confirm-cla" readonly></td></tr>
-                        <tr><th>氏名</th><td><input type="text" class="input-field w-full confirm-modal-field" id="confirm-name" readonly></td></tr>
-                        <tr><th>電話番号</th><td><input type="text" class="input-field w-full confirm-modal-field" id="confirm-tel" readonly></td></tr>
-                        <tr><th class="confirm-password-label">パスワード</th><td><input type="text" class="input-field w-full confirm-modal-field" id="confirm-pass" readonly></td></tr>
+                        <tr><th>図書ID</th><td><input type="text" class="input-field w-full confirm-modal-field" id="confirm-id" readonly></td></tr>
+                        <tr><th>書名</th><td><input type="text" class="input-field w-full confirm-modal-field" id="confirm-title" readonly></td></tr>
+                        <tr><th>著者</th><td><input type="text" class="input-field w-full confirm-modal-field" id="confirm-writerName" readonly></td></tr>
+                        <tr><th>会社名</th><td><input type="text" class="input-field w-full confirm-modal-field" id="confirm-company" readonly></td></tr>
+                        <tr><th>分類</th><td><input type="text" class="input-field w-full confirm-modal-field" id="confirm-bookClass" readonly></td></tr>
                         <tr><th>状態</th><td><input type="text" class="input-field w-full confirm-modal-field" id="confirm-status" readonly></td></tr>
                     </table>
           
@@ -138,7 +135,7 @@
                     <button type="button" class="modal-action-button" onclick="location.href='${pageContext.request.contextPath}/home/admin_home.jsp'">
                         メニュー
                     </button>
-                    <button type="button" class="modal-action-button" style="width: 120px;" onclick="location.href='${pageContext.request.contextPath}/UsersUpdate'">
+                    <button type="button" class="modal-action-button" style="width: 120px;" onclick="location.href='${pageContext.request.contextPath}/BooksUpdate'">
                         続けて更新
                     </button>
                 </div>
@@ -148,8 +145,11 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            const telInput = document.getElementById('input-tel');
-            const nameInput = document.getElementById('input-name');
+//             const telInput = document.getElementById('input-tel');
+            const titleInput = document.getElementById('input-title');
+            const nameInput = document.getElementById('input-writerName');
+            const companyInput = document.getElementById('input-company');
+            const claInput = document.getElementById('input-bookClass');
             const searchInput = document.getElementById('search-key');
 
          // 検索バーの全角数字 ➡️ 半角自動置換
@@ -161,31 +161,24 @@
         });
     }
             
-            if (nameInput) {
-                nameInput.addEventListener('input', function(e) {
-                    let cleanVal = this.value.replace(/[^a-zA-Z0-9\sぁ-んァ-ヶ一-龠々ーａ-ｚＡ-Ｚ]/g, ''); 
-                    cleanVal = cleanVal.replace(/[0-9０-９]/g, '');
-                    this.value = cleanVal;
-                });
-            }
 
-            if (telInput) {
-                telInput.addEventListener('input', function(e) {
-                    let val = this.value.replace(/[０-９]/g, function(s) {
-                        return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
-                    });
-                    let rawStr = val.replace(/[^0-9]/g, '');
-                    let formatted = '';
-                    if (rawStr.length > 7) {
-                        formatted = rawStr.substring(0, 3) + '-' + rawStr.substring(3, 7) + '-' + rawStr.substring(7, 11);
-                    } else if (rawStr.length > 3) {
-                        formatted = rawStr.substring(0, 3) + '-' + rawStr.substring(3);
-                    } else {
-                        formatted = rawStr;
-                    }
-                    this.value = formatted;
-                });
-            }
+//             if (telInput) {
+//                 telInput.addEventListener('input', function(e) {
+//                     let val = this.value.replace(/[０-９]/g, function(s) {
+//                         return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+//                     });
+//                     let rawStr = val.replace(/[^0-9]/g, '');
+//                     let formatted = '';
+//                     if (rawStr.length > 7) {
+//                         formatted = rawStr.substring(0, 3) + '-' + rawStr.substring(3, 7) + '-' + rawStr.substring(7, 11);
+//                     } else if (rawStr.length > 3) {
+//                         formatted = rawStr.substring(0, 3) + '-' + rawStr.substring(3);
+//                     } else {
+//                         formatted = rawStr;
+//                     }
+//                     this.value = formatted;
+//                 });
+//             }
         });
 
         function clearInput(id) {
@@ -194,7 +187,7 @@
         }
 
         function showConfirmModal() {
-            const claInput = document.querySelector('input[name="cla"]:checked');
+//             const claInput = document.querySelector('input[name="cla"]:checked');
             const statusInput = document.querySelector('input[name="status"]:checked');
             const form = document.getElementById('updateForm');
             const errorMessage = document.getElementById('error-message');
@@ -209,48 +202,54 @@
                 return;
             }
 
-            const name = document.getElementById('input-name').value.trim();
-            const tel = document.getElementById('input-tel').value.trim();
-            const pass = document.getElementById('input-pass').value.trim();
+            const title = document.getElementById('input-title').value.trim();
+            const writerName = document.getElementById('input-writerName').value.trim();
+            const company = document.getElementById('input-company').value.trim();
+            const bookClass = document.getElementById('input-bookClass').value.trim();
 
-            const nameRegex = /^[ぁ-んァ-ヶ一-龠々ーa-zA-Zａ-ｚＡ-Ｚ\s ]+$/;
-            if (!nameRegex.test(name)) {
-                errorMessage.innerText = "氏名には数字や記号は使用できません。";
-                errorMessage.style.visibility = 'visible';
-                return;
-            }
+//             const nameRegex = /^[ぁ-んァ-ヶ一-龠々ーa-zA-Zａ-ｚＡ-Ｚ\s ]+$/;
+//             if (!nameRegex.test(name)) {
+//                 errorMessage.innerText = "氏名には数字や記号は使用できません。";
+//                 errorMessage.style.visibility = 'visible';
+//                 return;
+//             }
 
-            const telRegex = /^[0-9-]+$/;
-            if (!telRegex.test(tel)) {
-                errorMessage.innerText = "電話番号は数字（ハイフン含む）のみで入力してください。";
-                errorMessage.style.visibility = 'visible';
-                return;
-            }
-			const telDigits = tel.replace(/[^0-9]/g, ''); 
+//             const telRegex = /^[0-9-]+$/;
+//             if (!telRegex.test(tel)) {
+//                 errorMessage.innerText = "電話番号は数字（ハイフン含む）のみで入力してください。";
+//                 errorMessage.style.visibility = 'visible';
+//                 return;
+//             }
+// 			const telDigits = tel.replace(/[^0-9]/g, ''); 
             
-            // 数字が10桁未満、または12桁以上の場合はエラー（一般的な固定電話は10桁、携帯は11桁）
-            if (telDigits.length < 10 || telDigits.length > 11) {
-                errorMessage.innerText = "電話番号の桁数が足りないか、正しくありません（10桁または11桁で入力してください）。";
-                errorMessage.style.visibility = 'visible';
-                // 入力欄にフォーカスを当てて、どこがダメだったか分かりやすくする
-                document.getElementById('input-tel').focus();
-                return;
-            }
+//             // 数字が10桁未満、または12桁以上の場合はエラー（一般的な固定電話は10桁、携帯は11桁）
+//             if (telDigits.length < 10 || telDigits.length > 11) {
+//                 errorMessage.innerText = "電話番号の桁数が足りないか、正しくありません（10桁または11桁で入力してください）。";
+//                 errorMessage.style.visibility = 'visible';
+//                 // 入力欄にフォーカスを当てて、どこがダメだったか分かりやすくする
+//                 document.getElementById('input-tel').focus();
+//                 return;
+//             }
 
-            if (pass.length > 0) {
-                const invalidRegex = /[^\x21-\x7E]/;
-                if (invalidRegex.test(pass)) {
-                    errorMessage.innerText = "パスワードに利用できない文字（全角文字やスペース）が含まれています。";
-                    errorMessage.style.visibility = 'visible';
-                    return; 
-                } 
-            }
+//             if (pass.length > 0) {
+//                 const invalidRegex = /[^\x21-\x7E]/;
+//                 if (invalidRegex.test(pass)) {
+//                     errorMessage.innerText = "パスワードに利用できない文字（全角文字やスペース）が含まれています。";
+//                     errorMessage.style.visibility = 'visible';
+//                     return; 
+//                 } 
+//             }
             
+//             document.getElementById('confirm-id').value = document.getElementById('input-id').value;
+//             document.getElementById('confirm-bookClass').value = claInput.parentElement.textContent.trim();
+//             document.getElementById('confirm-name').value = name;
+//             document.getElementById('confirm-tel').value = tel;
+//             document.getElementById('confirm-pass').value = pass === "" ? "（変更なし）" : "********";
             document.getElementById('confirm-id').value = document.getElementById('input-id').value;
-            document.getElementById('confirm-cla').value = claInput.parentElement.textContent.trim();
-            document.getElementById('confirm-name').value = name;
-            document.getElementById('confirm-tel').value = tel;
-            document.getElementById('confirm-pass').value = pass === "" ? "（変更なし）" : "********";
+            document.getElementById('confirm-title').value = title;
+            document.getElementById('confirm-writerName').value = writerName;
+            document.getElementById('confirm-company').value = company;
+            document.getElementById('confirm-bookClass').value = bookClass;
             document.getElementById('confirm-status').value = statusInput.parentElement.textContent.trim();
 
             document.getElementById('confirmModal').style.display = 'flex';

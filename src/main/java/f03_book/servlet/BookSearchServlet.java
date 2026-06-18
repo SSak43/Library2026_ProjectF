@@ -1,6 +1,7 @@
 package f03_book.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import Model.BooksBean;
@@ -35,18 +36,35 @@ public class BookSearchServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-		String id = request.getParameter("bookId");
+		String searchKey = request.getParameter("searchKey");
 
 		BooksBean booksBean = new BooksBean();
 		BooksSearchLogic logic = new BooksSearchLogic();
 		List<BooksBean> booksList = null;
-
-		if (id != null && !id.isEmpty()) {
-			//			try {
-			booksBean.setBookId(Integer.parseInt(id));
-			booksList = logic.id(booksBean);
-			//			}
+		
+		if (searchKey != null && !searchKey.isEmpty()) {
+			// 入力された文字が「すべて数字」ならID検索、それ以外なら氏名検索
+			if (searchKey.matches("^[0-9]+$")) {
+				booksBean.setBookId(Integer.parseInt(searchKey));
+				booksList = logic.id(booksBean);
+			} else {
+				// ⭕ 氏名としてセットしてロジックを呼び出す
+				booksBean.setTitle(searchKey);
+				booksList = logic.title(booksBean); // ②でこのメソッドを有効化します
+			}
+		} else {
+			// 何も入力されていない場合は、全件ではなく空のリスト（初期状態用）
+			booksList = new ArrayList<>();
 		}
+		
+		
+//
+//		if (id != null && !id.isEmpty()) {
+//			//			try {
+//			booksBean.setBookId(Integer.parseInt(id));
+//			booksList = logic.id(booksBean);
+//			//			}
+//		}
 
 		HttpSession session = request.getSession();
 		session.setAttribute("booksList", booksList);

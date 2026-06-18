@@ -5,8 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>貸出情報照会</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/home/riyousyahome.css">
+    <title>蔵書管理</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/home.css">
 </head>
 <body>
 
@@ -32,22 +32,19 @@ if (loginUserObj != null && loginUserObj instanceof UsersBean) {
         }
     }
 %>
-    <header class="header">
-    <div class="header-title">予約画面</div>
-    <form style="margin-left: auto;">
-        <button type="button" class="btn-logout" 
-                onclick="location.href='<%= menuUrl %>'">
-            メニュー
-        </button>
-    </form>
-</header>
 
-    <main class="main-container">
+    <div class="header">
+        <h1 class="header-title">蔵書管理</h1>
+        <button class="menu-button header-blue-button" type="button" onclick="location.href='${pageContext.request.contextPath}/home/admin_home.jsp'">メニュー</button>
+    </div>
 
-        <div class="menu-panel">
-            <a href="${pageContext.request.contextPath}/reserveBook" class="menu-link" style="font-size: 40px;">予約登録</a>
-            <a href="${pageContext.request.contextPath}/reserveSearch" class="menu-link" style="font-size: 40px;">照会・取り消し</a>
+    <div class="main-content-base layout-center">
+        <div class="link-group">
+            <a href="${pageContext.request.contextPath}/BooksRegist">図書登録</a>
+            <a href="${pageContext.request.contextPath}/BooksUpdate">更新</a>
+            <a href="${pageContext.request.contextPath}/booksSearch">図書情報参照</a>
         </div>
-    </main>
+    </div>
+
 </body>
 </html>

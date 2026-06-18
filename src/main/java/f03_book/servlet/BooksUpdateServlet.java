@@ -49,7 +49,7 @@ public class BooksUpdateServlet extends HttpServlet {
 
 		HttpSession session = request.getSession();
 		session.setAttribute("booksList", booksList);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/book/BooksUpdate.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/F-03/bookUpdate.jsp");
 		dispatcher.forward(request,response);
 	}
 

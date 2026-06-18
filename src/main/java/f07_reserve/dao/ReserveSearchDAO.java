@@ -14,11 +14,14 @@ import common.DAOBase;
 public class ReserveSearchDAO extends DAOBase {
 
     /**
-     * 予約状況を検索する（図書検索の条件に合わせる）
+     * 検索タイプとキーワードを指定して予約状況を取得する
      */
-    public List<ReserveBean> searchReserves(String category, String keyword) {
+    public List<ReserveBean> searchReserves(String searchType, String searchKeyword, int page) {
         List<ReserveBean> reserveList = new ArrayList<>();
         
+        int limit = 10;
+        int offset = (page - 1) * limit;
+
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
@@ -26,64 +29,81 @@ public class ReserveSearchDAO extends DAOBase {
         }
 
         try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
-            // 基本となるSQL（予約中のもの RESERVE_STATUS = '0' のみ）
+            // ベースとなるSQL
             StringBuilder sql = new StringBuilder(
-                "SELECT R.RESERVE_ID, R.BOOK_ID, U.USER_NAME, B.TITLE, B.WRITER_NAME, R.RESERVE_DATE, R.RESERVE_NO " +
+                "SELECT R.RESERVE_ID, R.USER_ID, U.USER_NAME, R.BOOK_ID, B.TITLE, B.WRITER_NAME, R.RESERVE_DATE, R.RESERVE_NO " +
                 "FROM RESERVE R " +
                 "JOIN BOOKS B ON R.BOOK_ID = B.BOOK_ID " +
                 "JOIN USERS U ON R.USER_ID = U.USER_ID " +
                 "WHERE R.RESERVE_STATUS = '0' "
             );
+            
+            List<Object> params = new ArrayList<>();
 
-            // キーワードがある場合、条件を追加
-            boolean hasKeyword = (keyword != null && !keyword.trim().isEmpty());
-            if (hasKeyword) {
-                if ("bookId".equals(category)) {
-                    sql.append("AND B.BOOK_ID = ? ");
-                } else if ("title".equals(category)) {
+            // ★キーワードが入力されている場合の動的SQL作成
+            if (searchKeyword != null && !searchKeyword.trim().isEmpty()) {
+                String kw = searchKeyword.trim();
+                
+                // 数値型のID検索（エラー回避のためtry-catch）
+                if ("userId".equals(searchType) || "bookId".equals(searchType)) {
+                    try {
+                        int id = Integer.parseInt(kw);
+                        if ("userId".equals(searchType)) {
+                            sql.append("AND R.USER_ID = ? ");
+                        } else {
+                            sql.append("AND R.BOOK_ID = ? ");
+                        }
+                        params.add(id);
+                    } catch (NumberFormatException e) {
+                        // IDに文字が入力された場合はヒットしないようにする
+                        sql.append("AND 1 = 0 "); 
+                    }
+                } 
+                // 文字列型のあいまい検索
+                else if ("title".equals(searchType)) {
                     sql.append("AND B.TITLE LIKE ? ");
-                } else if ("writerName".equals(category)) {
+                    params.add("%" + kw + "%");
+                } else if ("author".equals(searchType)) {
                     sql.append("AND B.WRITER_NAME LIKE ? ");
-                } else if ("company".equals(category)) {
-                    sql.append("AND B.COMPANY LIKE ? ");
-                } else if ("bookClass".equals(category)) {
-                    sql.append("AND B.BOOK_CLASS = ? ");
-                } else {
-                    // 「すべての項目」の場合
-                    sql.append("AND (B.BOOK_ID = ? OR B.TITLE LIKE ? OR B.WRITER_NAME LIKE ? OR B.COMPANY LIKE ?) ");
+                    params.add("%" + kw + "%");
+                } else if ("publisher".equals(searchType)) {
+                    sql.append("AND B.PUBLISHER LIKE ? "); // BOOKSテーブルの出版社カラムを想定
+                    params.add("%" + kw + "%");
+                } 
+                // 「すべての項目」の場合（全カラムに対してOR検索）
+                else {
+                    sql.append("AND (R.USER_ID LIKE ? OR R.BOOK_ID LIKE ? OR B.TITLE LIKE ? OR B.WRITER_NAME LIKE ? OR B.PUBLISHER LIKE ?) ");
+                    params.add("%" + kw + "%");
+                    params.add("%" + kw + "%");
+                    params.add("%" + kw + "%");
+                    params.add("%" + kw + "%");
+                    params.add("%" + kw + "%");
                 }
             }
 
-            // 指定通り「図書IDの昇順」、その中で「予約順の昇順」
-            sql.append("ORDER BY B.BOOK_ID ASC, R.RESERVE_NO ASC");
+            // 並び替えとページネーション
+            sql.append("ORDER BY R.RESERVE_ID ASC LIMIT ? OFFSET ?");
+            params.add(limit);
+            params.add(offset);
 
             PreparedStatement pStmt = conn.prepareStatement(sql.toString());
-
-            // パラメータのセット
-            if (hasKeyword) {
-                if ("bookId".equals(category) || "bookClass".equals(category)) {
-                    pStmt.setString(1, keyword);
-                } else if ("all".equals(category)) {
-                    pStmt.setString(1, keyword);
-                    pStmt.setString(2, "%" + keyword + "%");
-                    pStmt.setString(3, "%" + keyword + "%");
-                    pStmt.setString(4, "%" + keyword + "%");
-                } else {
-                    // あいまい検索
-                    pStmt.setString(1, "%" + keyword + "%");
-                }
+            
+            for (int i = 0; i < params.size(); i++) {
+                pStmt.setObject(i + 1, params.get(i));
             }
 
             try (ResultSet rs = pStmt.executeQuery()) {
                 while (rs.next()) {
                     ReserveBean rb = new ReserveBean();
                     rb.setReserveId(rs.getInt("RESERVE_ID"));
-                    rb.setBookId(rs.getInt("BOOK_ID"));
+                    rb.setUserId(rs.getInt("USER_ID"));
                     rb.setUserName(rs.getString("USER_NAME"));
+                    rb.setBookId(rs.getInt("BOOK_ID"));
                     rb.setTitle(rs.getString("TITLE"));
                     rb.setWriterName(rs.getString("WRITER_NAME"));
                     rb.setReserveDate(rs.getDate("RESERVE_DATE"));
                     rb.setReserveNo(rs.getInt("RESERVE_NO"));
+                    
                     reserveList.add(rb);
                 }
             }
@@ -94,20 +114,60 @@ public class ReserveSearchDAO extends DAOBase {
     }
 
     /**
-     * 予約を取り消す（RESERVE_STATUS を '1' に更新）
+     * 予約の取り消しと順位繰り上げ（前回のまま変更なし）
      */
     public boolean cancelReserve(int reserveId) {
         boolean result = false;
-        try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
-            String sql = "UPDATE RESERVE SET RESERVE_STATUS = '1' WHERE RESERVE_ID = ?";
-            PreparedStatement pStmt = conn.prepareStatement(sql);
-            pStmt.setInt(1, reserveId);
-            
-            if (pStmt.executeUpdate() == 1) {
+        Connection conn = null;
+        PreparedStatement pStmtSelect = null;
+        PreparedStatement pStmtCancel = null;
+        PreparedStatement pStmtUpdateNo = null;
+        ResultSet rs = null;
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
+            conn.setAutoCommit(false);
+
+            String sqlSelect = "SELECT BOOK_ID, RESERVE_NO FROM RESERVE WHERE RESERVE_ID = ?";
+            pStmtSelect = conn.prepareStatement(sqlSelect);
+            pStmtSelect.setInt(1, reserveId);
+            rs = pStmtSelect.executeQuery();
+
+            int bookId = -1;
+            int currentReserveNo = -1;
+            if (rs.next()) {
+                bookId = rs.getInt("BOOK_ID");
+                currentReserveNo = rs.getInt("RESERVE_NO");
+            }
+
+            if (bookId != -1 && currentReserveNo != -1) {
+                String sqlCancel = "UPDATE RESERVE SET RESERVE_STATUS = '1', RESERVE_NO = 0 WHERE RESERVE_ID = ?";
+                pStmtCancel = conn.prepareStatement(sqlCancel);
+                pStmtCancel.setInt(1, reserveId);
+                pStmtCancel.executeUpdate();
+
+                String sqlUpdateNo = "UPDATE RESERVE SET RESERVE_NO = RESERVE_NO - 1 "
+                                   + "WHERE BOOK_ID = ? AND RESERVE_STATUS = '0' AND RESERVE_NO > ?";
+                pStmtUpdateNo = conn.prepareStatement(sqlUpdateNo);
+                pStmtUpdateNo.setInt(1, bookId);
+                pStmtUpdateNo.setInt(2, currentReserveNo);
+                pStmtUpdateNo.executeUpdate();
+
+                conn.commit();
                 result = true;
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
+            if (conn != null) {
+                try { conn.rollback(); } catch (SQLException se) { se.printStackTrace(); }
+            }
             e.printStackTrace();
+        } finally {
+            try { if (rs != null) rs.close(); } catch (SQLException e) {}
+            try { if (pStmtSelect != null) pStmtSelect.close(); } catch (SQLException e) {}
+            try { if (pStmtCancel != null) pStmtCancel.close(); } catch (SQLException e) {}
+            try { if (pStmtUpdateNo != null) pStmtUpdateNo.close(); } catch (SQLException e) {}
+            try { if (conn != null) conn.close(); } catch (SQLException e) {}
         }
         return result;
     }

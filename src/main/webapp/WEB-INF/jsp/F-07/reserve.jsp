@@ -42,9 +42,9 @@
             <div class="modal-buttons-right">
                 
                 <button type="button" class="modal-action-button" style="width: 100px;" 
-                        onclick="location.href='${pageContext.request.contextPath}/ReserveManagement">メニュー</button>
+                        onclick="location.href='${pageContext.request.contextPath}/ReserveManagement'">メニュー</button>
                 <button type="button" class="modal-action-button" style="width: 100px; font-size: 0.9rem;" 
-                        onclick="location.href='${pageContext.request.contextPath}/reserveBook">続けて登録</button>
+                        onclick="location.href='${pageContext.request.contextPath}/reserveBook'">続けて登録</button>
             </div>
         </div>
     </div>

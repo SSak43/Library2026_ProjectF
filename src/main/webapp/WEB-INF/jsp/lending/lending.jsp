@@ -16,7 +16,34 @@
 
     <div class="main-box">
         <div class="error"><c:out value="${errorMessage}" /></div>
-        <div class="success"><c:out value="${successMessage}" /></div>
+        
+ <!-- 登録完了モーダル -->
+            <div id="completeModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-title">登録完了</div>
+    
+            <div style="text-align: center; margin: 30px 0; font-size: 1.1rem; line-height: 1.6;">
+                <p style="color: #2f5597; font-weight: bold;">
+                    <c:out value="${successMessage}" />
+                </p>
+            </div>
+  
+            <div class="modal-buttons">
+                <button type="button" class="modal-action-button" 
+                        onclick="location.href='/Library2026_ProjectF/home/admin_home.jsp'">メニュー</button>
+                <button type="button" class="modal-action-button" style="width: auto; font-size: 0.9rem;" 
+                        onclick="location.href='${pageContext.request.contextPath}/lending'">続けて登録</button>
+            </div>
+        </div>
+    </div>
+
+    <c:if test="${not empty successMessage}">
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                document.getElementById('completeModal').style.display = 'flex';
+            });
+        </script>
+    </c:if>
 
         <form id="lendForm" action="lending" method="post">
             <input type="hidden" id="hdnUserId" name="userId" value="${selectedUser != null ? selectedUser.userId : ''}">
@@ -78,22 +105,22 @@
     <div id="confirmModal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-title">確認画面</div>
-            <table style="width: 100%;">
+            <table style="width:100%;">
                 <tr>
-                    <th style="width: 30%;">利用者ID</th>
-                    <td class="popText"><span id="popUserId"></span></td>
+                    <th style="width:30%;">利用者ID</th>
+                    <td class="input-field w-full"><span id="popUserId"></span></td>
                 </tr>
                 <tr>
                     <th>氏名</th>
-                    <td class="popText"><span id="popUserName"></span></td>
+                    <td class="input-field w-full"><span id="popUserName"></span></td>
                 </tr>
                 <tr>
                     <th>図書ID</th>
-                    <td class="popText"><span id="popBookId"></span></td>
+                    <td class="input-field w-full"><span id="popBookId"></span></td>
                 </tr>
                 <tr>
                     <th>書名</th>
-                    <td class="popText"><span id="popBookTitle"></span></td>
+                    <td class="input-field w-full"><span id="popBookTitle"></span></td>
                 </tr>
             </table>
             <div class="modal-buttons">

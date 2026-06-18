@@ -19,7 +19,7 @@ body {
   margin-bottom: 10px; /* 下の検索枠との間隔 */
 }
 
-/* 「検索画面」のテキスト */
+/* 画面のテキスト */
 .page-title {
   font-size: 20px;
   color: #333;
@@ -73,7 +73,6 @@ body {
 .search-col-item,
 .search-col-value {
   border-right: 1px solid #000;
-  border-under: 1px solid #000; /* 右側に1pxの黒い実線を引く */
 }
 
 /* 十字の区切り線（横） */
@@ -82,12 +81,12 @@ body {
 }
 
 /* 各列の幅 */
-.search-col-item { width: 20%; } /* 検索項目の列の幅を全体の25%に設定 */
-.search-col-value { width: 60%; } /* 検索値の列の幅を全体の55%に設定 */
+.search-col-item { width: 20%; } /* 検索項目の列の幅を全体の20%に設定 */
+.search-col-value { width: 60%; } /* 検索値の列の幅を全体の60%に設定 */
 .search-col-buttons { 
   width: 20%; 
-  vertical-align: bottom; /* ★上下中央揃えから「下揃え」に変更 */
-  padding-bottom: 8px; /* ★下枠にくっつきすぎないよう、ちょっとだけ隙間を空けて調整 */
+  vertical-align: bottom; /* 上下中央揃えから「下揃え」に変更 */
+  padding-bottom: 8px; /* 下枠にくっつきすぎないよう、ちょっとだけ隙間を空けて調整 */
 } 
 
 /* フォーム部品の設定 */
@@ -97,7 +96,7 @@ body {
   background-color: transparent; /* セレクトボックスの背景色を透明に設定 */
   border: none; /* セレクトボックスの枠線を非表示設定 */
   cursor: pointer; /* マウスオーバー時にカーソルを指のマークにする */
-  width: 38%; /* セレクトボックスの横幅を親要素の90%に設定 */
+  width: 38%; /* セレクトボックスの横幅を親要素の38%に設定 */
   box-sizing: border-box; /* パディングとボーダーを幅（width）に含める設定 */
   
   /* ブラウザ標準のプルダウン矢印を非表示にする */
@@ -145,7 +144,7 @@ body {
   content: "";
   position: absolute;
   bottom: -0.5px; /* 右側のセルの線と高さを合わせる */
-  left: 5%; /* ★ここで左端の隙間の幅を調整します（お好みで変更OK） */
+  left: 5%; /* ここで左端の隙間の幅を調整します */
   right: 0;
   border-bottom: 1px solid #000; /* 黒い実線を引く */
 }
@@ -213,13 +212,13 @@ body {
   background-color: #f2f2f2;
 }
 
-/* 変更された項目に合わせた各列の幅の比率 */
-.col-no { width: 5%; }        /* 「No.」列 */
-.col-id { width: 15%; }       /* 「図書ID」列 */
-.col-title { width: 40%; }    /* 「書名」列 */
-.col-userid { width: 15%; }   /* 「利用者ID」列 */
-.col-returndate { width: 15%; }/* 「返却日」列 */
-.col-action { width: 10%; }   /* 「操作」列 */
+/* 各列の幅の比率（合計が100%になるように調整） */
+.col-no { width: 5%; }           /* 「No.」列の幅 */
+.col-book-id { width: 15%; }     /* 「図書ID」列の幅 */
+.col-title { width: 40%; }       /* 「書名」列の幅 */
+.col-user-id { width: 15%; }     /* 「利用者ID」列の幅 */
+.col-return-date { width: 15%; } /* 「返却日」列の幅 */
+.col-action { width: 10%; }      /* 「操作」列の幅 */
 
 /* --- 右下のボタンエリア --- */
 .pagination-area {

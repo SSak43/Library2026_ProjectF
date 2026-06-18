@@ -12,22 +12,33 @@
   <div class="page-title">貸出状況</div>
   <button type="button" class="menu-btn">メニュー</button>
 </div>
-
+<!-- 新しく追加した検索エリア -->
 <div class="search-container">
   <table class="search-table">
     <tr>
-      <th class="search-col-item">利用者ID</th>
-      <td class="search-col-value">
-        <input type="text" class="search-input" autocomplete="off">
-      </td>
-      <td class="search-col-buttons">
-        <button type="button" class="action-btn">表示</button>
+      <th class="search-col-item border-bottom-gap">検索項目</th>
+      <th class="search-col-value border-bottom">検索値</th>
+      <td rowspan="2" class="search-col-buttons">
+        <button type="button" class="action-btn">検索</button>
         <button type="button" class="action-btn">リセット</button>
+      </td>
+    </tr>
+    <tr>
+      <td class="search-col-item border-bottom-gap"> <select class="search-select">
+          <option>すべての項目▼</option>
+          <option>図書ID</option>
+          <option>書名</option>
+          <option>著者</option>
+          <option>出版社</option>
+        </select>
+      </td>
+      <td class="search-col-value border-bottom"> <input type="text" class="search-input" autocomplete="off">
       </td>
     </tr>
   </table>
 </div>
 
+<!-- 既存の表エリア -->
 <div class="table-container">
   <p class="result-message">1件の貸出図書が見つかりました。</p>
   
@@ -38,7 +49,7 @@
         <th class="col-id">図書ID</th>
         <th class="col-title">書名</th>
         <th class="col-author">貸出日</th>
-        <th class="col-publisher">返却期限</th>
+        <th class="col-publisher">返却日</th>
         <th class="col-action">操作</th>
       </tr>
     </thead>

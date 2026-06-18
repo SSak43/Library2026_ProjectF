@@ -73,7 +73,6 @@
   .search-col-item,
   .search-col-value {
     border-right: 1px solid #000;
-    border-under: 1px solid #000; /* 右側に1pxの黒い実線を引く */
   }
 
   /* 十字の区切り線（横） */

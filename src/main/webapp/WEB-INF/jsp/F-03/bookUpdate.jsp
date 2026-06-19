@@ -36,7 +36,7 @@
             
         <div class="register-error-message" id="error-message" style="min-height: 1.5em; visibility: ${isSearch && !isFound ? 'visible' : 'hidden' || not empty errorMessage ? 'visible' : 'hidden'};">
             <c:choose>
-                <c:when test="${isSearch && !isFound}">該当する利用者は存在しません</c:when>
+                <c:when test="${isSearch && !isFound}">該当する図書は存在しません</c:when>
                 <c:otherwise><c:out value="${errorMessage}" /></c:otherwise>
             </c:choose>
         </div>

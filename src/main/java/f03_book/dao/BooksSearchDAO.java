@@ -53,11 +53,11 @@ public class BooksSearchDAO extends DAOBase {
 			throw new IllegalStateException("JDBCドライバを読み込めません");
 		}
 		try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
-			// ⭕ 氏名の部分一致（LIKE）で検索するSQL
+			// ⭕ 氏名の完全一致（LIKE）で検索するSQL
 			String sql = "SELECT * FROM BOOKS WHERE TITLE LIKE ?";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
-			pStmt.setString(1, "%" + booksBean.getTitle() + "%");
-//			pStmt.setString(1,booksBean.getTitle());
+//			pStmt.setString(1, "%" + booksBean.getTitle() + "%");
+			pStmt.setString(1,booksBean.getTitle());
 			
 			try(ResultSet rs = pStmt.executeQuery()){
 				while(rs.next()) {

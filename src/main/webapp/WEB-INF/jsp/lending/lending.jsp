@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="Model.UsersBean" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="ja">
@@ -9,9 +10,32 @@
 </head>
 <body>
 
+<%
+
+UsersBean loginUser = null;
+Object loginUserObj = session.getAttribute("loginUser");
+if (loginUserObj == null) loginUserObj = session.getAttribute("user");
+if (loginUserObj == null) loginUserObj = session.getAttribute("login");
+if (loginUserObj != null && loginUserObj instanceof UsersBean) {
+    loginUser = (UsersBean) loginUserObj;
+}
+    // ログインユーザーの区分に応じて遷移先URLを決定
+    String menuUrl = request.getContextPath() + "/home/admin_home.jsp"; // デフォルト
+    if (loginUser != null) {
+        String uClass = loginUser.getUserClass();
+        if ("0".equals(uClass) || "管理者".equals(uClass)) {
+            menuUrl = request.getContextPath() + "/home/admin_home.jsp";
+        } else if ("1".equals(uClass) || "司書".equals(uClass)) {
+            menuUrl = request.getContextPath() + "/home/sisyo_home.jsp";
+        } else if ("2".equals(uClass) || "利用者".equals(uClass)) {
+            menuUrl = request.getContextPath() + "/home/riyousyahome.jsp";
+        }
+    }
+%>
+
     <div class="header">
         <h1 class="header-title">貸出入力画面</h1>
-        <button class="menu-button header-blue-button" type="button" onclick="location.href='/Library2026_ProjectF/home/admin_home.jsp'">メニュー</button>
+        <button class="menu-button" type="button" onclick="location.href='<%= menuUrl %>'">メニュー</button>
     </div>
 
     <div class="main-box">
@@ -51,9 +75,15 @@
             <input type="hidden" id="actionField" name="action" value="">
 
             <div style="margin-bottom: 10px;">
-                <input type="text" id="inputUserId" placeholder="利用者ID入力" value="${selectedUser != null ? selectedUser.userId : ''}" class="input-field" autofocus required>
-                <button type="button" onclick="submitSearch('searchUser')" style="padding: 5px 20px; font-size: 1rem; background-color: #fff; border:1px solid;">表示</button>
-            </div>
+			    <input type="text" id="inputUserId" placeholder="利用者ID入力" 
+			           value="${not empty param.userId ? param.userId : (selectedUser != null ? String.format('%06d', selectedUser.userId) : '')}" 
+			           class="input-field" autofocus required 
+			           maxlength="6" pattern="[0-9]{6}" 
+			           oninvalid="this.setCustomValidity('6桁の数字（例: 000001）を入力してください')" 
+			           oninput="this.setCustomValidity('')">
+			           
+			    <button type="button" onclick="submitSearch('searchUser')" style="padding: 5px 20px; font-size: 1rem; background-color: #fff; border:1px solid;">表示</button>
+			</div>
             <table>
                 <tr>
                     <th>氏名</th>
@@ -70,9 +100,16 @@
             </table>
 
             <div style="margin-bottom: 10px;">
-                <input type="text" id="inputBookId" placeholder="図書ID入力" value="${selectedBook != null ? selectedBook.bookId : ''}" class="input-field" required>
-                <button type="button" onclick="submitSearch('searchBook')" style="padding: 5px 20px; font-size: 1rem; background-color: #fff; border:1px solid;">表示</button>
-            </div>
+			    <input type="text" id="inputBookId" name="bookId" placeholder="図書IDを入力" 
+			           value="${not empty param.bookId ? param.bookId : inputBookId}" 
+			           class="input-field" required 
+			           maxlength="6" pattern="[0-9]{6}" 
+			           oninvalid="this.setCustomValidity('6桁の数字（例: 000001）を入力してください')" 
+			           oninput="this.setCustomValidity('')">
+			           
+			    <button type="button" onclick="submitSearch('searchBook')" style="padding: 5px 20px; font-size: 1rem; background-color: #fff; border:1px solid;">表示</button>
+			</div>
+
             <table>
                 <tr>
                     <th>書名</th>
@@ -133,6 +170,14 @@
     <script>
         // 「表示」ボタンが押されたときの処理
         function submitSearch(actionType) {
+            
+            // 入力チェック（6桁かどうかなど）を満たしていない場合は、吹き出しを出して処理を止める
+            if (actionType === 'searchUser') {
+                if (!document.getElementById('inputUserId').reportValidity()) return;
+            } else if (actionType === 'searchBook') {
+                if (!document.getElementById('inputBookId').reportValidity()) return;
+            }
+
             // 入力欄の最新の値を、送信用の隠しフィールド(hidden)に移し替える
             document.getElementById('hdnUserId').value = document.getElementById('inputUserId').value;
             document.getElementById('hdnBookId').value = document.getElementById('inputBookId').value;

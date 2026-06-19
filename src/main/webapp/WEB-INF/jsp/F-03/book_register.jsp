@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="Model.UsersBean" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
@@ -13,9 +14,32 @@
 </head>
 <body>
 
+<%
+
+UsersBean loginUser = null;
+Object loginUserObj = session.getAttribute("loginUser");
+if (loginUserObj == null) loginUserObj = session.getAttribute("user");
+if (loginUserObj == null) loginUserObj = session.getAttribute("login");
+if (loginUserObj != null && loginUserObj instanceof UsersBean) {
+    loginUser = (UsersBean) loginUserObj;
+}
+    // ログインユーザーの区分に応じて遷移先URLを決定
+    String menuUrl = request.getContextPath() + "/home/admin_home.jsp"; // デフォルト
+    if (loginUser != null) {
+        String uClass = loginUser.getUserClass();
+        if ("0".equals(uClass) || "管理者".equals(uClass)) {
+            menuUrl = request.getContextPath() + "/home/admin_home.jsp";
+        } else if ("1".equals(uClass) || "司書".equals(uClass)) {
+            menuUrl = request.getContextPath() + "/home/sisyo_home.jsp";
+        } else if ("2".equals(uClass) || "利用者".equals(uClass)) {
+            menuUrl = request.getContextPath() + "/home/riyousyahome.jsp";
+        }
+    }
+%>
+
     <div class="header">
         <h1 class="header-title">図書登録入力画面</h1>
-        <button class="menu-button" type="button" onclick="location.href='${pageContext.request.contextPath}/home/admin_home.jsp'">メニュー</button>
+        <button class="menu-button" type="button" onclick="location.href='${pageContext.request.contextPath}/BooksMain'">メニュー</button>
     </div>
 
     <form action="${pageContext.request.contextPath}/BooksRegist" method="post" id="registForm">
@@ -101,7 +125,7 @@
             <div class="modal-buttons-right">　
             
             	<button type="button" class="modal-action-button" style="width: 120px;" 
-                        onclick="location.href='${pageContext.request.contextPath}/home/admin_home.jsp'">メニュー</button>
+                        onclick="location.href='<%= menuUrl %>'">メニュー</button>
                 <button type="button" class="modal-action-button" style="width: 120px;　font-size: 0.9rem;" 
                         onclick="location.href='${pageContext.request.contextPath}/BooksRegist'">続けて登録</button>
                 

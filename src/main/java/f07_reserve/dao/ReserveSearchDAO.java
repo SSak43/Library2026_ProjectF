@@ -29,22 +29,23 @@ public class ReserveSearchDAO extends DAOBase {
         }
 
         try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
-            // ベースとなるSQL
+            // ベースとなるSQL（※論理削除されていないデータのみ取得するように修正）
             StringBuilder sql = new StringBuilder(
                 "SELECT R.RESERVE_ID, R.USER_ID, U.USER_NAME, R.BOOK_ID, B.TITLE, B.WRITER_NAME, R.RESERVE_DATE, R.RESERVE_NO " +
                 "FROM RESERVE R " +
                 "JOIN BOOKS B ON R.BOOK_ID = B.BOOK_ID " +
                 "JOIN USERS U ON R.USER_ID = U.USER_ID " +
-                "WHERE R.RESERVE_STATUS = '0' "
+                "WHERE R.RESERVE_STATUS = '0' " +
+                "AND R.DELETE_FLAG = '0' AND B.DELETE_FLAG = '0' AND U.DELETE_FLAG = '0' "
             );
             
             List<Object> params = new ArrayList<>();
 
-            // ★キーワードが入力されている場合の動的SQL作成
+            // ★キーワードが入力されている場合のみ絞り込み（空欄なら全て表示される）
             if (searchKeyword != null && !searchKeyword.trim().isEmpty()) {
                 String kw = searchKeyword.trim();
                 
-                // 数値型のID検索（エラー回避のためtry-catch）
+                // 数値型のID検索
                 if ("userId".equals(searchType) || "bookId".equals(searchType)) {
                     try {
                         int id = Integer.parseInt(kw);
@@ -55,8 +56,7 @@ public class ReserveSearchDAO extends DAOBase {
                         }
                         params.add(id);
                     } catch (NumberFormatException e) {
-                        // IDに文字が入力された場合はヒットしないようにする
-                        sql.append("AND 1 = 0 "); 
+                        sql.append("AND 1 = 0 "); // 数字以外が入力されたらヒットさせない
                     }
                 } 
                 // 文字列型のあいまい検索
@@ -67,12 +67,12 @@ public class ReserveSearchDAO extends DAOBase {
                     sql.append("AND B.WRITER_NAME LIKE ? ");
                     params.add("%" + kw + "%");
                 } else if ("publisher".equals(searchType)) {
-                    sql.append("AND B.PUBLISHER LIKE ? "); // BOOKSテーブルの出版社カラムを想定
+                    sql.append("AND B.COMPANY LIKE ? "); // DBに合わせてCOMPANYに修正
                     params.add("%" + kw + "%");
                 } 
                 // 「すべての項目」の場合（全カラムに対してOR検索）
                 else {
-                    sql.append("AND (R.USER_ID LIKE ? OR R.BOOK_ID LIKE ? OR B.TITLE LIKE ? OR B.WRITER_NAME LIKE ? OR B.PUBLISHER LIKE ?) ");
+                    sql.append("AND (R.USER_ID LIKE ? OR R.BOOK_ID LIKE ? OR B.TITLE LIKE ? OR B.WRITER_NAME LIKE ? OR B.COMPANY LIKE ?) ");
                     params.add("%" + kw + "%");
                     params.add("%" + kw + "%");
                     params.add("%" + kw + "%");
@@ -114,7 +114,7 @@ public class ReserveSearchDAO extends DAOBase {
     }
 
     /**
-     * 予約の取り消しと順位繰り上げ（前回のまま変更なし）
+     * 予約の取り消しと順位繰り上げ
      */
     public boolean cancelReserve(int reserveId) {
         boolean result = false;
@@ -142,6 +142,7 @@ public class ReserveSearchDAO extends DAOBase {
             }
 
             if (bookId != -1 && currentReserveNo != -1) {
+                // キャンセル時は論理削除（DELETE_FLAG='1'）にせず、予約ステータスを'1'(完了/取消)にします
                 String sqlCancel = "UPDATE RESERVE SET RESERVE_STATUS = '1', RESERVE_NO = 0 WHERE RESERVE_ID = ?";
                 pStmtCancel = conn.prepareStatement(sqlCancel);
                 pStmtCancel.setInt(1, reserveId);

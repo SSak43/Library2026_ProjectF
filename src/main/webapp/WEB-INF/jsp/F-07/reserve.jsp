@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="Model.UsersBean" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="ja">
@@ -15,7 +16,7 @@
 
     <div class="header">
         <h1 class="header-title">図書予約登録画面</h1>
-        <button class="menu-button" type="button" onclick="location.href='${pageContext.request.contextPath}/home/admin_home.jsp'">メニュー</button>
+        <button class="menu-button" type="button" onclick="location.href='${pageContext.request.contextPath}/ReserveManagement'">メニュー</button>
     </div>
 
     <form action="${pageContext.request.contextPath}/reserveBook" method="post" id="reserveForm">
@@ -61,9 +62,13 @@
                     <th>利用者ID</th>
                     <td>
                         <div style="display: flex; gap: 10px; align-items: center;">
-                            <input type="text" class="input-field" name="userId" id="input-user-id" placeholder="利用者IDを入力" value="${inputUserId}" style="width: 200px;" required>
-                            <button type="button" class="clear-button" style="padding: 5px 20px; font-size: 1rem;" onclick="submitAction('searchUser')">表示</button>
-                        </div>
+						    <input type="text" class="input-field" name="userId" id="input-user-id" placeholder="利用者IDを入力" 
+						           value="${inputUserId}" style="width: 200px;" required 
+						           maxlength="6" pattern="[0-9]{6}" 
+						           oninvalid="this.setCustomValidity('6桁の数字（例: 123456）を入力してください')" 
+						           oninput="this.setCustomValidity('')">
+						    <button type="button" class="clear-button" style="padding: 5px 20px; font-size: 1rem;" onclick="submitAction('searchUser')">表示</button>
+						</div>
                     </td>
                 </tr>
                 <tr>
@@ -76,9 +81,16 @@
                     <th>図書ID</th>
                     <td>
                         <div style="display: flex; gap: 10px; align-items: center;">
-                            <input type="text" class="input-field" name="bookId" id="input-book-id" placeholder="図書IDを入力" value="${inputBookId}" style="width: 200px;" required>
-                            <button type="button" class="clear-button" style="padding: 5px 20px; font-size: 1rem;" onclick="submitAction('searchBook')">表示</button>
-                        </div>
+						    <input type="text" class="input-field" name="bookId" id="inputBookId" placeholder="図書IDを入力" 
+						           value="${inputBookId}" style="width: 200px !important; min-width: 200px; flex-shrink: 0;"
+						           required maxlength="6" pattern="[0-9]{6}" 
+						           oninvalid="this.setCustomValidity('6桁の数字（例: 123456）を入力してください')" 
+						           oninput="this.setCustomValidity('')">
+						           
+						    <button type="button" class="clear-button" style="padding: 5px 20px; font-size: 1rem;" onclick="submitSearch('searchBook')">表示</button>
+						</div>
+
+
                     </td>
                 </tr>
                 <tr>

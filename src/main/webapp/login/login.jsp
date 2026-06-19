@@ -31,9 +31,11 @@
 
             <form action="/Library2026_ProjectF/login" method="post">
                 <div class="form-group">
-                    <label for="login_id">ID</label>
-                    <input type="text" id="login_id" name="login_id" class="form-control" required autofocus>
-                </div>
+				    <label for="login_id">ID</label>
+				    <input type="text" id="login_id" name="login_id" class="form-control" required autofocus maxlength="6" pattern="[0-9]{6}" 
+				           oninvalid="this.setCustomValidity('6桁の数字（例: 123456）を入力してください')" 
+				           oninput="this.setCustomValidity('')">
+				</div>
 
                 <div class="form-group">
                     <label for="password">パスワード</label>

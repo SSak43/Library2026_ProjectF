@@ -1,6 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%-- JSTLを使用するための宣言（Jakarta EE用） --%>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %> 
+
+<td>${book.bookId}</td>
+
+<td><fmt:formatNumber value="${book.bookId}" pattern="000000" /></td>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -360,18 +365,16 @@
           
           <td style="text-align: right; vertical-align: middle; padding: 5px 18px 5px 0;">
             <c:if test="${book.bookStatus == '0'}">
-              <%-- form を inline-block にして右寄せが効くようにする --%>
-              <form action="${pageContext.request.contextPath}/lending" method="GET" style="display: inline-block; margin: 0; padding: 0; vertical-align: middle;">
-                
-                <input type="hidden" name="bookId" value="${book.bookId}">
-                <input type="hidden" name="userId" value="${sessionScope.loginUser.userId}">
-                
-                <button type="submit" class="register-button" 
-                        style="padding: 6px 16px; width: auto; font-size: 0.7rem; font-weight: bold; cursor: pointer; border-radius: 4px; border: 1px solid #7f7f7f; vertical-align: middle;">
-                    貸出
-                </button>
-              </form>
-            </c:if>
+			    <fmt:formatNumber value="${book.bookId}" pattern="000000" var="fmtBookId" />
+			    <fmt:formatNumber value="${sessionScope.loginUser.userId}" pattern="000000" var="fmtUserId" />
+			    
+			    <form action="${pageContext.request.contextPath}/lending" method="post" style="display:inline;">
+			        <input type="hidden" name="action" value="searchBook">
+			        <input type="hidden" name="bookId" value="${fmtBookId}">
+			        <input type="hidden" name="userId" value="${fmtUserId}">
+			        <button type="submit" class="action-btn">貸出</button>
+			    </form>
+			</c:if>
           </td>
         </tr>
       </c:forEach>

@@ -4,14 +4,12 @@ import java.io.IOException;
 import java.util.List;
 
 import Model.ReserveBean;
-import Model.UsersBean;
 import f07_reserve.dao.ReserveSearchDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession; 
+import jakarta.servlet.http.HttpServletResponse; 
 
 @WebServlet("/reserveSearch")
 public class ReserveSearchServlet extends HttpServlet {
@@ -51,35 +49,11 @@ public class ReserveSearchServlet extends HttpServlet {
             }
         }
 
-        // ② 検索条件の取得（新しいドロップダウン対応）
-        HttpSession session = request.getSession();
+        // ② 検索条件の取得（初回時のユーザーID強制セットを削除）
         String searchType = request.getParameter("searchType");
         String searchKeyword = request.getParameter("searchKeyword");
 
-        // 初回アクセス時の処理
-        if (searchType == null && searchKeyword == null) {
-            Object loginUserObj = session.getAttribute("loginUser");
-            if (loginUserObj == null) loginUserObj = session.getAttribute("user"); 
-            if (loginUserObj == null) loginUserObj = session.getAttribute("login"); 
-            
-            if (loginUserObj != null && loginUserObj instanceof UsersBean) {
-                UsersBean loginUser = (UsersBean) loginUserObj;
-                String uClass = loginUser.getUserClass();
-                
-                // 利用者(権限2)の場合は、検索項目を「利用者ID」、検索値を「自分のID」に初期セットする
-                if ("利用者".equals(uClass) || "2".equals(uClass) || "user".equals(uClass) || uClass == null || uClass.isEmpty()) {
-                    searchType = "userId";
-                    searchKeyword = String.valueOf(loginUser.getUserId());
-                } else {
-                    searchType = "all";
-                    searchKeyword = "";
-                }
-            } else {
-                searchType = "all";
-                searchKeyword = "";
-            }
-        }
-
+        // 常に最初は「すべての項目」「検索値なし（全件表示）」をデフォルトにする
         if (searchType == null) searchType = "all";
         if (searchKeyword == null) searchKeyword = "";
 

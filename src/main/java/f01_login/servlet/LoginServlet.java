@@ -30,6 +30,12 @@ public class LoginServlet extends HttpServlet {
 		String errorMessage = "";
 
 		if (idStr != null && !idStr.isEmpty() && password != null && !password.isEmpty()) {
+			
+			if (idStr.length() != 6 || !idStr.matches("^[0-9]{6}$")) {
+				request.setAttribute("errorMessage", "ログインIDは6桁の数字（0埋め）で入力してください。");
+				request.getRequestDispatcher("login/login.jsp").forward(request, response);
+				return; // ここで処理を終了し、ログイン画面に戻す
+			}
 			try {
 				int userId = Integer.parseInt(idStr);
 

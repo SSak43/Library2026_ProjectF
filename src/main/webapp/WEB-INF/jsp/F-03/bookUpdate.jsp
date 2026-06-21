@@ -53,7 +53,7 @@
 
             <table class="form-table ${!isFound ? 'form-table-locked' : 'form-table-active'}">
                 <tr>
-                    <th>利用者ID</th>
+                    <th>図書ID</th>
                     <td>
                         <input type="text" class="input-field input-readonly-id" id="input-id" value="${isFound ? b.bookId : ''}" readonly placeholder="IDを表示します">
                     </td>

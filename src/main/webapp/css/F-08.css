@@ -215,7 +215,7 @@
   }
 
   /* 各列の幅の比率 */
-  .col-no { width: 4%; } /* 「No.」列の幅を全体の6%に設定 */
+  .col-no { width: 5%; } /* 「No.」列の幅を全体の6%に設定 */
   .col-id { width: 10%; } /* 「図書ID」列の幅を全体の10%に設定 */
   .col-title { width: 65%; } /* 「書名」列の幅を全体の34%に設定 */
   .col-author { width: 6%; } /* 「著者」列の幅を全体の12%に設定 */
@@ -244,6 +244,7 @@
   .pagination-area {
     display: flex; /* 子要素（ボタン群）をフレックスボックスでレイアウトする */
     justify-content: flex-end; /* ボタン群を右側に寄せる */
+    margin-top: -20px;
   }
 
   .pagination-buttons {
@@ -251,6 +252,7 @@
     border: 1px solid #000; /* ボタン群全体を1pxの黒い実線で囲む */
     border-top: none; /* ボタン群の上側の枠線を消す（上の表と一体化させるため） */
     background-color: #eeeeee; /* ボタン群の背景色を薄いグレーに設定 */
+    border-top: none;
   }
 
   .pagination-buttons button {

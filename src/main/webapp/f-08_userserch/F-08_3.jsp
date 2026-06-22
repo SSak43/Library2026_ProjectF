@@ -70,7 +70,7 @@
   <table class="custom-table">
     <thead>
       <tr>
-        <th class="col-no">予約状況状況</th>
+        <th class="col-no">予約状況</th>
         <th class="col-id">図書ID</th>
         <th class="col-title">書名</th>
         <th class="col-author">予約日</th>

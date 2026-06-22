@@ -1,3 +1,0 @@
-http://localhost:8080/Library2026_ProjectF/rentalSearch
-
-http://localhost:8080/Library2026_ProjectF/reserveStatusInquiry

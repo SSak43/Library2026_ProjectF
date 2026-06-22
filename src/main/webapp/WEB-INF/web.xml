@@ -84,4 +84,24 @@
     <servlet-name>BooksUpdateServlet</servlet-name>
     <url-pattern>/BooksUpdateServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>OverServlet</display-name>
+    <servlet-name>OverServlet</servlet-name>
+    <servlet-class>f09_over.servlet.OverServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>OverServlet</servlet-name>
+    <url-pattern>/OverServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>InquiryManagementServlet</display-name>
+    <servlet-name>InquiryManagementServlet</servlet-name>
+    <servlet-class>f08_inquiry.servlet.InquiryManagementServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>InquiryManagementServlet</servlet-name>
+    <url-pattern>/InquiryManagementServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

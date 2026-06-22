@@ -58,6 +58,6 @@ public class UserStatusServlet extends HttpServlet {
 		request.setAttribute("targetUserId", userId);
 		
 		// JSPへフォワード
-		request.getRequestDispatcher("/WEB-INF/jsp/f08_rentalSearch/userStatus.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/jsp/F-08/F-08_3.jsp").forward(request, response);
 	}
 }

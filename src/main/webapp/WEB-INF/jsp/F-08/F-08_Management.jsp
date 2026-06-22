@@ -19,9 +19,9 @@
     <div class="main-content-base layout-center">
         <!-- リンク群をまとめる枠 -->
         <div class="link-group">
-            <a href="F-08.jsp">貸出状況</a>
-            <a href="F-08_1.jsp">予約状況</a>
-            <a href="F-08_3.jsp">貸出・予約状況</a>
+            <a href="${pageContext.request.contextPath}/rentalSearch">貸出状況</a>
+            <a href="${pageContext.request.contextPath}/reserveStatusInquiry">予約状況</a>
+            <a href="${pageContext.request.contextPath}/userStatus">貸出・予約状況</a>
         </div>
     </div>
 

@@ -24,7 +24,7 @@ public class ReserveStatusInquiryServlet extends HttpServlet {
 		request.setAttribute("searchCategory", "all");
 		request.setAttribute("searchKeyword", "");
 
-		request.getRequestDispatcher("/WEB-INF/jsp/f08_rentalSearch/reserveStatusInquiry.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/jsp/F-08/F-08_1.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -43,6 +43,6 @@ public class ReserveStatusInquiryServlet extends HttpServlet {
 		request.setAttribute("searchCategory", searchCategory);
 		request.setAttribute("searchKeyword", searchKeyword);
 
-		request.getRequestDispatcher("/WEB-INF/jsp/f08_rentalSearch/reserveStatusInquiry.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/jsp/F-08/F-08_1.jsp").forward(request, response);
 	}
 }

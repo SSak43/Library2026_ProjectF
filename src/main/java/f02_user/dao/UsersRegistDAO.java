@@ -87,7 +87,7 @@ public class UsersRegistDAO extends DAOBase {
 			return false;
 		}
 	}
-	private String hashPassword(String password) {
+	public static String hashPassword(String password) {
 		if (password == null) {
 			return "";
 		}

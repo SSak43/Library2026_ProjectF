@@ -1,8 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-	<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
+
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %> 
-	<td>${lend.lendId}</td>
+
+<td>${lend.lendId}</td>
 
 <td><fmt:formatNumber value="${lend.lendId}" pattern="000000" /></td>
 <!DOCTYPE html>
@@ -11,14 +12,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>貸出状況</title>
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/css/F-08.css">
+<link rel="stylesheet"	href="${pageContext.request.contextPath}/css/F-08.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/home.css">
 </head>
 <body>
-	<div class="page-header">
-		<div class="page-title">貸出状況</div>
-		<button type="button" class="menu-btn">メニュー</button>
-	</div>
+    <div class="header">
+        <h1 class="header-title">貸出状況</h1>
+        <button class="menu-button" type="button" onclick="location.href='${pageContext.request.contextPath}/InquiryManagementServlet'">メニュー</button>
+    </div>
 	<!-- 新しく追加した検索エリア -->
 	<div class="search-container">
 		<table class="search-table">
@@ -26,13 +27,12 @@
 				<th class="search-col-item border-bottom-gap">検索項目</th>
 				<th class="search-col-value border-bottom">検索値</th>
 				<td rowspan="2" class="search-col-buttons">
-					<button type="button" class="action-btn">検索</button>
-					<button type="button" class="action-btn">リセット</button>
+          <button type="submit" class="action-btn" onclick="document.getElementById('pageInput').value=1;">検索</button>
+          <button type="button" class="action-btn" onclick="location.href='RentalSearchServlet'">リセット</button>
 				</td>
 			</tr>
 			<tr>
-				<td class="search-col-item border-bottom-gap"><select
-					class="search-select">
+				<td class="search-col-item border-bottom-gap">
 						<select class="search-select" name="searchType">
 							<option value="all" ${searchType == 'all' ? 'selected' : ''}>すべての項目▼</option>
 							<option value="bookId" ${searchType == 'bookId' ? 'selected' : ''}>図書ID</option>
@@ -82,7 +82,6 @@
           <td><c:out value="${lend.lendDate}" /></td>
           <td><c:out value="${lend.returnDate}" /></td>
           <td><c:out value="${book.bookClass}" /></td>
-          <td><c:out value="${book. }">
           
           
           <td style="text-align: right; vertical-align: middle; padding: 5px 18px 5px 0;">

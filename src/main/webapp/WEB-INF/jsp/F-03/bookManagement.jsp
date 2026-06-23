@@ -35,14 +35,14 @@ if (loginUserObj != null && loginUserObj instanceof UsersBean) {
 
     <div class="header">
         <h1 class="header-title">蔵書管理</h1>
-        <button class="menu-button header-blue-button" type="button" onclick="location.href='${pageContext.request.contextPath}/home/admin_home.jsp'">メニュー</button>
+        <button class="menu-button header-blue-button" type="button" onclick="location.href='<%= menuUrl %>'">メニュー</button>
     </div>
 
     <div class="main-content-base layout-center">
         <div class="link-group">
             <a href="${pageContext.request.contextPath}/BooksRegist">図書登録</a>
             <a href="${pageContext.request.contextPath}/BooksUpdate">更新</a>
-            <a href="${pageContext.request.contextPath}/booksSearch">図書情報参照</a>
+            <a href="${pageContext.request.contextPath}/BooksReferenceSearch">図書情報参照</a>
         </div>
     </div>
 

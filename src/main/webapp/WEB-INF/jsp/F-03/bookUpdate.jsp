@@ -41,9 +41,9 @@
             </c:choose>
         </div>
 
-        <form method="GET" action="${pageContext.request.contextPath}/BooksUpdate" id="searchForm">
-            <div class="id-search-group" style="display: flex; gap: 10px; margin-bottom: 20px; justify-content: center;"">
-                <input type="text" class="input-field" id="search-key" name="searchKey" value="${param.searchKey}" placeholder="利用者IDまたは書名入力" required autofocus>
+        <form method="GET" action="${pageContext.request.contextPath}/BooksUpdate" id="searchForm" onsubmit="return validateSearch(event)">
+            <div class="id-search-group" style="display: flex; gap: 10px; margin-bottom: 20px; justify-content: center;">
+                <input type="text" class="input-field" id="search-key" name="searchKey" value="${param.searchKey}" placeholder="図書IDまたは書名入力" required autofocus oninput="this.setCustomValidity('')">
                 <button type="submit" class="header-blue-button">表示</button>
             </div>
         </form>
@@ -160,25 +160,7 @@
             });
         });
     }
-            
 
-//             if (telInput) {
-//                 telInput.addEventListener('input', function(e) {
-//                     let val = this.value.replace(/[０-９]/g, function(s) {
-//                         return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
-//                     });
-//                     let rawStr = val.replace(/[^0-9]/g, '');
-//                     let formatted = '';
-//                     if (rawStr.length > 7) {
-//                         formatted = rawStr.substring(0, 3) + '-' + rawStr.substring(3, 7) + '-' + rawStr.substring(7, 11);
-//                     } else if (rawStr.length > 3) {
-//                         formatted = rawStr.substring(0, 3) + '-' + rawStr.substring(3);
-//                     } else {
-//                         formatted = rawStr;
-//                     }
-//                     this.value = formatted;
-//                 });
-//             }
         });
 
         function clearInput(id) {
@@ -186,8 +168,29 @@
             document.getElementById(id).focus();
         }
 
+     //  表示ボタンを押したときのチェック処理を追加
+        function validateSearch(event) {
+            var input = document.getElementById('search-key');
+            var val = input.value.trim();
+
+            // 入力された文字が「すべて数字（全角・半角問わず）」かどうかを判定
+            if (/^[0-9０-９]+$/.test(val)) {
+                
+                // 数字なのに「6桁」じゃなかったらエラーを出してストップ！
+                if (val.length !== 6) {
+                    input.setCustomValidity('図書IDを検索する場合は、6桁の数字（例: 123456）を入力してください。');
+                    input.reportValidity();
+                    event.preventDefault(); // 送信をキャンセル
+                    return false;
+                }
+            }
+            
+            // 数字以外の文字（漢字やアルファベット等）が含まれていれば、書名検索とみなしてそのまま送信
+            return true;
+        }
+
         function showConfirmModal() {
-//             const claInput = document.querySelector('input[name="cla"]:checked');
+
             const statusInput = document.querySelector('input[name="status"]:checked');
             const form = document.getElementById('updateForm');
             const errorMessage = document.getElementById('error-message');
@@ -207,38 +210,7 @@
             const company = document.getElementById('input-company').value.trim();
             const bookClass = document.getElementById('input-bookClass').value.trim();
 
-//             const nameRegex = /^[ぁ-んァ-ヶ一-龠々ーa-zA-Zａ-ｚＡ-Ｚ\s ]+$/;
-//             if (!nameRegex.test(name)) {
-//                 errorMessage.innerText = "氏名には数字や記号は使用できません。";
-//                 errorMessage.style.visibility = 'visible';
-//                 return;
-//             }
 
-//             const telRegex = /^[0-9-]+$/;
-//             if (!telRegex.test(tel)) {
-//                 errorMessage.innerText = "電話番号は数字（ハイフン含む）のみで入力してください。";
-//                 errorMessage.style.visibility = 'visible';
-//                 return;
-//             }
-// 			const telDigits = tel.replace(/[^0-9]/g, ''); 
-            
-//             // 数字が10桁未満、または12桁以上の場合はエラー（一般的な固定電話は10桁、携帯は11桁）
-//             if (telDigits.length < 10 || telDigits.length > 11) {
-//                 errorMessage.innerText = "電話番号の桁数が足りないか、正しくありません（10桁または11桁で入力してください）。";
-//                 errorMessage.style.visibility = 'visible';
-//                 // 入力欄にフォーカスを当てて、どこがダメだったか分かりやすくする
-//                 document.getElementById('input-tel').focus();
-//                 return;
-//             }
-
-//             if (pass.length > 0) {
-//                 const invalidRegex = /[^\x21-\x7E]/;
-//                 if (invalidRegex.test(pass)) {
-//                     errorMessage.innerText = "パスワードに利用できない文字（全角文字やスペース）が含まれています。";
-//                     errorMessage.style.visibility = 'visible';
-//                     return; 
-//                 } 
-//             }
             
 //             document.getElementById('confirm-id').value = document.getElementById('input-id').value;
 //             document.getElementById('confirm-bookClass').value = claInput.parentElement.textContent.trim();

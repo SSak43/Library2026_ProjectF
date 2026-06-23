@@ -31,9 +31,9 @@
             該当する利用者は存在しません
         </div>
 
-        <form method="GET" action="${pageContext.request.contextPath}/UsersSearch" id="searchForm">
+        <form method="GET" action="${pageContext.request.contextPath}/UsersSearch" id="searchForm" onsubmit="return validateSearch(event)">
             <div class="id-search-group" style="margin-bottom: 20px;">
-                <input type="text" class="input-field" id="search-key" name="searchKey" value="${param.searchKey}" placeholder="利用者IDまたは氏名入力" required autofocus>
+                <input type="text" class="input-field" id="search-key" name="searchKey" value="${param.searchKey}" placeholder="利用者IDまたは氏名入力" required autofocus oninput="this.setCustomValidity('')">
                 <button type="submit" class="header-blue-button">表示</button>
             </div>
         </form>
@@ -96,6 +96,27 @@
                 });
             }
         });
+
+        function validateSearch(event) {
+            var input = document.getElementById('search-key');
+            var val = input.value.trim();
+
+            // 入力された文字が「すべて数字（全角・半角問わず）」かどうかを判定
+            if (/^[0-9０-９]+$/.test(val)) {
+                
+                // 数字なのに「6桁」じゃなかったらエラーを出してストップ！
+                if (val.length !== 6) {
+                    input.setCustomValidity('IDを検索する場合は、6桁の数字（例: 123456）を入力してください。');
+                    input.reportValidity();
+                    event.preventDefault(); // 送信をキャンセル
+                    return false;
+                }
+            }
+            
+            // 数字以外の文字（漢字やアルファベット等）が含まれていれば、氏名検索とみなしてそのまま送信
+            return true;
+        }
+        
 
        
         

@@ -66,7 +66,7 @@ if (loginUserObj != null && loginUserObj instanceof UsersBean) {
                 <tr>
                     <th>図書ID</th>
                     <td>
-                        <input type="text" class="input-field" value="<fmt:formatNumber value='${latestId + 1}' pattern='00000' />" placeholder="00001" readonly>
+                        <input type="text" class="input-field" value="<fmt:formatNumber value='${latestId + 1}' pattern='000000' />" placeholder="00001" readonly>
                     </td>
                 </tr>
                 <tr>
@@ -220,6 +220,11 @@ if (loginUserObj != null && loginUserObj instanceof UsersBean) {
         
         function submitForm() {
             document.getElementById('registForm').submit();
+        }
+
+        function clearInput(id) {
+            document.getElementById(id).value = '';
+            document.getElementById(id).focus();
         }
     </script>
 

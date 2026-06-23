@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%-- JSTLを使用するための宣言（Jakarta EE用） --%>
+<%@ page import="Model.UsersBean" %>
+
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %> 
 
@@ -275,11 +276,34 @@
 </style>
 </head>
 <body>
+<%
+// ログインユーザーの区分に応じて遷移先URLを決定する処理
+UsersBean loginUser = null;
+Object loginUserObj = session.getAttribute("loginUser");
+if (loginUserObj == null) loginUserObj = session.getAttribute("user");
+if (loginUserObj == null) loginUserObj = session.getAttribute("login");
+if (loginUserObj != null && loginUserObj instanceof UsersBean) {
+loginUser = (UsersBean) loginUserObj;
+}
+
+String menuUrl = request.getContextPath() + "/home/admin_home.jsp"; // デフォルト
+if (loginUser != null) {
+String uClass = loginUser.getUserClass();
+if ("0".equals(uClass) || "管理者".equals(uClass)) {
+menuUrl = request.getContextPath() + "/home/admin_home.jsp";
+} else if ("1".equals(uClass) || "司書".equals(uClass)) {
+menuUrl = request.getContextPath() + "/home/sisyo_home.jsp";
+} else if ("2".equals(uClass) || "利用者".equals(uClass)) {
+menuUrl = request.getContextPath() + "/home/riyousyahome.jsp";
+}
+}
+%>
+
 <div class="page-header">
   <div class="page-title">検索画面</div>
   
   <button class="menu-btn" type="button" 
-            onclick="location.href='${pageContext.request.contextPath}/home/admin_home.jsp'"
+            onclick="location.href='<%= menuUrl %>'"
             style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); padding: 10px 25px; font-size: 0.95rem; cursor: pointer;">
         メニュー
     </button>
@@ -310,7 +334,7 @@
           </select>
         </td>
         <td class="search-col-value border-bottom"> 
-          <input type="text" class="search-input" name="keyword" value="<c:out value='${keyword}'/>" autocomplete="off">
+          <input type="text" class="search-input" name="keyword" value="<c:out value='${keyword}'/>" autocomplete="off"autofocus>
         </td>
       </tr>
     </table>

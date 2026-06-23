@@ -48,7 +48,7 @@ if (loginUser != null) {
 
     <div class="header">
         <h1 class="header-title">利用者データ更新入力画面</h1>
-        <button class="menu-button header-blue-button" type="button" onclick="location.href='<%= menuUrl %>'">メニュー</button>
+        <button class="menu-button" type="button" onclick="location.href='${pageContext.request.contextPath}/UserManagement'">メニュー</button>
     </div>
 
     <div class="main-content-base layout-top-padding register-main-content">

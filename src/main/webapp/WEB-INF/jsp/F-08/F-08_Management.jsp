@@ -12,7 +12,7 @@
 
     <div class="header">
         <h1 class="header-title">貸出状況照会</h1>
-        <button type="button" class="menu-button">メニュー</button>
+        <button class="menu-button header-blue-button" type="button" onclick="location.href='${pageContext.request.contextPath}/home/admin_home.jsp'">メニュー</button>
     </div>
 
     <!-- メイン枠 -->

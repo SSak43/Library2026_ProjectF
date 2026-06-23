@@ -9,7 +9,7 @@ import Model.BooksBean;
 import Model.LendsBean;
 import Model.UsersBean;
 import f02_user.dao.UsersSearchDAO;
-import f04_book_search.dao.BooksSearchDAO;
+import f03_book.dao.BooksSearchDAO;
 import f05_lending.dao.LendsDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -21,7 +21,6 @@ import jakarta.servlet.http.HttpServletResponse;
 public class LendingServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	// 各ボタン（表示、登録）や図書検索からの遷移を受け付ける
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		executeLending(request, response);
 	}
@@ -33,116 +32,153 @@ public class LendingServlet extends HttpServlet {
 	private void executeLending(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 
-		// 1. 画面から送られてきたパラメータを取得
-		String action = request.getParameter("action"); // ボタンの識別（searchUser, searchBook, register）
+		String action = request.getParameter("action"); 
 		String userIdStr = request.getParameter("userId");
 		String bookIdStr = request.getParameter("bookId");
 
-		// メッセージ用変数
+		// 検索画面から遷移してきた場合、自動的に「図書の表示ボタン」が押されたのと同じ処理にする
+		if ((action == null || action.isEmpty()) && bookIdStr != null) {
+			action = "searchBook";
+		}
+
 		String errorMessage = "";
 		String successMessage = "";
 
-		// 画面に表示する用のデータ箱
 		UsersBean selectedUser = null;
 		BooksBean selectedBook = null;
-		int activeLendsCount = 0; // 現在の貸出数
+		int activeLendsCount = 0;
 
-		// 2. 【状態保持ロジック】すでにIDが存在していれば、DBから最新情報を引いてきて保持する
-		// これにより、利用者検索をした時も図書情報が消えずに残ります
-		if (userIdStr != null && !userIdStr.trim().isEmpty()) {
+		// ==========================================
+		// 1. 利用者情報の取得とバリデーション
+		// ==========================================
+		if (userIdStr != null && !userIdStr.isEmpty()) {
 			try {
 				int userId = Integer.parseInt(userIdStr);
-				UsersSearchDAO userDAO = new UsersSearchDAO();
-				UsersBean searchParam = new UsersBean();
-				searchParam.setUserId(userId);
 				
-				List<UsersBean> userList = userDAO.findById(searchParam);
+				
+				UsersBean searchUser = new UsersBean();
+				searchUser.setUserId(userId);
+				UsersSearchDAO userDAO = new UsersSearchDAO();
+				List<UsersBean> userList = userDAO.findById(searchUser); // リストで受け取る
+
 				if (userList != null && !userList.isEmpty()) {
-					selectedUser = userList.get(0);
-					// 現在借りている冊数をカウント
+					selectedUser = userList.get(0); // 1件目を取得
+					
+					// 貸出冊数の確認
 					LendsDAO lendsDAO = new LendsDAO();
 					activeLendsCount = lendsDAO.countActiveLends(userId);
+					
+					if ("searchUser".equals(action) && activeLendsCount >= 5) {
+						errorMessage = "この利用者は既に5冊借りているため、新しく貸出できません。";
+					}
 				} else if ("searchUser".equals(action)) {
-					errorMessage = "該当する利用者が存在しません。";
+					errorMessage = "該当する利用者が見つかりません。";
 				}
 			} catch (NumberFormatException e) {
-				if ("searchUser".equals(action)) errorMessage = "利用者IDは数字で入力してください。";
+				if ("searchUser".equals(action)) {
+					errorMessage = "利用者IDは数字で入力してください。";
+				}
 			}
+		} else if ("searchUser".equals(action)) {
+			errorMessage = "利用者IDを入力してください。";
 		}
 
-		if (bookIdStr != null && !bookIdStr.trim().isEmpty()) {
+		// ==========================================
+		// 2. 図書情報の取得とバリデーション
+		// ==========================================
+		if (bookIdStr != null && !bookIdStr.isEmpty()) {
 			try {
 				int bookId = Integer.parseInt(bookIdStr);
-				BooksSearchDAO bookDAO = new BooksSearchDAO();
-				// 前回作成したsearchBooksを「図書IDの完全一致」として利用
-				List<BooksBean> bookList = bookDAO.searchBooks("bookId", String.valueOf(bookId), 1);
 				
+				BooksBean searchBook = new BooksBean();
+				searchBook.setBookId(bookId);
+				BooksSearchDAO booksDAO = new BooksSearchDAO();
+				List<BooksBean> bookList = booksDAO.findById(searchBook); 
+
 				if (bookList != null && !bookList.isEmpty()) {
-					selectedBook = bookList.get(0);
-					
-					// 「図書表示」ボタンを押した時だけ、貸出可能チェックを行う
-					if ("searchBook".equals(action) && !"0".equals(selectedBook.getBookStatus())) {
-						errorMessage = "この図書は現在貸出できません（貸出中または貸出不可）。";
-						selectedBook = null; // 画面に表示させない
+					selectedBook = bookList.get(0); 
+
+					// ⭕ 【修正ポイント】「図書の表示ボタン」を押した時だけでなく、
+					// 貸出可能な図書が選ばれていれば「常に」日付を計算して維持する
+					if (!"0".equals(selectedBook.getBookStatus())) {
+						if ("searchBook".equals(action)) {
+							errorMessage = "この図書は現在貸出できません。(貸出中または貸出不可)";
+						}
+						selectedBook = null;
+					} else {
+						// 常に14日後の返却期限を計算してJSPへ渡す
+						LocalDate today = LocalDate.now();
+						LocalDate returnLine = today.plusDays(14);
+						request.setAttribute("returnLine", Date.valueOf(returnLine));
 					}
+					
 				} else if ("searchBook".equals(action)) {
-					errorMessage = "該当する図書が存在しません。";
+					errorMessage = "該当する図書が見つかりません。";
 				}
 			} catch (NumberFormatException e) {
-				if ("searchBook".equals(action)) errorMessage = "図書IDは数字で入力してください。";
+				if ("searchBook".equals(action)) {
+					errorMessage = "図書IDは数字で入力してください。";
+				}
 			}
+		} else if ("searchBook".equals(action)) {
+			errorMessage = "図書IDを入力してください。";
 		}
 
-		// 3. 「登録」ボタンが押されたときの貸出登録処理
-		if("rend".equals(action)){
+		// ==========================================
+		// 3. 確定登録時の最終バリデーション
+		// ==========================================
+		if ("register".equals(action)) {
 			if (selectedUser == null) {
 				errorMessage = "利用者を検索して確定させてください。";
+			} else if (activeLendsCount >= 5) {
+				errorMessage = "この利用者は既に5冊借りているため、新しく貸出できません。";
 			} else if (selectedBook == null) {
 				errorMessage = "図書を検索して確定させてください。";
+			} else if (!"0".equals(selectedBook.getBookStatus())) {
+				errorMessage = "この図書は現在貸出できません。";
 			}
 		}
-		
-		
-		if ("register".equals(action)) {
-				// 貸出データの作成
-				LendsBean lend = new LendsBean();
-				lend.setUserId(selectedUser.getUserId());
-				lend.setBookId(selectedBook.getBookId());
-				
-				// 日付の計算（本日貸出、返却期限は14日後）
-				LocalDate today = LocalDate.now();
-				LocalDate returnLine = today.plusDays(14); // 2週間後
-				
-				lend.setLendDate(Date.valueOf(today));
-				lend.setReturnLine(Date.valueOf(returnLine));
-				lend.setLendRegist(Date.valueOf(today));
-				lend.setLendUpdate(Date.valueOf(today));
-				
-				// データベースに登録
-				LendsDAO lendsDAO = new LendsDAO();
-				boolean isSuccess = lendsDAO.registerLend(lend);
-				
-				if (isSuccess) {
-					successMessage = "貸出登録が完了しました！（返却期限: " + returnLine + "）";
-					// 登録が成功したら、入力・選択状態をきれいにリセットする
-					selectedUser = null;
-					selectedBook = null;
-					activeLendsCount = 0;
-				} else {
-					errorMessage = "貸出登録に失敗しました。システム管理者に連絡してください。";
-				}
-			
-			
+
+		// ==========================================
+		// 4. データベースへの登録処理
+		// ==========================================
+		if ("register".equals(action) && errorMessage.isEmpty()) {
+			LendsBean lend = new LendsBean();
+			lend.setUserId(selectedUser.getUserId());
+			lend.setBookId(selectedBook.getBookId());
+
+			LocalDate today = LocalDate.now();
+			LocalDate returnLine = today.plusDays(14);
+
+			lend.setLendDate(Date.valueOf(today));
+			lend.setReturnLine(Date.valueOf(returnLine));
+			lend.setLendRegist(Date.valueOf(today));
+			lend.setLendUpdate(Date.valueOf(today));
+
+			LendsDAO lendsDAO = new LendsDAO();
+			boolean isSuccess = lendsDAO.registerLend(lend);
+
+			if (isSuccess) {
+				successMessage = "貸出登録が完了しました！（返却期限: " + returnLine + "）";
+				// 登録成功後は画面をリセット
+				selectedUser = null;
+				selectedBook = null;
+				activeLendsCount = 0;
+			} else {
+				errorMessage = "貸出登録に失敗しました。システム管理者に連絡してください。";
+			}
 		}
 
-		// 4. JSP（画面）に表示データを送る
+		// ==========================================
+		// 5. 画面（JSP）へ引き渡すデータの格納と遷移
+		// ==========================================
 		request.setAttribute("selectedUser", selectedUser);
 		request.setAttribute("selectedBook", selectedBook);
 		request.setAttribute("activeLendsCount", activeLendsCount);
 		request.setAttribute("errorMessage", errorMessage);
 		request.setAttribute("successMessage", successMessage);
 
-		// 5. 貸出画面（JSP）へ進む
-		request.getRequestDispatcher("/WEB-INF/jsp/lending/lending.jsp").forward(request, response);
+		
+		request.getRequestDispatcher("/WEB-INF/jsp/F-05/lending.jsp").forward(request, response);
 	}
 }

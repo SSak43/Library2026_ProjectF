@@ -53,10 +53,10 @@ if (loginUserObj != null && loginUserObj instanceof UsersBean) {
                     <th>区分</th>
                     <td>
                         <div class="category-options">
-    					<label><input type="radio" name="cla" value="1"> 管理者</label>
-   						 <label><input type="radio" name="cla" value="2"> 司書</label>
-    					<label><input type="radio" name="cla" value="0"> 利用者</label>
-					</div>
+						    <label><input type="radio" name="cla" value="1" required> 管理者</label>
+						    <label><input type="radio" name="cla" value="2" required> 司書</label>
+						    <label><input type="radio" name="cla" value="0" required> 利用者</label>
+						</div>
                     </td>
                 </tr>
                 <tr>
@@ -76,7 +76,7 @@ if (loginUserObj != null && loginUserObj instanceof UsersBean) {
                 <tr>
                     <th>利用者ID</th>
                     <td>
-                        <input type="text" class="input-field" value="<fmt:formatNumber value='${latestId + 1}' pattern='00000' />" placeholder="00001" readonly>
+                        <input type="text" class="input-field" value="<fmt:formatNumber value='${latestId + 1}' pattern='000000' />" placeholder="000001" readonly>
                     </td>
                 </tr>
                 <tr>
@@ -144,12 +144,11 @@ if (loginUserObj != null && loginUserObj instanceof UsersBean) {
             const telInput = document.getElementById('input-tel');
             const nameInput = document.getElementById('input-name');
             
-            // 氏名の入力制御（ひらがな、カタカナ、漢字、英字、スペースを許可）
-            nameInput.addEventListener('input', function(e) {
-                let cleanVal = this.value.replace(/[^a-zA-Z0-9\sぁ-んァ-ヶ亜-熙纊-鶴々ーａ-ｚＡ-Ｚ]/g, ''); 
-                cleanVal = cleanVal.replace(/[0-9０-９]/g, '');
-                this.value = cleanVal;
-            });
+            // 氏名の入力制御（日本語・英字・スペースは自由、数字と記号だけを自動消去）
+				nameInput.addEventListener('input', function(e) {
+				    // 「\p{L}（すべての文字）」と「\p{Z}（すべてのスペース）」以外をすべて消去
+				    this.value = this.value.replace(/[^\p{L}\p{Z}]/gu, '');
+				});
 
             // 電話番号の入力制御
             telInput.addEventListener('input', function(e) {
@@ -192,12 +191,18 @@ if (loginUserObj != null && loginUserObj instanceof UsersBean) {
             }
 
             const claInput = document.querySelector('input[name="cla"]:checked');
+
+            if (!claInput) {
+                errorMessage.innerText = "区分を選択してください。";
+                errorMessage.style.visibility = 'visible';
+                return;
+            }
+            
             const name = document.getElementById('input-name').value.trim();
             const tel = document.getElementById('input-tel').value.trim();
             const pass = document.getElementById('input-pass').value.trim();
 
-            const nameRegex = /^[ぁ-んァ-ヶ亜-熙纊-鶴々ーa-zA-Zａ-ｚＡ-Ｚ\s ]+$/;
-            if (!nameRegex.test(name)) {
+            if (/[^\p{L}\p{Z}]/u.test(name)) {
                 errorMessage.innerText = "氏名には数字や記号は使用できません。";
                 errorMessage.style.visibility = 'visible';
                 return;

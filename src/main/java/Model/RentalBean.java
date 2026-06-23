@@ -10,6 +10,7 @@ public class RentalBean implements Serializable {
 	private String loanDate;
 	private String returnDeadline;
 	private String userId; 
+	private String userName;
 	
 	public RentalBean() {}
 
@@ -28,4 +29,7 @@ public class RentalBean implements Serializable {
 	// 💡 追加した userId のゲッターとセッター
 	public String getUserId() { return userId; }
 	public void setUserId(String userId) { this.userId = userId; }
+
+	public String getUserName() {return userName; }
+	public void setUserName(String userName) {this.userName = userName;}
 }

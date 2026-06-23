@@ -19,8 +19,11 @@ public class RentalSearchDAO extends DAOBase {
 			"SELECT LPAD(L.BOOK_ID, 5, '0') AS BOOK_ID_STR, B.TITLE, " +
 			"DATE_FORMAT(L.LEND_DATE, '%Y/%m/%d') AS LEND_DATE_STR, " +
 			"DATE_FORMAT(L.RETURN_LINE, '%Y/%m/%d') AS RETURN_LINE_STR, " +
-			"L.USER_ID " + 
-			"FROM LENDS L JOIN BOOKS B ON L.BOOK_ID = B.BOOK_ID WHERE 1=1 "
+			"L.USER_ID, U.USER_NAME " + 
+			"FROM LENDS L " + 
+			"JOIN BOOKS B ON L.BOOK_ID = B.BOOK_ID " +  
+			"JOIN USERS U ON L.USER_ID = U.USER_ID " +
+			"WHERE 1=1 "
 		);
 
 		if (keyword != null && !keyword.trim().isEmpty()) {
@@ -29,10 +32,12 @@ public class RentalSearchDAO extends DAOBase {
 				case "title": sql.append("AND B.TITLE LIKE ? "); break;
 				case "writerName": sql.append("AND B.WRITER_NAME LIKE ? "); break;
 				case "company": sql.append("AND B.COMPANY LIKE ? "); break;
+				case "userId": sql.append("AND U.USER_ID LIKE ? "); break;
+				case "name": sql.append("AND U.USER_NAME LIKE ? "); break;
 				case "bookClass": sql.append("AND B.BOOK_CLASS LIKE ? "); break;
 				case "all":
 				default:
-					sql.append("AND (L.BOOK_ID LIKE ? OR B.TITLE LIKE ? OR B.WRITER_NAME LIKE ? OR B.COMPANY LIKE ? OR B.BOOK_CLASS LIKE ?) ");
+					sql.append("AND (L.BOOK_ID LIKE ? OR B.TITLE LIKE ? OR B.WRITER_NAME LIKE ? OR B.COMPANY LIKE ? OR B.BOOK_CLASS LIKE ? OR U.USER_ID LIKE ? OR U.USER_NAME LIKE ?) ");
 					break;
 			}
 		}
@@ -52,7 +57,7 @@ public class RentalSearchDAO extends DAOBase {
 			if (keyword != null && !keyword.trim().isEmpty()) {
 				String searchWord = "%" + keyword + "%";
 				if ("all".equals(category)) {
-					for(int i=1; i<=5; i++) ps.setString(i, searchWord);
+					for(int i=1; i<=7; i++) ps.setString(i, searchWord);
 				} else {
 					ps.setString(1, searchWord);
 				}
@@ -68,6 +73,7 @@ public class RentalSearchDAO extends DAOBase {
 					
 		
 					bean.setUserId(rs.getString("USER_ID"));
+					bean.setUserName(rs.getString("USER_NAME"));
 					
 					list.add(bean);
 				}

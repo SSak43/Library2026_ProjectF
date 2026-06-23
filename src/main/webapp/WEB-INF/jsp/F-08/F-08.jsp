@@ -1,7 +1,8 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 
-<%@ taglib uri="jakarta.tags.core" prefix="c" %>
-<%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %> 
+<%@ taglib uri="jakarta.tags.core" prefix="c"%>
+<%@ taglib uri="jakarta.tags.fmt" prefix="fmt"%>
 
 <td>${lend.lendId}</td>
 
@@ -12,52 +13,63 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>貸出状況</title>
-<link rel="stylesheet"	href="${pageContext.request.contextPath}/css/F-08.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/home.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/css/F-08.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/css/home.css">
 </head>
 <body>
-    <div class="header">
-        <h1 class="header-title">貸出状況</h1>
-        <button class="menu-button" type="button" onclick="location.href='${pageContext.request.contextPath}/InquiryManagementServlet'">メニュー</button>
-    </div>
+	<div class="header">
+		<h1 class="header-title">貸出状況</h1>
+		<button class="menu-button" type="button"
+			onclick="location.href='${pageContext.request.contextPath}/InquiryManagementServlet'">メニュー</button>
+	</div>
 	<!-- 新しく追加した検索エリア -->
 	<div class="search-container">
-		<table class="search-table">
-			<tr>
-				<th class="search-col-item border-bottom-gap">検索項目</th>
-				<th class="search-col-value border-bottom">検索値</th>
-				<td rowspan="2" class="search-col-buttons">
-          <button type="submit" class="action-btn" onclick="document.getElementById('pageInput').value=1;">検索</button>
-          <button type="button" class="action-btn" onclick="location.href='RentalSearchServlet'">リセット</button>
-				</td>
-			</tr>
-			<tr>
-				<td class="search-col-item border-bottom-gap">
-						<select class="search-select" name="searchType">
-							<option value="all" ${searchType == 'all' ? 'selected' : ''}>すべての項目▼</option>
-							<option value="bookId" ${searchType == 'bookId' ? 'selected' : ''}>図書ID</option>
-							<option value="title" ${searchType == 'title' ? 'selected' : ''}>書名</option>
-							<option value="writer" ${searchType == 'writer' ? 'selected' : ''}>著者</option>
-							<option value="company" ${searchType == 'company' ? 'selected' : ''}>出版社</option>
+		<form action="${pageContext.request.contextPath}/rentalSearch"
+			method="post" id="searchForm">
+			<table class="search-table">
+				<tr>
+					<th class="search-col-item border-bottom-gap">検索項目</th>
+					<th class="search-col-value border-bottom">検索値</th>
+					<td rowspan="2" class="search-col-buttons">
+						<button type="submit" class="action-btn">検索</button>
+						<button type="button" class="action-btn">リセット</button>
+					</td>
+				</tr>
+				<tr>
+					<td class="search-col-item border-bottom-gap"><select
+						class="search-select" name="searchCategory">
+							<option value="all" ${searchCategory == 'all' ? 'selected' : ''}>すべての項目▼</option>
+							<option value="bookId"
+								${searchCategory == 'bookId' ? 'selected' : ''}>図書ID</option>
+							<option value="title"
+								${searchCategory == 'title' ? 'selected' : ''}>書名</option>
+							<option value="userId"
+								${searchCategory == 'user' ? 'selected' : ''}>利用者ID</option>
+							<option value="name"
+								${searchCategory == 'name' ? 'selected' : ''}>利用者氏名</option>
 					</select></td>
-				<td class="search-col-value border-bottom">
-          <input type="text" class="search-input" name="keyword" value="<c:out value='${keyword}'/>" autocomplete="off">
-			</tr>
-		</table>
+					<td class="search-col-value border-bottom"><input type="text"
+						class="search-input" name="searchKeyword"
+						value="<c:out value='${keyword}'/>" autocomplete="off">
+				</tr>
+			</table>
+		</form>
 	</div>
 
 	<!-- 既存の表エリア -->
 	<div class="table-container">
-		<p class="result-message">    
+		<p class="result-message">
 			<c:choose>
-     		 <c:when test="${lendList.size() > 0}">
-     		   ${currentPage}ページ目：${lendList.size()}件の図書を表示しています。
+				<c:when test="${rentalList.size() > 0}">
+     		   ${currentPage}ページ目：${rentalList.size()}件の図書を表示しています。
      			 </c:when>
-      		<c:otherwise>
+				<c:otherwise>
        		 条件に一致する図書が見つかりませんでした。
      		 </c:otherwise>
-    		</c:choose>
-  		</p>
+			</c:choose>
+		</p>
 
 
 		<table class="custom-table">
@@ -66,50 +78,58 @@
 					<th class="col-no">No.</th>
 					<th class="col-id">図書ID</th>
 					<th class="col-title">書名</th>
-					<th class="col-author">貸出日</th>
-					<th class="col-publisher">返却日</th>
+					<th class="col-lend-date">貸出日</th>
+					<th class="col-return-date">返却期限</th>
 					<th class="col-action">操作</th>
 				</tr>
 			</thead>
-    <tbody>
-      <!-- Servletから受け取った図書リストをループで表示 -->
-      <c:forEach var="lend" items="${lendList}" varStatus="status">
-        <tr>
-          <td>${(currentPage - 1) * 10 + status.count}</td>
-          <td>${lend.lendId}</td>
-          <td><c:out value="${book.bookId}" /></td>
-          <td><c:out value="${book.title}" /></td>
-          <td><c:out value="${lend.lendDate}" /></td>
-          <td><c:out value="${lend.returnDate}" /></td>
-          <td><c:out value="${book.bookClass}" /></td>
-          
-          
-          <td style="text-align: right; vertical-align: middle; padding: 5px 18px 5px 0;">
-            <c:if test="${book.bookStatus == '0'}">
-			    <fmt:formatNumber value="${book.bookId}" pattern="000000" var="fmtBookId" />
-			    <fmt:formatNumber value="${sessionScope.loginUser.userId}" pattern="000000" var="fmtUserId" />
-			    
-			    <form action="${pageContext.request.contextPath}/userStatus" method="post" style="display:inline;">
-			        <input type="hidden" name="action" value="searchBook">
-			        <input type="hidden" name="bookId" value="${fmtBookId}">
-			        <input type="hidden" name="userId" value="${fmtUserId}">
-			        <button type="submit" class="action-btn">詳細</button>
-			    </form>
-			</c:if>
-          </td>
-        </tr>
-      </c:forEach>
-      
-      <!-- 取得件数が10件未満の場合、デザイン維持のために空行を追加 -->
-      <c:if test="${empty bookList || bookList.size() < 10}">
-        <c:forEach begin="${empty bookList ? 1 : bookList.size() + 1}" end="10" var="i">
-          <tr>
-            <td>${(currentPage != null ? currentPage - 1 : 0) * 10 + i}</td>
-            <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-          </tr>
-        </c:forEach>
-      </c:if>
-    </tbody>
+			<tbody>
+				<!-- Servletから受け取った図書リストをループで表示 -->
+				<c:forEach var="rental" items="${rentalList}" varStatus="status">
+					<tr>
+						<td>${((currentPage != null ? currentPage : 1) - 1) * 10 + status.count}</td>
+						<%-- 						<td><c:out value="${rental.lendId}" /></td> --%>
+						<td><c:out value="${rental.bookId}" /></td>
+						<td><c:out value="${rental.title}" /></td>
+						<td><c:out value="${rental.loanDate}" /></td>
+						<td><c:out value="${rental.returnDeadline}" /></td>
+<%-- 						<td><c:out value="${book.bookClass}" /></td> --%>
+
+
+						<td
+							style="text-align: right; vertical-align: middle; padding: 5px 18px 5px 0;">
+								<fmt:formatNumber value="${rental.bookId}" pattern="000000"
+									var="fmtBookId" />
+								<fmt:formatNumber value="${sessionScope.loginUser.userId}"
+									pattern="000000" var="fmtUserId" />
+
+								<form action="${pageContext.request.contextPath}/userStatus">
+									<input type="hidden" name="action" value="searchBook">
+									<input type="hidden" name="bookId" value="${fmtBookId}">
+									<input type="hidden" name="userId" value="${fmtUserId}">
+									<button type="submit" class="action-btn">詳細</button>
+								</form>
+						</td>
+					</tr>
+				</c:forEach>
+
+				<!-- 取得件数が10件未満の場合、デザイン維持のために空行を追加 -->
+				<c:if test="${empty rentalList || rentalList.size() < 10}">
+					<c:forEach begin="${empty rentalList ? 1 : rentalList.size() + 1}"
+						end="10" var="i">
+						<tr>
+							<td>${(currentPage != null ? currentPage - 1 : 0) * 10 + i}</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</c:forEach>
+				</c:if>
+			</tbody>
 		</table>
 
 		<div class="pagination-area">

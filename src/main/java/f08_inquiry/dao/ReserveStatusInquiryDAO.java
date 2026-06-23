@@ -15,43 +15,48 @@ public class ReserveStatusInquiryDAO extends DAOBase {
 
 	public List<ReserveBean> searchReserves(String category, String keyword) {
 		List<ReserveBean> list = new ArrayList<>();
-		
+
 		// 基本となるテーブル結合SQL文
 		StringBuilder sql = new StringBuilder(
-			"SELECT R.BOOK_ID, B.TITLE, R.RESERVE_DATE, U.USER_NAME " +
-			"FROM RESERVE R " +
-			"JOIN BOOKS B ON R.BOOK_ID = B.BOOK_ID " +
-			"JOIN USERS U ON R.USER_ID = U.USER_ID WHERE 1=1 "
-		);
+				"SELECT R.BOOK_ID, B.TITLE, R.RESERVE_DATE, U.USER_NAME, U.USER_ID " +
+						"FROM RESERVE R " +
+						"JOIN BOOKS B ON R.BOOK_ID = B.BOOK_ID " +
+						"JOIN USERS U ON R.USER_ID = U.USER_ID WHERE 1=1 ");
 
 		boolean hasKeyword = (keyword != null && !keyword.trim().isEmpty());
 		String targetKeyword = hasKeyword ? keyword.trim() : "";
 
+		boolean isAllSearch = false;
 		// カテゴリーに応じてSQLのWHERE句を動的に追加
 		if (hasKeyword) {
 			switch (category) {
-				case "bookId":
-					sql.append("AND R.BOOK_ID = ? ");
-					break;
-				case "title":
-					sql.append("AND B.TITLE LIKE ? ");
-					break;
-				case "writerName":
-					sql.append("AND B.WRITER_NAME LIKE ? ");
-					break;
-				case "company":
-					sql.append("AND B.COMPANY LIKE ? ");
-					break;
-				case "bookClass":
-					sql.append("AND B.BOOK_CLASS LIKE ? ");
-					break;
-				case "userId":
-					sql.append("AND R.USER_ID = ? ");
-					break;
-				case "all":
-				default:
-					sql.append("AND (R.BOOK_ID LIKE ? OR B.TITLE LIKE ? OR B.WRITER_NAME LIKE ? OR B.COMPANY LIKE ? OR R.USER_ID LIKE ?) ");
-					break;
+			case "bookId":
+				sql.append("AND R.BOOK_ID = ? ");
+				break;
+			case "title":
+				sql.append("AND B.TITLE LIKE ? ");
+				break;
+			case "writerName":
+				sql.append("AND B.WRITER_NAME LIKE ? ");
+				break;
+			case "company":
+				sql.append("AND B.COMPANY LIKE ? ");
+				break;
+			case "bookClass":
+				sql.append("AND B.BOOK_CLASS LIKE ? ");
+				break;
+			case "userId":
+				sql.append("AND R.USER_ID = ? ");
+				break;
+			case "userName":
+				sql.append("AND U.USER_NAME LIKE ? ");
+				break;
+			case "all":
+			default:
+				sql.append(
+						"AND (R.BOOK_ID LIKE ? OR B.TITLE LIKE ? OR B.WRITER_NAME LIKE ? OR B.COMPANY LIKE ? OR R.USER_ID LIKE ? OR U.USER_NAME LIKE ?) ");
+				isAllSearch = true;
+				break;
 			}
 		}
 
@@ -64,23 +69,20 @@ public class ReserveStatusInquiryDAO extends DAOBase {
 		}
 
 		try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
-			 PreparedStatement ps = conn.prepareStatement(sql.toString())) {
+				PreparedStatement ps = conn.prepareStatement(sql.toString())) {
 
 			// プレースホルダー (?) への値のセット
 			if (hasKeyword) {
-				if ("bookId".equals(category) || "userId".equals(category)) {
+				if (isAllSearch) {
+					String likeStr = "%" + targetKeyword + "%";
+					for (int i = 1; i <= 6; i++)
+						ps.setString(i, likeStr);
+				} else if ("bookId".equals(category) || "userId".equals(category)) {
 					try {
 						ps.setInt(1, Integer.parseInt(targetKeyword));
 					} catch (NumberFormatException e) {
 						ps.setInt(1, -1); // 数値変換できない場合は該当なしにする
 					}
-				} else if ("all".equals(category)) {
-					String likeStr = "%" + targetKeyword + "%";
-					ps.setString(1, likeStr);
-					ps.setString(2, likeStr);
-					ps.setString(3, likeStr);
-					ps.setString(4, likeStr);
-					ps.setString(5, likeStr);
 				} else {
 					ps.setString(1, "%" + targetKeyword + "%");
 				}
@@ -92,6 +94,7 @@ public class ReserveStatusInquiryDAO extends DAOBase {
 					bean.setBookId(rs.getInt("BOOK_ID"));
 					bean.setTitle(rs.getString("TITLE"));
 					bean.setReserveDate(rs.getDate("RESERVE_DATE"));
+					bean.setUserId(rs.getInt("USER_ID"));
 					bean.setUserName(rs.getString("USER_NAME"));
 					list.add(bean);
 				}

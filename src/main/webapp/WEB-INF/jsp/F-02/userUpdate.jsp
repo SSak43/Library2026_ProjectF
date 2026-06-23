@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="Model.UsersBean" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
@@ -21,9 +22,33 @@
 </head>
 <body>
 
+<%
+// ログインユーザーの区分に応じて遷移先URLを決定する処理
+UsersBean loginUser = null;
+Object loginUserObj = session.getAttribute("loginUser");
+if (loginUserObj == null) loginUserObj = session.getAttribute("user");
+if (loginUserObj == null) loginUserObj = session.getAttribute("login");
+if (loginUserObj != null && loginUserObj instanceof UsersBean) {
+    loginUser = (UsersBean) loginUserObj;
+}
+
+String menuUrl = request.getContextPath() + "/home/admin_home.jsp"; // デフォルト
+if (loginUser != null) {
+    String uClass = loginUser.getUserClass();
+    if ("0".equals(uClass) || "管理者".equals(uClass)) {
+        menuUrl = request.getContextPath() + "/home/admin_home.jsp";
+    } else if ("1".equals(uClass) || "司書".equals(uClass)) {
+        menuUrl = request.getContextPath() + "/home/sisyo_home.jsp";
+    } else if ("2".equals(uClass) || "利用者".equals(uClass)) {
+        menuUrl = request.getContextPath() + "/home/riyousyahome.jsp";
+    }
+}
+%>
+
+
     <div class="header">
         <h1 class="header-title">利用者データ更新入力画面</h1>
-        <button class="menu-button header-blue-button" type="button" onclick="location.href='${pageContext.request.contextPath}/UserManagement'">メニュー</button>
+        <button class="menu-button header-blue-button" type="button" onclick="location.href='<%= menuUrl %>'">メニュー</button>
     </div>
 
     <div class="main-content-base layout-top-padding register-main-content">
@@ -41,12 +66,40 @@
             </c:choose>
         </div>
 
-        <form method="GET" action="${pageContext.request.contextPath}/UsersUpdate" id="searchForm">
-            <div class="id-search-group" style="display: flex; gap: 10px; margin-bottom: 20px; justify-content: center;"">
-                <input type="text" class="input-field" id="search-key" name="searchKey" value="${param.searchKey}" placeholder="利用者IDまたは氏名入力" required autofocus>
+        <form method="GET" action="${pageContext.request.contextPath}/UsersUpdate" id="searchForm" onsubmit="return validateSearch(event)">
+            <div class="id-search-group" style="display: flex; gap: 10px; margin-bottom: 20px; justify-content: center;">
+                <input type="text" class="input-field" id="search-key" name="searchKey" value="${param.searchKey}" placeholder="利用者IDまたは氏名入力" required autofocus oninput="this.setCustomValidity('')">
                 <button type="submit" class="header-blue-button">表示</button>
             </div>
         </form>
+        
+        <script>
+            function validateSearch(event) {
+                var input = document.getElementById('search-key');
+                var val = input.value.trim();
+
+                // 入力された文字が「すべて数字（全角・半角問わず）」かどうかを判定
+                if (/^[0-9０-９]+$/.test(val)) {
+                    
+                    // 全角数字が含まれていたら、半角に直してあげる
+                    var convertedVal = val.replace(/[０-９]/g, function(s) {
+                        return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+                    });
+                    input.value = convertedVal;
+
+                    // 数字なのに「6桁」じゃなかったらエラーを出してストップ！
+                    if (convertedVal.length !== 6) {
+                        input.setCustomValidity('IDを検索する場合は、6桁の数字（例: 123456）を入力してください。');
+                        input.reportValidity();
+                        event.preventDefault(); // 送信をキャンセル
+                        return false;
+                    }
+                }
+                
+                // 数字以外の文字（漢字やアルファベット等）が含まれていれば、氏名検索とみなしてそのまま送信！
+                return true;
+            }
+        </script>
             
         <form action="${pageContext.request.contextPath}/UsersUpdate" method="post" id="updateForm">
             <input type="hidden" name="userId" value="${u.userId}">
@@ -55,7 +108,7 @@
                 <tr>
                     <th>利用者ID</th>
                     <td>
-                        <input type="text" class="input-field input-readonly-id" id="input-id" value="${isFound ? u.userId : ''}" readonly placeholder="IDを表示します">
+                        <input type="text" class="input-field input-readonly-id" id="input-id" value="<c:if test='${isFound}'><fmt:formatNumber value='${u.userId}' pattern='000000' /></c:if>" readonly placeholder="IDを表示します">
                     </td>
                 </tr>
                 <tr>

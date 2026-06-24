@@ -78,8 +78,8 @@
 					<th class="col-no">No.</th>
 					<th class="col-id">図書ID</th>
 					<th class="col-title">書名</th>
-					<th class="col-lend-date">貸出日</th>
-					<th class="col-return-date">返却期限</th>
+					<th class="col-date">貸出日</th>
+					<th class="col-date">返却期限</th>
 					<th class="col-action">操作</th>
 				</tr>
 			</thead>
@@ -93,23 +93,20 @@
 						<td><c:out value="${rental.title}" /></td>
 						<td><c:out value="${rental.loanDate}" /></td>
 						<td><c:out value="${rental.returnDeadline}" /></td>
-<%-- 						<td><c:out value="${book.bookClass}" /></td> --%>
+						<%-- 						<td><c:out value="${book.bookClass}" /></td> --%>
 
 
-						<td
-							style="text-align: right; vertical-align: middle; padding: 5px 18px 5px 0;">
-								<fmt:formatNumber value="${rental.bookId}" pattern="000000"
-									var="fmtBookId" />
-								<fmt:formatNumber value="${sessionScope.loginUser.userId}"
-									pattern="000000" var="fmtUserId" />
+						<td class="col-action-cell">
+							<fmt:formatNumber value="${rental.bookId}" pattern="000000" var="fmtBookId" /> <fmt:formatNumber
+								value="${sessionScope.loginUser.userId}" pattern="000000"
+								var="fmtUserId" />
 
-								<form action="${pageContext.request.contextPath}/userStatus">
-									<input type="hidden" name="action" value="searchBook">
-									<input type="hidden" name="bookId" value="${fmtBookId}">
-									<input type="hidden" name="userId" value="${fmtUserId}">
-									<button type="submit" class="action-btn">詳細</button>
-								</form>
-						</td>
+							<form action="${pageContext.request.contextPath}/userStatus">
+								<input type="hidden" name="action" value="searchBook"> <input
+									type="hidden" name="bookId" value="${fmtBookId}"> <input
+									type="hidden" name="userId" value="${fmtUserId}">
+								<button type="submit" class="action-btn">詳細</button>
+							</form></td>
 					</tr>
 				</c:forEach>
 
@@ -119,8 +116,6 @@
 						end="10" var="i">
 						<tr>
 							<td>${(currentPage != null ? currentPage - 1 : 0) * 10 + i}</td>
-							<td></td>
-							<td></td>
 							<td></td>
 							<td></td>
 							<td></td>

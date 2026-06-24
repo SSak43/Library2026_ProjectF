@@ -78,8 +78,8 @@
 					<th class="col-no">No.</th>
 					<th class="col-id">図書ID</th>
 					<th class="col-title">書名</th>
-					<th class="col-author">予約日</th>
-					<th class="col-publisher">利用者名</th>
+					<th class="col-date">予約日</th>
+					<th class="col-name">利用者名</th>
 					<th class="col-action">操作</th>
 				</tr>
 			</thead>
@@ -91,17 +91,14 @@
 						<%-- 						<td><c:out value="${reserve.lendId}" /></td> --%>
 						<td><c:out value="${reserve.bookId}" /></td>
 						<td><c:out value="${reserve.title}" /></td>
-						<td><c:out value="${reserve.loanDate}" /></td>
-						<td><c:out value="${reserve.returnDeadline}" /></td>
+						<td><c:out value="${reserve.reserveDate}" /></td>
+						<td><c:out value="${reserve.userName}" /></td>
 						<%-- 						<td><c:out value="${book.bookClass}" /></td> --%>
 
 
-						<td
-							style="text-align: right; vertical-align: middle; padding: 5px 18px 5px 0;">
-							<fmt:formatNumber value="${reserve.bookId}" pattern="000000"
-								var="fmtBookId" /> <fmt:formatNumber
-								value="${sessionScope.loginUser.userId}" pattern="000000"
-								var="fmtUserId" />
+						<td class="col-action-cell">
+							<fmt:formatNumber value="${reserve.bookId}" pattern="000000" var="fmtBookId" />
+							<fmt:formatNumber value="${sessionScope.loginUser.userId}" pattern="000000" var="fmtUserId" />
 
 							<form action="${pageContext.request.contextPath}/userStatus">
 								<input type="hidden" name="action" value="searchBook"> <input
@@ -118,8 +115,6 @@
 						end="10" var="i">
 						<tr>
 							<td>${(currentPage != null ? currentPage - 1 : 0) * 10 + i}</td>
-							<td></td>
-							<td></td>
 							<td></td>
 							<td></td>
 							<td></td>

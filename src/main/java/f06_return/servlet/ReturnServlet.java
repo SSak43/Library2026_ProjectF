@@ -41,11 +41,12 @@ public class ReturnServlet extends HttpServlet {
                 int bookId = Integer.parseInt(bookIdStr);
                 activeLend = dao.findActiveLendByBookId(bookId);
 
-                if (activeLend == null && "search".equals(action)) {
-                    errorMessage = "指定された図書IDは貸出中ではないか、存在しません。";
+                if (activeLend == null && "searchBook".equals(action)) {
+                    errorMessage = "該当する図書が存在しません";
                 }
             } catch (NumberFormatException e) {
-                if ("search".equals(action)) errorMessage = "図書IDは数字で入力してください。";
+               
+                if ("searchBook".equals(action)) errorMessage = "図書IDは数字で入力してください。";
             }
         }
 

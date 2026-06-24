@@ -39,7 +39,7 @@ if (loginUserObj != null && loginUserObj instanceof UsersBean) {
     </div>
 
     <div class="main-box">
-        <div class="error"><c:out value="${errorMessage}" /></div>
+        <div class="error" id="error-message"><c:out value="${errorMessage}" /></div>
         
         <div id="completeModal" class="modal-overlay">
             <div class="modal-content">
@@ -106,7 +106,7 @@ if (loginUserObj != null && loginUserObj instanceof UsersBean) {
                 </tr>
             </table>
 
-            <button type="button" class="btn-right" onclick="openConfirmationModal()" style="margin-top: 20px;">返却</button>
+            <button type="button" class="btn-right" onclick="openConfirmationModal()" style="margin-top: 20px;" ${empty activeLend ? 'disabled' : ''}>返却</button>
         </form>
     </div>
 
@@ -139,39 +139,64 @@ if (loginUserObj != null && loginUserObj instanceof UsersBean) {
     </div>
 
     <script>
-        function submitSearch(actionType) {
+ // 「表示」ボタンが押されたときの処理
+    function submitSearch(actionType) {
+            var errorMsg = document.getElementById('error-message');
+            if (errorMsg) errorMsg.innerText = ""; // 画面上のテキストエラーを一度クリア
+
+            if (actionType === 'searchBook') {
+                // 吹き出し（HTML5バリデーション）のチェック
+                if (!document.getElementById('inputBookId').reportValidity()) {
+                    return; // エラーがあればここでストップ（吹き出しが出る）
+                }
+            }
+
+            // 入力欄の最新の値を、送信用の隠しフィールド(hidden)に移し替える
             document.getElementById('hdnBookId').value = document.getElementById('inputBookId').value;
+            
+            // アクションをセットして返却フォーム（returnForm）をServletへ送信
             document.getElementById('actionField').value = actionType;
             document.getElementById('returnForm').submit();
         }
 
-        function openConfirmationModal() {
-            var userId = document.getElementById('txtUserId').innerText.trim();
-            var userName = document.getElementById('txtUserName').innerText.trim();
-            var bookTitle = document.getElementById('txtBookTitle').innerText.trim();
+    function openConfirmationModal() {
+        var errorMsg = document.getElementById('error-message');
+        if (errorMsg) errorMsg.innerText = ""; // エラーをクリア
 
-            if (userName === "" || bookTitle === "") {
-                document.getElementById('actionField').value = 'search'; // 情報がない場合は再検索扱いにする
-                document.getElementById('returnForm').submit();
-                return;
-            }
-            
-            document.getElementById('popUserId').innerText = userId;
-            document.getElementById('popUserName').innerText = userName;
-            document.getElementById('popBookId').innerText = document.getElementById('inputBookId').value;
-            document.getElementById('popBookTitle').innerText = bookTitle;
-            
-            document.getElementById('confirmModal').style.display = 'flex';
+        // 1. 最新のテキストボックスの図書IDを取得
+        var currentBookId = document.getElementById('inputBookId').value.trim();
+
+        // 2. 図書IDが空、または6桁の数字じゃない場合は、エラーを表示してポップアップを開かせない
+        if (currentBookId === "") {
+            if (errorMsg) errorMsg.innerText = "図書IDを入力してください。";
+            return;
+        }
+        if (!/^[0-9]{6}$/.test(currentBookId)) {
+            if (errorMsg) errorMsg.innerText = "図書IDは6桁の数字（例: 000001）で入力してください。";
+            return;
         }
 
-        function closeConfirmationModal() {
-            document.getElementById('confirmModal').style.display = 'none';
-        }
+        // --- ここから下は元の処理 ---
+        var userId = document.getElementById('txtUserId').innerText.trim();
+        var userName = document.getElementById('txtUserName').innerText.trim();
+        var bookTitle = document.getElementById('txtBookTitle').innerText.trim();
 
-        function submitReturn() {
-            document.getElementById('actionField').value = 'return';
+        if (userName === "" || bookTitle === "") {
+            document.getElementById('actionField').value = 'searchBook'; // アクションをsearchBookに合わせておきます
             document.getElementById('returnForm').submit();
+            return;
         }
+        
+        // 最新の図書IDを、送信用の隠しフィールド(hidden)にも念のため上書き
+        document.getElementById('hdnBookId').value = currentBookId;
+
+        document.getElementById('popUserId').innerText = userId;
+        document.getElementById('popUserName').innerText = userName;
+        document.getElementById('popBookId').innerText = currentBookId; // 最新のIDを表示
+        document.getElementById('popBookTitle').innerText = bookTitle;
+        
+        document.getElementById('confirmModal').style.display = 'flex';
+    }
     </script>
 </body>
 </html>

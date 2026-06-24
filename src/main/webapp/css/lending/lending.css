@@ -173,3 +173,13 @@ th {
 .w-full {
 	width: 100%;
 }
+
+/*登録ボタンのいろ*/
+button:disabled {
+            background-color: #888888 !important; /* しっかりと存在感のある濃いグレー */
+            color: rgb(0, 0, 0) !important;            /* 文字を「白」にしてクッキリ読めるように */
+            border: 1px solid #666666 !important; /* 枠線も濃いめの影に */
+            cursor: not-allowed !important;       /* マウスを乗せたら禁止マーク */
+            box-shadow: none !important;          /* 影を消す */
+        }
+

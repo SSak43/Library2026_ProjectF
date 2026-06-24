@@ -104,7 +104,7 @@ if (loginUserObj != null && loginUserObj instanceof UsersBean) {
 			           value="${not empty param.bookId ? param.bookId : inputBookId}" 
 			           class="input-field" required 
 			           maxlength="6" pattern="[0-9]{6}" 
-			           oninvalid="this.setCustomValidity('6桁の数字（例: 000001）を入力してください')" 
+			           oninvalid="this.setCustomValidity('6桁の数字（例: 123456）を入力してください')" 
 			           oninput="this.setCustomValidity('')">
 			           
 			    <button type="button" onclick="submitSearch('searchBook')" style="padding: 5px 20px; font-size: 1rem; background-color: #fff; border:1px solid;">表示</button>
@@ -134,8 +134,7 @@ if (loginUserObj != null && loginUserObj instanceof UsersBean) {
                     <td><c:if test="${selectedBook != null}">貸出日から14日間</c:if></td>
                 </tr>
             </table>
-
-            <button type="button" class="btn-right" onclick="openConfirmationModal()">登録</button>
+            <button type="button" class="btn-right" onclick="openConfirmationModal()"${empty selectedUser || empty selectedBook ? 'disabled' : ''}>登録</button>
         </form>
     </div>
 

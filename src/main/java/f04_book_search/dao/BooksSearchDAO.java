@@ -32,17 +32,15 @@ public class BooksSearchDAO extends DAOBase {
         StringBuilder sql = new StringBuilder("SELECT * FROM BOOKS ");
         List<Object> params = new ArrayList<>();
 
-        // キーワードが入力されている場合の絞り込み条件（WHERE句の組み立て）
+     // キーワードが入力されている場合の絞り込み条件（WHERE句の組み立て）
         if (keyword != null && !keyword.trim().isEmpty()) {
             if ("all".equals(searchType)) {
-                // 「すべて」の場合はテキスト系の項目で部分一致検索
-                sql.append("WHERE TITLE LIKE ? OR WRITER_NAME LIKE ? OR COMPANY LIKE ? OR BOOK_CLASS = ? ");
-                String likeKeyword = "%" + keyword + "%";
-                params.add(likeKeyword); // TITLE
-                params.add(likeKeyword); // WRITER_NAME
-                params.add(likeKeyword); // COMPANY
-                params.add(keyword);     // BOOK_CLASS(完全一致想定)
-                
+                // 「すべて」の場合は図書ID（6桁化）、タイトル、著者名、出版社で部分一致検索
+                sql.append("WHERE LPAD(BOOK_ID, 6, '0') LIKE ? OR TITLE LIKE ? OR WRITER_NAME LIKE ? OR COMPANY LIKE ? ");
+                params.add("%" + keyword + "%"); // 図書ID用
+                params.add("%" + keyword + "%"); // タイトル用
+                params.add("%" + keyword + "%"); // 著者名用
+                params.add("%" + keyword + "%"); // 出版社用
             } else if ("bookId".equals(searchType)) {
                 sql.append("WHERE BOOK_ID = ? ");
                 try {

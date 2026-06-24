@@ -371,7 +371,7 @@ menuUrl = request.getContextPath() + "/home/riyousyahome.jsp";
       <c:forEach var="book" items="${bookList}" varStatus="status">
         <tr>
           <td>${(currentPage - 1) * 10 + status.count}</td>
-          <td>${book.bookId}</td>
+          <td><fmt:formatNumber value="${book.bookId}" pattern="000000" /></td>
           <td><c:out value="${book.title}" /></td>
           <td><c:out value="${book.writerName}" /></td>
           <td><c:out value="${book.company}" /></td>

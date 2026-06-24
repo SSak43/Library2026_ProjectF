@@ -39,7 +39,7 @@ if (loginUserObj != null && loginUserObj instanceof UsersBean) {
     </div>
 
     <div class="main-box">
-        <div class="error"><c:out value="${errorMessage}" /></div>
+        <div class="error" id="error-message"><c:out value="${errorMessage}" /></div>
         
  <!-- 登録完了モーダル -->
             <div id="completeModal" class="modal-overlay">
@@ -188,25 +188,55 @@ if (loginUserObj != null && loginUserObj instanceof UsersBean) {
 
         // 「登録」ボタンが押されたときにポップアップを開く処理
         function openConfirmationModal() {
+            var errorMsg = document.getElementById('error-message');
+            if (errorMsg) errorMsg.innerText = ""; // エラーをクリア
+
+            // 1. 最新のテキストボックスの値を取得
+            var currentUserId = document.getElementById('inputUserId').value.trim();
+            var currentBookId = document.getElementById('inputBookId').value.trim();
+
+            // 2. 利用者IDが空、または6桁の数字じゃない場合はエラーを出してストップ
+            if (currentUserId === "") {
+                if (errorMsg) errorMsg.innerText = "利用者IDを入力してください。";
+                return;
+            }
+            if (!/^[0-9]{6}$/.test(currentUserId)) {
+                if (errorMsg) errorMsg.innerText = "利用者IDは6桁の数字（例: 000001）で入力してください。";
+                return;
+            }
+
+            // 3. 図書IDが空、または6桁の数字じゃない場合はエラーを出してストップ
+            if (currentBookId === "") {
+                if (errorMsg) errorMsg.innerText = "図書IDを入力してください。";
+                return;
+            }
+            if (!/^[0-9]{6}$/.test(currentBookId)) {
+                if (errorMsg) errorMsg.innerText = "図書IDは6桁の数字（例: 000001）で入力してください。";
+                return;
+            }
+
+            // --- ここから下は元の表示チェック処理 ---
             var userName = document.getElementById('txtUserName').innerText.trim();
             var bookTitle = document.getElementById('txtBookTitle').innerText.trim();
 
-
-            
-            // 両方のデータが正しく表示されているかチェック
+            // 「表示」ボタンを押さずに氏名などが空のままの場合は、再表示(rend)のアクションを起こす
             if (userName === "" || bookTitle === "") {
              	document.getElementById('actionField').value = 'rend';
             	document.getElementById('lendForm').submit();
                 return;
             }
             
-            // ポップアップ内のスパンタグに、現在の画面の値をコピーする
-            document.getElementById('popUserId').innerText = document.getElementById('inputUserId').value;
+            // 最新のIDを、送信用の隠しフィールド(hidden)にも念のため上書き
+            document.getElementById('hdnUserId').value = currentUserId;
+            document.getElementById('hdnBookId').value = currentBookId;
+            
+            // ポップアップ内のスパンタグに、最新の値をコピーする
+            document.getElementById('popUserId').innerText = currentUserId;
             document.getElementById('popUserName').innerText = userName;
-            document.getElementById('popBookId').innerText = document.getElementById('inputBookId').value;
+            document.getElementById('popBookId').innerText = currentBookId;
             document.getElementById('popBookTitle').innerText = bookTitle;
             
-            // ポップアップを画面に表示する（flexにすることで中央揃えになる）
+            // ポップアップを画面に表示する
             document.getElementById('confirmModal').style.display = 'flex';
         }
 

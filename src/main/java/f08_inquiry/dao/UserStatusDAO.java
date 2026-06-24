@@ -27,7 +27,12 @@ public class UserStatusDAO extends DAOBase {
 		try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
 			 PreparedStatement ps = conn.prepareStatement(sql)) {
 			
-			ps.setInt(1, Integer.parseInt(userId));
+			try {
+				ps.setInt(1, Integer.parseInt(userId));
+			} catch (NumberFormatException e) {
+				ps.setInt(1, -1); // 変換できなければ存在しないID(-1)にして安全に空の結果を返す
+			}
+
 			try (ResultSet rs = ps.executeQuery()) {
 				while (rs.next()) {
 					RentalBean bean = new RentalBean();
@@ -48,20 +53,26 @@ public class UserStatusDAO extends DAOBase {
 	// ② 予約状況を5件取得
 	public List<ReserveBean> getUserReserves(String userId) {
 		List<ReserveBean> list = new ArrayList<>();
-		String sql = "SELECT R.RESERVE_ID, R.BOOK_ID, B.TITLE, R.RESERVE_DATE, U.USER_NAME " +
-					 "FROM RESERVE R JOIN BOOKS B ON R.BOOK_ID = B.BOOK_ID " +
-					 "JOIN USERS U ON R.USER_ID = U.USER_ID " +
-					 "WHERE R.USER_ID = ? ORDER BY R.RESERVE_DATE DESC LIMIT 5";
+		String sql =
+				"SELECT R.RESERVE_ID, LPAD(R.BOOK_ID, 5, '0') AS BOOK_ID_STR, B.TITLE, " +
+				 "DATE_FORMAT(R.RESERVE_DATE, '%Y/%m/%d') AS RESERVE_DATE_STR, U.USER_NAME " +
+				 "FROM RESERVE R JOIN BOOKS B ON R.BOOK_ID = B.BOOK_ID " +
+				 "JOIN USERS U ON R.USER_ID = U.USER_ID " +
+				 "WHERE R.USER_ID = ? ORDER BY R.RESERVE_DATE DESC LIMIT 5";
 
 		try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
 			 PreparedStatement ps = conn.prepareStatement(sql)) {
 			
-			ps.setInt(1, Integer.parseInt(userId));
+			try {
+				ps.setInt(1, Integer.parseInt(userId));
+			} catch (NumberFormatException e) {
+				ps.setInt(1, -1);
+			}
 			try (ResultSet rs = ps.executeQuery()) {
 				while (rs.next()) {
 					ReserveBean bean = new ReserveBean();
 					bean.setReserveId(rs.getInt("RESERVE_ID"));
-					bean.setBookId(rs.getInt("BOOK_ID"));
+					bean.setBookId(Integer.parseInt(rs.getString("BOOK_ID_STR")));
 					bean.setTitle(rs.getString("TITLE"));
 					bean.setReserveDate(rs.getDate("RESERVE_DATE"));
 					bean.setUserName(rs.getString("USER_NAME"));

@@ -46,7 +46,7 @@
 							<option value="title"
 								${searchCategory == 'title' ? 'selected' : ''}>書名</option>
 							<option value="userId"
-								${searchCategory == 'user' ? 'selected' : ''}>利用者ID</option>
+								${searchCategory == 'userId' ? 'selected' : ''}>利用者ID</option>
 							<option value="name"
 								${searchCategory == 'name' ? 'selected' : ''}>利用者氏名</option>
 					</select></td>
@@ -97,9 +97,9 @@
 
 
 						<td class="col-action-cell">
-							<fmt:formatNumber value="${rental.bookId}" pattern="000000" var="fmtBookId" /> <fmt:formatNumber
-								value="${sessionScope.loginUser.userId}" pattern="000000"
-								var="fmtUserId" />
+							<fmt:formatNumber value="${rental.bookId}" pattern="000000" var="fmtBookId" />
+<%-- 							<fmt:formatNumber value="${sessionScope.loginUser.userId}" pattern="000000" var="fmtUserId" /> --%>
+							<fmt:formatNumber value="${rental.userId}" pattern="000000" var="fmtUserId" />
 
 							<form action="${pageContext.request.contextPath}/userStatus">
 								<input type="hidden" name="action" value="searchBook"> <input

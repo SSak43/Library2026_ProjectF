@@ -34,7 +34,7 @@ if (loginUserObj != null && loginUserObj instanceof UsersBean) {
 %>
 
     <div class="header">
-        <h1 class="header-title">貸出入力画面</h1>
+        <h1 class="header-title">返却入力画面</h1>
         <button class="menu-button" type="button" onclick="location.href='<%= menuUrl %>'">メニュー</button>
     </div>
 

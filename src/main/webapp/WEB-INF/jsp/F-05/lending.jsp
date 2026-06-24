@@ -54,7 +54,7 @@ if (loginUserObj != null && loginUserObj instanceof UsersBean) {
   
             <div class="modal-buttons">
                 <button type="button" class="modal-action-button" 
-                        onclick="location.href='/Library2026_ProjectF/home/admin_home.jsp'">メニュー</button>
+                        onclick="location.href='<%= menuUrl %>'">メニュー</button>
                 <button type="button" class="modal-action-button" style="width: auto; font-size: 0.9rem;" 
                         onclick="location.href='${pageContext.request.contextPath}/lending'">続けて登録</button>
             </div>

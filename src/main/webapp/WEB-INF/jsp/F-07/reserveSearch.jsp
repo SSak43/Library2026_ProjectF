@@ -84,7 +84,7 @@ function resetForm() {
     <tr>
       <th class="search-col-item border-bottom-gap">検索項目</th>
       <th class="search-col-value border-bottom">検索値</th>
-      <td rowspan="2" class="search-col-buttons">
+      <td rowspan="2" class="search-col-buttons" >
         <button type="submit" class="action-btn" onclick="setSearchAction()">検索</button>
         <button type="button" class="action-btn" onclick="resetForm()">リセット</button>
       </td>
@@ -101,7 +101,7 @@ function resetForm() {
         </select>
       </td>
       <td class="search-col-value border-bottom"> 
-        <input type="text" name="searchKeyword" class="search-input" value="<%= searchKeyword %>" autocomplete="off">
+        <input type="text" name="searchKeyword" class="search-input" value="<%= searchKeyword %>" autocomplete="off" autofocus>
       </td>
     </tr>
   </table>

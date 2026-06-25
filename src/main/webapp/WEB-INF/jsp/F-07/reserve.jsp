@@ -94,8 +94,8 @@
                         <div style="display: flex; gap: 10px; align-items: center;">
                             <input type="text" class="input-field" name="bookId" id="inputBookId" placeholder="図書IDを入力" 
                                    value="${inputBookId}" style="width: 200px !important; min-width: 200px; flex-shrink: 0;"
-                                   required maxlength="6" pattern="[0-9]{6}" 
-                                   oninvalid="this.setCustomValidity('6桁の数字（例: 000001）を入力してください')" 
+                                   required autofocus maxlength="6" pattern="[0-9]{6}" 
+                                   oninvalid="this.setCustomValidity('6桁の数字（例: 123456）を入力してください')" 
                                    oninput="this.setCustomValidity('')">
                                    
                             <button type="button" class="clear-button" style="padding: 5px 20px; font-size: 1rem;" onclick="submitSearch('searchBook')">表示</button>

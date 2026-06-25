@@ -96,24 +96,24 @@
 						<%-- 						<td><c:out value="${book.bookClass}" /></td> --%>
 
 
-						<td class="col-action-cell">
-							<fmt:formatNumber value="${reserve.bookId}" pattern="000000" var="fmtBookId" />
-<%-- 							<fmt:formatNumber value="${sessionScope.loginUser.userId}" pattern="000000" var="fmtUserId" /> --%>
-							<fmt:formatNumber value="${rental.userId}" pattern="000000" var="fmtUserId" />
+						<td class="col-action-cell"><fmt:formatNumber
+								value="${reserve.bookId}" pattern="000000" var="fmtBookId" /> <%-- 							<fmt:formatNumber value="${sessionScope.loginUser.userId}" pattern="000000" var="fmtUserId" /> --%>
+							<fmt:formatNumber value="${reserve.userId}" pattern="000000"
+								var="fmtUserId" />
 
 							<form action="${pageContext.request.contextPath}/userStatus">
 								<input type="hidden" name="action" value="searchBook"> <input
 									type="hidden" name="bookId" value="${fmtBookId}"> <input
 									type="hidden" name="userId" value="${fmtUserId}">
 								<button type="submit" class="action-btn">詳細</button>
-							</form>
-						</td>
+							</form></td>
 					</tr>
 				</c:forEach>
 				<!-- 取得件数が10件未満の場合、デザイン維持のために空行を追加 -->
 				<c:if test="${empty reserveList || reserveList.size() < 10}">
-					<c:forEach begin="${empty reserveList ? 1 : reserveList.size() + 1}"
-						end="10" var="i">
+					<c:forEach
+						begin="${empty reserveList ? 1 : reserveList.size() + 1}" end="10"
+						var="i">
 						<tr>
 							<td>${(currentPage != null ? currentPage - 1 : 0) * 10 + i}</td>
 							<td></td>

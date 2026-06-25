@@ -23,7 +23,7 @@ public class RentalSearchDAO extends DAOBase {
 			"FROM LENDS L " + 
 			"JOIN BOOKS B ON L.BOOK_ID = B.BOOK_ID " +  
 			"JOIN USERS U ON L.USER_ID = U.USER_ID " +
-			"WHERE 1=1 "
+			"WHERE 1=1 AND L.RETURN_DATE IS NULL "
 		);
 
 		if (keyword != null && !keyword.trim().isEmpty()) {
@@ -70,8 +70,7 @@ public class RentalSearchDAO extends DAOBase {
 					bean.setTitle(rs.getString("TITLE"));
 					bean.setLoanDate(rs.getString("LEND_DATE_STR"));
 					bean.setReturnDeadline(rs.getString("RETURN_LINE_STR"));
-					
-		
+
 					bean.setUserId(rs.getString("USER_ID"));
 					bean.setUserName(rs.getString("USER_NAME"));
 					

@@ -22,7 +22,7 @@ public class UserStatusDAO extends DAOBase {
 					 "DATE_FORMAT(L.LEND_DATE, '%Y/%m/%d') AS LOAN_DATE_STR, " +
 					 "DATE_FORMAT(L.RETURN_LINE, '%Y/%m/%d') AS RETURN_DEADLINE_STR " +
 					 "FROM LENDS L JOIN BOOKS B ON L.BOOK_ID = B.BOOK_ID " +
-					 "WHERE L.USER_ID = ? ORDER BY L.LEND_DATE DESC LIMIT 5";
+					 "WHERE L.USER_ID = ? AND L.RETURN_DATE IS NULL ORDER BY L.LEND_DATE DESC LIMIT 5";
 
 		try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
 			 PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -54,7 +54,7 @@ public class UserStatusDAO extends DAOBase {
 	public List<ReserveBean> getUserReserves(String userId) {
 		List<ReserveBean> list = new ArrayList<>();
 		String sql =
-				"SELECT R.RESERVE_ID, LPAD(R.BOOK_ID, 5, '0') AS BOOK_ID_STR, B.TITLE, " +
+				"SELECT R.RESERVE_ID, LPAD(R.BOOK_ID, 5, '0') AS BOOK_ID_STR, B.TITLE, R.RESERVE_DATE, " +
 				 "DATE_FORMAT(R.RESERVE_DATE, '%Y/%m/%d') AS RESERVE_DATE_STR, U.USER_NAME " +
 				 "FROM RESERVE R JOIN BOOKS B ON R.BOOK_ID = B.BOOK_ID " +
 				 "JOIN USERS U ON R.USER_ID = U.USER_ID " +

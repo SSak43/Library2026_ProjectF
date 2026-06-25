@@ -10,7 +10,8 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/F-08.css">
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/css/home.css"></head>
+	href="${pageContext.request.contextPath}/css/home.css">
+</head>
 <body>
 	<div class="header">
 		<h1 class="header-title">貸出・予約状況</h1>
@@ -83,11 +84,11 @@
 								value="${sessionScope.loginUser.userId}" pattern="000000"
 								var="fmtUserId" />
 
-							<form action="${pageContext.request.contextPath}/userStatus">
+							<form action="${pageContext.request.contextPath}/returnBook">
 								<input type="hidden" name="action" value="searchBook"> <input
 									type="hidden" name="bookId" value="${fmtBookId}"> <input
 									type="hidden" name="userId" value="${fmtUserId}">
-								<button type="submit" class="action-btn">詳細</button>
+								<button type="submit" class="action-btn">返却</button>
 							</form></td>
 					</tr>
 				</c:forEach>
@@ -114,8 +115,8 @@
         <th class="col-no">予約状況状況</th>
         <th class="col-id">図書ID</th>
         <th class="col-title">書名</th>
-        <th class="col-author">予約日</th>
-        <th class="col-publisher">利用者名</th>
+        <th class="col-date">予約日</th>
+        <th class="col-name">利用者名</th>
         <th class="col-action">操作</th>
       </tr>
     </thead>
@@ -136,12 +137,12 @@
 							<fmt:formatNumber value="${reserve.bookId}" pattern="000000" var="fmtBookId" />
 							<fmt:formatNumber value="${sessionScope.loginUser.userId}" pattern="000000" var="fmtUserId" />
 
-							<form action="${pageContext.request.contextPath}/userStatus">
-								<input type="hidden" name="action" value="searchBook"> <input
-									type="hidden" name="bookId" value="${fmtBookId}"> <input
-									type="hidden" name="userId" value="${fmtUserId}">
-								<button type="submit" class="action-btn">詳細</button>
-							</form>
+			    <form action="${pageContext.request.contextPath}/reserveSearch" method="post" style="display:inline;">
+			        <input type="hidden" name="action" value="searchBook">
+			        <input type="hidden" name="bookId" value="${fmtBookId}">
+			        <input type="hidden" name="userId" value="${fmtUserId}">
+			        <button type="submit" class="action-btn">取り消し</button>
+			    </form>
 						</td>
 					</tr>
 				</c:forEach>

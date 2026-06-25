@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
+<%@ page import="java.util.Date" %>
 <%@ taglib uri="jakarta.tags.core" prefix="c"%>
 <%@ taglib uri="jakarta.tags.fmt" prefix="fmt"%>
 
@@ -96,17 +96,19 @@
 						<%-- 						<td><c:out value="${book.bookClass}" /></td> --%>
 
 
-						<td class="col-action-cell">
-							<fmt:formatNumber value="${rental.bookId}" pattern="000000" var="fmtBookId" />
-<%-- 							<fmt:formatNumber value="${sessionScope.loginUser.userId}" pattern="000000" var="fmtUserId" /> --%>
-							<fmt:formatNumber value="${rental.userId}" pattern="000000" var="fmtUserId" />
+						<td class="col-action-cell"><fmt:formatNumber
+								value="${rental.bookId}" pattern="000000" var="fmtBookId" /> <%-- 							<fmt:formatNumber value="${sessionScope.loginUser.userId}" pattern="000000" var="fmtUserId" /> --%>
+							<fmt:formatNumber value="${rental.userId}" pattern="000000"
+								var="fmtUserId" />
 
 							<form action="${pageContext.request.contextPath}/userStatus">
 								<input type="hidden" name="action" value="searchBook"> <input
 									type="hidden" name="bookId" value="${fmtBookId}"> <input
 									type="hidden" name="userId" value="${fmtUserId}">
 								<button type="submit" class="action-btn">詳細</button>
-							</form></td>
+								
+							</form>
+							</td>
 					</tr>
 				</c:forEach>
 

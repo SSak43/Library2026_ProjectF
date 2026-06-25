@@ -1,4 +1,29 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="Model.UsersBean" %>
+
+<body>　の下
+<%
+// ログインユーザーの区分に応じて遷移先URLを決定する処理
+UsersBean loginUser = null;
+Object loginUserObj = session.getAttribute("loginUser");
+if (loginUserObj == null) loginUserObj = session.getAttribute("user");
+if (loginUserObj == null) loginUserObj = session.getAttribute("login");
+if (loginUserObj != null && loginUserObj instanceof UsersBean) {
+loginUser = (UsersBean) loginUserObj;
+}
+
+String menuUrl = request.getContextPath() + "/home/admin_home.jsp"; // デフォルト
+if (loginUser != null) {
+String uClass = loginUser.getUserClass();
+if ("0".equals(uClass) || "管理者".equals(uClass)) {
+menuUrl = request.getContextPath() + "/home/admin_home.jsp";
+} else if ("1".equals(uClass) || "司書".equals(uClass)) {
+menuUrl = request.getContextPath() + "/home/sisyo_home.jsp";
+} else if ("2".equals(uClass) || "利用者".equals(uClass)) {
+menuUrl = request.getContextPath() + "/home/riyousyahome.jsp";
+}
+}
+%>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -12,7 +37,7 @@
 
     <div class="header">
         <h1 class="header-title">貸出状況照会</h1>
-        <button class="menu-button header-blue-button" type="button" onclick="location.href='${pageContext.request.contextPath}/home/admin_home.jsp'">メニュー</button>
+        <button onclick="location.href='<%= menuUrl %>'">メニュー</button>
     </div>
 
     <!-- メイン枠 -->

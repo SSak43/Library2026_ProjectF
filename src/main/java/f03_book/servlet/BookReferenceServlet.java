@@ -62,7 +62,7 @@ public class BookReferenceServlet extends HttpServlet {
 		session.setAttribute("booksList", booksList);
 		
 	
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/jsp/F-03/bookReference.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/F-03/bookReference.jsp");
 		dispatcher.forward(request, response);
 	}
 

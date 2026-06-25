@@ -98,4 +98,28 @@ public class ReserveDAO extends DAOBase {
         
         return isDuplicate;
     }
+    
+    /**
+     * 指定された図書の「現在の予約数」を取得する
+     */
+    public int getReserveCountByBookId(int bookId) {
+        int count = 0;
+        // RESERVE_STATUS = '0'（予約中）のデータを数えるSQL
+        String sql = "SELECT COUNT(*) FROM RESERVE WHERE BOOK_ID = ? AND RESERVE_STATUS = '0'";
+        
+        try (java.sql.Connection conn = java.sql.DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
+             java.sql.PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setInt(1, bookId);
+            
+            try (java.sql.ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    count = rs.getInt(1); 
+                }
+            }
+        } catch (java.sql.SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
 }

@@ -42,6 +42,7 @@ public class ReserveServlet extends HttpServlet {
         UsersBean selectedUser = null;
         BooksBean selectedBook = null;
         String displayBookStatus = "";
+        int reserveCount = 0;
 
         // 利用者情報の検索・保持
         if (userIdStr != null && !userIdStr.trim().isEmpty()) {
@@ -62,7 +63,7 @@ public class ReserveServlet extends HttpServlet {
             }
         }
 
-        // 図書情報の検索・保持
+     // 図書情報の検索・保持
         if (bookIdStr != null && !bookIdStr.trim().isEmpty()) {
             try {
                 int bookId = Integer.parseInt(bookIdStr);
@@ -77,6 +78,11 @@ public class ReserveServlet extends HttpServlet {
                         case "1": displayBookStatus = "貸出中"; break;
                         case "2": displayBookStatus = "貸出不可"; break;
                     }
+                    
+                    // ReserveDAOを使って現在の予約数を取得する
+                    ReserveDAO countDao = new ReserveDAO();
+                    reserveCount = countDao.getReserveCountByBookId(selectedBook.getBookId());
+                    
                 } else if ("searchBook".equals(action)) {
                     errorMessage = "該当する図書が存在しません。";
                 }
@@ -132,6 +138,7 @@ public class ReserveServlet extends HttpServlet {
         request.setAttribute("successMessage", successMessage);
         request.setAttribute("inputUserId", userIdStr);
         request.setAttribute("inputBookId", bookIdStr);
+        request.setAttribute("reserveCount", reserveCount);
 
      
         request.getRequestDispatcher("/WEB-INF/jsp/F-07/reserve.jsp").forward(request, response);

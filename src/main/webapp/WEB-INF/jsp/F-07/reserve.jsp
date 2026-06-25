@@ -14,6 +14,19 @@
 </head>
 <body>
 
+<%
+    // セッションからログインしているユーザーの情報を取得し、6桁のIDと氏名を準備する
+    UsersBean loginUser = null;
+    Object loginUserObj = session.getAttribute("loginUser");
+    if (loginUserObj == null) loginUserObj = session.getAttribute("user");
+    if (loginUserObj == null) loginUserObj = session.getAttribute("login");
+    if (loginUserObj != null && loginUserObj instanceof UsersBean) {
+        loginUser = (UsersBean) loginUserObj;
+        pageContext.setAttribute("loggedUserId", String.format("%06d", loginUser.getUserId()));
+        pageContext.setAttribute("loggedUserName", loginUser.getUserName());
+    }
+%>
+
     <div class="header">
         <h1 class="header-title">図書予約登録画面</h1>
         <button class="menu-button" type="button" onclick="location.href='${pageContext.request.contextPath}/ReserveManagement'">メニュー</button>
@@ -21,7 +34,7 @@
 
     <form action="${pageContext.request.contextPath}/reserveBook" method="post" id="reserveForm">
         <input type="hidden" name="action" id="actionField" value="">
-		<input type="hidden" id="book-status" value="${selectedBook != null ? selectedBook.bookStatus : ''}">
+        <input type="hidden" id="book-status" value="${selectedBook != null ? selectedBook.bookStatus : ''}">
 
         <div class="main-content-base layout-top-padding register-main-content">
     
@@ -29,68 +42,64 @@
                 <c:out value="${errorMessage}" />
             </div>
             
-<!-- 登録完了モーダル -->
             <div id="completeModal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-title">登録完了</div>
-    
-            <div style="text-align: center; margin: 30px 0; font-size: 1.1rem; line-height: 1.6;">
-                <p style="color: #2f5597; font-weight: bold;">
-                    <c:out value="${successMessage}" />
-                </p>
+                <div class="modal-content">
+                    <div class="modal-title">登録完了</div>
+            
+                    <div style="text-align: center; margin: 30px 0; font-size: 1.1rem; line-height: 1.6;">
+                        <p style="color: #2f5597; font-weight: bold;">
+                            <c:out value="${successMessage}" />
+                        </p>
+                    </div>
+          
+                    <div class="modal-buttons-right">
+                        <button type="button" class="modal-action-button" style="width: 100px;" 
+                                onclick="location.href='${pageContext.request.contextPath}/ReserveManagement'">メニュー</button>
+                        <button type="button" class="modal-action-button" style="width: 100px; font-size: 0.9rem;" 
+                                onclick="location.href='${pageContext.request.contextPath}/reserveBook'">続けて登録</button>
+                    </div>
+                </div>
             </div>
-  
-            <div class="modal-buttons-right">
-                
-                <button type="button" class="modal-action-button" style="width: 100px;" 
-                        onclick="location.href='${pageContext.request.contextPath}/ReserveManagement'">メニュー</button>
-                <button type="button" class="modal-action-button" style="width: 100px; font-size: 0.9rem;" 
-                        onclick="location.href='${pageContext.request.contextPath}/reserveBook'">続けて登録</button>
-            </div>
-        </div>
-    </div>
 
-    <c:if test="${not empty successMessage}">
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                document.getElementById('completeModal').style.display = 'flex';
-            });
-        </script>
-    </c:if>
+            <c:if test="${not empty successMessage}">
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        document.getElementById('completeModal').style.display = 'flex';
+                    });
+                </script>
+            </c:if>
+
             <table class="form-table">
                 <tr>
                     <th>利用者ID</th>
                     <td>
                         <div style="display: flex; gap: 10px; align-items: center;">
-						    <input type="text" class="input-field" name="userId" id="input-user-id" placeholder="利用者IDを入力" 
-						           value="${inputUserId}" style="width: 200px;" required 
-						           maxlength="6" pattern="[0-9]{6}" 
-						           oninvalid="this.setCustomValidity('6桁の数字（例: 123456）を入力してください')" 
-						           oninput="this.setCustomValidity('')">
-						    <button type="button" class="clear-button" style="padding: 5px 20px; font-size: 1rem;" onclick="submitAction('searchUser')">表示</button>
-						</div>
+                            <input type="text" class="input-field" name="userId" id="input-user-id" 
+                                   value="${not empty inputUserId ? inputUserId : loggedUserId}" 
+                                   style="width: 200px; background-color: #f5f5f5;" readonly required>
+                        </div>
                     </td>
                 </tr>
                 <tr>
                     <th>氏名</th>
                     <td>
-                        <input type="text" class="input-field w-full" id="input-user-name" value="${selectedUser != null ? selectedUser.userName : ''}" style="background-color: #f5f5f5;" readonly>
+                        <input type="text" class="input-field w-full" id="input-user-name" 
+                               value="${not empty selectedUser ? selectedUser.userName : loggedUserName}" 
+                               style="background-color: #f5f5f5;" readonly>
                     </td>
                 </tr>
                 <tr>
                     <th>図書ID</th>
                     <td>
                         <div style="display: flex; gap: 10px; align-items: center;">
-						    <input type="text" class="input-field" name="bookId" id="inputBookId" placeholder="図書IDを入力" 
-						           value="${inputBookId}" style="width: 200px !important; min-width: 200px; flex-shrink: 0;"
-						           required maxlength="6" pattern="[0-9]{6}" 
-						           oninvalid="this.setCustomValidity('6桁の数字（例: 123456）を入力してください')" 
-						           oninput="this.setCustomValidity('')">
-						           
-						    <button type="button" class="clear-button" style="padding: 5px 20px; font-size: 1rem;" onclick="submitSearch('searchBook')">表示</button>
-						</div>
-
-
+                            <input type="text" class="input-field" name="bookId" id="inputBookId" placeholder="図書IDを入力" 
+                                   value="${inputBookId}" style="width: 200px !important; min-width: 200px; flex-shrink: 0;"
+                                   required maxlength="6" pattern="[0-9]{6}" 
+                                   oninvalid="this.setCustomValidity('6桁の数字（例: 000001）を入力してください')" 
+                                   oninput="this.setCustomValidity('')">
+                                   
+                            <button type="button" class="clear-button" style="padding: 5px 20px; font-size: 1rem;" onclick="submitSearch('searchBook')">表示</button>
+                        </div>
                     </td>
                 </tr>
                 <tr>
@@ -106,9 +115,9 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>貸出状態</th>
+                    <th>予約数</th>
                     <td>
-                        <input type="text" class="input-field w-full" value="${displayBookStatus}" style="background-color: #f5f5f5;" readonly>
+                        <input type="text" class="input-field w-full" value="${not empty reserveCount ? reserveCount : '0'} 件" style="background-color: #f5f5f5;" readonly>
                     </td>
                 </tr>
             </table>
@@ -118,7 +127,7 @@
                 
                 <button type="button" class="register-button" 
                         onclick="showConfirmModal()" 
-                        ${(selectedUser == null || selectedBook == null) ? 'disabled style="background-color: #cccccc; border-color: #999999; color: #777777; cursor: not-allowed;"' : ''}>
+                        ${(empty loggedUserId || selectedBook == null) ? 'disabled style="background-color: #cccccc; border-color: #999999; color: #777777; cursor: not-allowed;"' : ''}>
                     登録
                 </button>
             </div>
@@ -160,31 +169,62 @@
     </div>
 
     <script>
-        // フォームを送信する関数
+        // フォームを送信する関数（表示ボタン・登録ボタン等で利用）
         function submitAction(actionType) {
             document.getElementById('actionField').value = actionType;
             document.getElementById('reserveForm').submit();
         }
 
-        // モーダルを表示し、入力されている値をセットする関数
+        // 表示ボタン（図書検索）が押されたときの処理（※追加）
+        function submitSearch(actionType) {
+            // 図書IDの吹き出しチェック
+            if (actionType === 'searchBook') {
+                if (!document.getElementById('inputBookId').reportValidity()) return;
+            }
+            submitAction(actionType);
+        }
+
+        // モーダルを表示し、入力されている値をセットする関数（不正登録ガード付き）
         function showConfirmModal() {
-            // --- エラーチェック処理 ---
             const errorMessage = document.getElementById('error-message');
             const bookStatus = document.getElementById('book-status').value;
             
+            // 最新の図書IDを取得
+            var currentBookId = document.getElementById('inputBookId').value.trim();
+
+            // 図書IDが空、または6桁の数字じゃない場合はエラーを出してストップ
+            if (currentBookId === "") {
+                errorMessage.innerText = "図書IDを入力してください。";
+                errorMessage.style.visibility = 'visible';
+                return;
+            }
+            if (!/^[0-9]{6}$/.test(currentBookId)) {
+                errorMessage.innerText = "図書IDは6桁の数字（例: 000001）で入力してください。";
+                errorMessage.style.visibility = 'visible';
+                return;
+            }
+
             // 貸出不可（ステータスが '2'）の場合はエラーを出して処理を止める
             if (bookStatus === '2') {
                 errorMessage.innerText = "この図書は予約できません。";
                 errorMessage.style.visibility = 'visible';
                 return;
             }
+
+            // 書名が空の場合は再検索させる
+            var bookTitle = document.getElementById('input-book-title').value.trim();
+            if (bookTitle === "") {
+                submitAction('searchBook');
+                return;
+            }
+
             errorMessage.style.visibility = 'hidden';
 
             // --- モーダルへの値のセット処理 ---
             document.getElementById('modal-user-id').value = document.getElementById('input-user-id').value;
             document.getElementById('modal-user-name').value = document.getElementById('input-user-name').value;
-            document.getElementById('modal-book-id').value = document.getElementById('input-book-id').value;
-            document.getElementById('modal-book-title').value = document.getElementById('input-book-title').value;
+            document.getElementById('modal-book-id').value = currentBookId; // 最新のIDをセット
+            document.getElementById('modal-book-title').value = bookTitle;
             document.getElementById('modal-book-writer').value = document.getElementById('input-book-writer').value;
             
             document.getElementById('confirmModal').style.display = 'flex';
@@ -202,7 +242,7 @@
 
         // 全角数字から半角への自動変換
         document.addEventListener("DOMContentLoaded", function() {
-            const ids = ['input-user-id', 'input-book-id'];
+            const ids = ['inputBookId']; // ※利用者IDは書き換え不可なので対象外に変更
             ids.forEach(id => {
                 const element = document.getElementById(id);
                 if (element) {
@@ -215,7 +255,6 @@
             });
         });
    
-</script>
-
+    </script>
 </body>
 </html>

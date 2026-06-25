@@ -199,7 +199,7 @@
                 return;
             }
             if (!/^[0-9]{6}$/.test(currentBookId)) {
-                errorMessage.innerText = "図書IDは6桁の数字（例: 000001）で入力してください。";
+                errorMessage.innerText = "図書IDは6桁の数字（例: 123456）で入力してください。";
                 errorMessage.style.visibility = 'visible';
                 return;
             }

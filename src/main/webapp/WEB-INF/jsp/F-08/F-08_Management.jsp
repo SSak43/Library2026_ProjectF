@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="Model.UsersBean" %>
 
-<body>　の下
+<body>
 <%
 // ログインユーザーの区分に応じて遷移先URLを決定する処理
 UsersBean loginUser = null;

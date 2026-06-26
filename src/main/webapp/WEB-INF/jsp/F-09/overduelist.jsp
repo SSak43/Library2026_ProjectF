@@ -34,7 +34,7 @@ menuUrl = request.getContextPath() + "/home/riyousyahome.jsp";
 <body>
 <div class="header">
   <h1 class="header-title">返却期限超過の貸出一覧</h1>
-        <button onclick="location.href='<%= menuUrl %>'">メニュー</button>
+        <button class="menu-button header-blue-button" onclick="location.href='<%= menuUrl %>'">メニュー</button>
 </div>
 
 <div class="search-container">

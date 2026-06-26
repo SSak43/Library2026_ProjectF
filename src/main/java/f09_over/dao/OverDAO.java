@@ -22,7 +22,7 @@ public class OverDAO extends DAOBase {
 						"FROM LENDS L " +
 						"JOIN BOOKS B ON L.BOOK_ID = B.BOOK_ID " +
 						"JOIN USERS U ON L.USER_ID = U.USER_ID " +
-						"WHERE 1=1 AND L.RETURN_DATE IS NULL AND L.RETURN_LINE > CURRENT_DATE ");
+						"WHERE 1=1 AND L.RETURN_DATE IS NULL AND L.RETURN_LINE < CURRENT_DATE ");
 		if (keyword != null && !keyword.trim().isEmpty()) {
 			switch (category) {
 			case "bookId":

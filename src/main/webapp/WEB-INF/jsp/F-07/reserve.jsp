@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/F-02.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/register.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/update.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/modal.css">
 </head>
 <body>
 
@@ -43,23 +44,23 @@
             </div>
             
             <div id="completeModal" class="modal-overlay">
-                <div class="modal-content">
-                    <div class="modal-title">登録完了</div>
-            
-                    <div style="text-align: center; margin: 30px 0; font-size: 1.1rem; line-height: 1.6;">
-                        <p style="color: #2f5597; font-weight: bold;">
-                            <c:out value="${successMessage}" />
-                        </p>
-                    </div>
-          
-                    <div class="modal-buttons-right">
-                        <button type="button" class="modal-action-button" style="width: 100px;" 
-                                onclick="location.href='${pageContext.request.contextPath}/ReserveManagement'">メニュー</button>
-                        <button type="button" class="modal-action-button" style="width: 100px; font-size: 0.9rem;" 
-                                onclick="location.href='${pageContext.request.contextPath}/reserveBook'">続けて登録</button>
-                    </div>
-                </div>
-            </div>
+			     <div class="modal-content">
+			         <div class="modal-title">登録完了</div>
+			 
+			         <div style="text-align: center; margin: 30px 0; font-size: 1.1rem; line-height: 1.6;">
+			             <p style="color: #2f5597; font-weight: bold;">
+			                 <c:out value="${successMessage}" />
+			             </p>
+			         </div>
+			       
+			         <div class="modal-buttons">
+			             <button type="button" 
+			                     onclick="location.href='${pageContext.request.contextPath}/ReserveManagement'">メニュー</button>
+			             <button type="button" 
+			                     onclick="location.href='${pageContext.request.contextPath}/reserveBook'">続けて登録</button>
+			         </div>
+			     </div>
+			 </div>
 
             <c:if test="${not empty successMessage}">
                 <script>
@@ -135,38 +136,38 @@
     </form>
 
     <div id="confirmModal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-title">予約登録確認</div>
-    
-            <table class="form-table">
-                <tr>
-                    <th>利用者ID</th>
-                    <td><input type="text" class="input-field w-full confirm-modal-field" id="modal-user-id" readonly></td>
-                </tr>
-                <tr>
-                    <th>利用者名</th>
-                    <td><input type="text" class="input-field w-full confirm-modal-field" id="modal-user-name" readonly></td>
-                </tr>
-                <tr>
-                    <th>図書ID</th>
-                    <td><input type="text" class="input-field w-full confirm-modal-field" id="modal-book-id" readonly></td>
-                </tr>
-                <tr>
-                    <th>図書名</th>
-                    <td><input type="text" class="input-field w-full confirm-modal-field" id="modal-book-title" readonly></td>
-                </tr>
-                <tr>
-                    <th>著者</th>
-                    <td><input type="text" class="input-field w-full confirm-modal-field" id="modal-book-writer" readonly></td>
-                </tr>
-            </table>
-  
-            <div class="modal-buttons-right">
-                <button type="button" class="modal-action-button" onclick="hideConfirmModal()">戻る</button>
-                <button type="button" class="modal-action-button" onclick="submitForm()">登録</button>
-            </div>
-        </div>
-    </div>
+     <div class="modal-content">
+         <div class="modal-title">予約登録確認</div>
+ 
+         <table class="form-table">
+             <tr>
+                 <th>利用者ID</th>
+                 <td><input type="text" class="input-field w-full confirm-modal-field" id="modal-user-id" readonly></td>
+             </tr>
+             <tr>
+                 <th>利用者名</th>
+                 <td><input type="text" class="input-field w-full confirm-modal-field" id="modal-user-name" readonly></td>
+             </tr>
+             <tr>
+                 <th>図書ID</th>
+                 <td><input type="text" class="input-field w-full confirm-modal-field" id="modal-book-id" readonly></td>
+             </tr>
+             <tr>
+                 <th>図書名</th>
+                 <td><input type="text" class="input-field w-full confirm-modal-field" id="modal-book-title" readonly></td>
+             </tr>
+             <tr>
+                 <th>著者</th>
+                 <td><input type="text" class="input-field w-full confirm-modal-field" id="modal-book-writer" readonly></td>
+             </tr>
+         </table>
+
+         <div class="modal-buttons">
+             <button type="button" onclick="hideConfirmModal()">戻る</button>
+             <button type="button" onclick="submitForm()">登録</button>
+         </div>
+     </div>
+ </div>
 
     <script>
         // フォームを送信する関数（表示ボタン・登録ボタン等で利用）

@@ -143,35 +143,4 @@
     text-align: center;
 }
 
-/* -----------------------------------------
-   モーダル共通（必要に応じて残しています）
-   ----------------------------------------- */
-.modal-overlay {
-    display: none;
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-color: rgba(0, 0, 0, 0.1);
-    justify-content: center;
-    align-items: center;
-    z-index: 10;
-}
-
-.modal-content {
-    background-color: #d9d9d9;
-    border: 1.5px solid #2f5597;
-    box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
-    padding: 30px;
-    width: 70%;
-    max-width: 600px;
-    position: relative;
-}
-
-.modal-title {
-    text-align: center;
-    margin-top: 0;
-    margin-bottom: 20px;
-    font-size: 1.2rem;
-    font-weight: normal;
-}
-
 

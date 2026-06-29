@@ -27,24 +27,6 @@
     color: red;
 }
 
-/* 確認モーダル内のボタンコンテナ（右寄せ） */
-.modal-buttons-right {
-    display: flex;
-    justify-content: flex-end;
-    gap: 15px;
-    margin-top: 20px;
-}
-
-/* モーダル用のアクションボタン共通 */
-.modal-action-button {
-    border: 1px solid #2f5597;
-    background-color: white;
-    padding: 5px 20px;
-    width: 100px;
-    text-align: center;
-    cursor: pointer;
-}
-
 /* 入力欄・確認欄の横幅100%固定 */
 .w-full {
     width: 100%;
@@ -55,5 +37,3 @@
     font-size: 0.9rem;
     white-space: nowrap;
 }
-
-

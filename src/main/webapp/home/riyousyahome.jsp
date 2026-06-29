@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>利用者メニュー画面</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/home/riyousyahome.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/management.css">
 </head>
 <body>
     <header class="header">

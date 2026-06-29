@@ -1,0 +1,90 @@
+@charset "UTF-8";
+
+/* ==========================================================================
+   モーダル（ポップアップ）共通スタイル
+   ========================================================================== */
+
+/* モーダル全体のオーバーレイ（背景を暗くする） */
+.modal-overlay {
+    display: none; /* 最初は非表示（JSでflexに変更） */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* 黒の半透明 */
+    z-index: 1000; /* ヘッダー等より前面に表示 */
+    justify-content: center;
+    align-items: center;
+}
+
+/* モーダル本体（ダイアログボックス） */
+.modal-content {
+    background: #d3d3d3; /* 薄いグレーの背景色 */
+    border: 3px solid #666; /* 濃いグレーの枠線 */
+    padding: 25px;
+    width: 100%;
+    max-width: 500px; /* 横幅の上限（レスポンシブ対応） */
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* モーダルのタイトル（「確認画面」「登録完了」など） */
+.modal-title {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 20px;
+    font-size: 20px;
+    color: #333;
+}
+
+/* ==========================================================================
+   モーダル内の要素スタイル
+   ========================================================================== */
+
+/* 確認画面内のテーブル調整 */
+.modal-content table {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.modal-content th {
+    background: #e0e0e0;
+    width: 30%;
+    font-weight: bold;
+}
+
+/* ボタンの配置エリア（右寄せ・横並び） */
+.modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px; /* ボタン同士の間隔 */
+    margin-top: 25px;
+}
+
+/* モーダル内のボタン（システム全体のデザインと統一） */
+.modal-buttons button {
+    background-color: white;
+    border: 1px solid #2f5597;
+    padding: 8px 25px; /* 他の画面のメニューボタン等と同じ押しやすい余白 */
+    font-size: 16px;
+    font-family: inherit;
+    cursor: pointer;
+    text-align: center;
+    min-width: 110px;  /* 「戻る」「確定」などの最小幅 */
+    width: auto;       /* 「続けて登録」のように文字数が増えても自動で広がる */
+    transition: background-color 0.2s ease;
+}
+
+/* ボタンにマウスを乗せたときの効果 */
+.modal-buttons button:hover {
+    background-color: #f2f2f2; /* ほんのりグレーにしてクリック感を出す */
+}
+
+/* 汎用クラス */
+.popText {
+    background-color: #b0b0b0;
+}
+
+.w-full {
+    width: 100%;
+}

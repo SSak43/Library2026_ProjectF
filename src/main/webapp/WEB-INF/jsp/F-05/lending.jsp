@@ -7,6 +7,7 @@
     <meta charset="UTF-8">
     <title>図書システム - 貸出入力画面</title>
     <link rel="stylesheet" href="/Library2026_ProjectF/css/lending/lending.css">
+    <link rel="stylesheet" href="/Library2026_ProjectF/css/modal.css">
 </head>
 <body>
 

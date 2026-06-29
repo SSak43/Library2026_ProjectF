@@ -80,9 +80,8 @@
 
 
 						<td class="col-action-cell">
-							<fmt:formatNumber value="${rental.bookId}" pattern="000000" var="fmtBookId" /> <fmt:formatNumber
-								value="${sessionScope.loginUser.userId}" pattern="000000"
-								var="fmtUserId" />
+							<fmt:formatNumber value="${rental.bookId}" pattern="000000" var="fmtBookId" />
+							<fmt:formatNumber value="${sessionScope.loginUser.userId}" pattern="000000" var="fmtUserId" />
 
 							<form action="${pageContext.request.contextPath}/returnBook">
 								<input type="hidden" name="action" value="searchBook"> <input

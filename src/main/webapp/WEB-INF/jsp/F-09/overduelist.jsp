@@ -1,5 +1,28 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ page import="Model.UsersBean" %>
+<%
+// ログインユーザーの区分に応じて遷移先URLを決定する処理
+UsersBean loginUser = null;
+Object loginUserObj = session.getAttribute("loginUser");
+if (loginUserObj == null) loginUserObj = session.getAttribute("user");
+if (loginUserObj == null) loginUserObj = session.getAttribute("login");
+if (loginUserObj != null && loginUserObj instanceof UsersBean) {
+loginUser = (UsersBean) loginUserObj;
+}
+
+String menuUrl = request.getContextPath() + "/home/admin_home.jsp"; // デフォルト
+if (loginUser != null) {
+String uClass = loginUser.getUserClass();
+if ("0".equals(uClass) || "管理者".equals(uClass)) {
+menuUrl = request.getContextPath() + "/home/admin_home.jsp";
+} else if ("1".equals(uClass) || "司書".equals(uClass)) {
+menuUrl = request.getContextPath() + "/home/sisyo_home.jsp";
+} else if ("2".equals(uClass) || "利用者".equals(uClass)) {
+menuUrl = request.getContextPath() + "/home/riyousyahome.jsp";
+}
+}
+%>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -11,7 +34,7 @@
 <body>
 <div class="header">
   <h1 class="header-title">返却期限超過の貸出一覧</h1>
-  <button type="button" class="menu-button" onclick="goToMenu()">メニュー</button>
+        <button class="menu-button header-blue-button" onclick="location.href='<%= menuUrl %>'">メニュー</button>
 </div>
 
 <div class="search-container">
@@ -56,28 +79,53 @@
         <th class="col-book-id">図書ID</th>
         <th class="col-title">書名</th>
         <th class="col-user-id text-center">利用者ID</th>
-        <th class="col-return-date text-center">返却日</th>
+        <th class="col-return-line text-center">返却期限</th>
         <th class="col-action text-center">操作</th>
       </tr>
     </thead>
-    <tbody>
-      <tr>
-        <td>1</td>
-        <td>00001</td>
-        <td>重要なことは問い続けること...</td>
-        <td class="text-center">U12345</td>
-        <td class="text-center">2026/06/10</td>
-        <td class="text-center"><button type="button" class="action-btn">返却</button></td>
-      </tr>
-      <c:forEach begin="2" end="10" var="i">
-        <tr>
-            <td>${i}</td><td></td><td></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-        </tr>
-      </c:forEach>
-    </tbody>
+			<tbody>
+				<!-- Servletから受け取った図書リストをループで表示 -->
+				<c:forEach var="rental" items="${rentalList}" varStatus="status">
+					<tr>
+						<td>${((currentPage != null ? currentPage : 1) - 1) * 10 + status.count}</td>
+						<%-- 						<td><c:out value="${rental.lendId}" /></td> --%>
+						<td><c:out value="${rental.bookId}" /></td>
+						<td><c:out value="${rental.title}" /></td>
+						<td><c:out value="${rental.loanDate}" /></td>
+						<td><c:out value="${rental.returnDeadline}" /></td>
+						<%-- 						<td><c:out value="${book.bookClass}" /></td> --%>
+
+
+						<td class="col-action-cell"><fmt:formatNumber
+								value="${rental.bookId}" pattern="000000" var="fmtBookId" /> <%-- 							<fmt:formatNumber value="${sessionScope.loginUser.userId}" pattern="000000" var="fmtUserId" /> --%>
+							<fmt:formatNumber value="${rental.userId}" pattern="000000"
+								var="fmtUserId" />
+
+							<form action="${pageContext.request.contextPath}/returnBook">
+								<input type="hidden" name="action" value="searchBook"> <input
+									type="hidden" name="bookId" value="${fmtBookId}"> <input
+									type="hidden" name="userId" value="${fmtUserId}">
+								<button type="submit" class="action-btn">返却</button>
+							</form>
+							</td>
+					</tr>
+				</c:forEach>
+
+				<!-- 取得件数が10件未満の場合、デザイン維持のために空行を追加 -->
+				<c:if test="${empty rentalList || rentalList.size() < 10}">
+					<c:forEach begin="${empty rentalList ? 1 : rentalList.size() + 1}"
+						end="10" var="i">
+						<tr>
+							<td>${(currentPage != null ? currentPage - 1 : 0) * 10 + i}</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</c:forEach>
+				</c:if>
+			</tbody>
   </table>
 
   <div class="pagination-area">

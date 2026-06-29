@@ -1,7 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="Model.UsersBean" %>
 <!DOCTYPE html>
 <%@ taglib uri="jakarta.tags.core" prefix="c"%>
 <%@ taglib uri="jakarta.tags.fmt" prefix="fmt"%>
+<%
+//ログインユーザーの区分に応じて遷移先URLを決定する処理
+UsersBean loginUser = null;
+Object loginUserObj = session.getAttribute("loginUser");
+if (loginUserObj == null) loginUserObj = session.getAttribute("user");
+if (loginUserObj == null) loginUserObj = session.getAttribute("login");
+if (loginUserObj != null && loginUserObj instanceof UsersBean) {
+loginUser = (UsersBean) loginUserObj;
+}
+String uClass = loginUser.getUserClass();
+%>
+
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
@@ -39,10 +52,12 @@
 								${searchCategory == 'bookId' ? 'selected' : ''}>図書ID</option>
 							<option value="title"
 								${searchCategory == 'title' ? 'selected' : ''}>書名</option>
+					<% if(!"2".equals(uClass)){ %>
 							<option value="userId"
 								${searchCategory == 'userId' ? 'selected' : ''}>利用者ID</option>
 							<option value="name"
 								${searchCategory == 'name' ? 'selected' : ''}>利用者氏名</option>
+								<% } %>
 							<!--           <option>著者</option> -->
 							<!--           <option>出版社</option> -->
 					</select></td>

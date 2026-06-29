@@ -20,7 +20,7 @@
         <div class="menu-panel">
             <a href="${pageContext.request.contextPath}/booksSearch" class="menu-link" style="font-size: 40px;">図書検索</a>
             <a href="${pageContext.request.contextPath}/ReserveManagement" class="menu-link" style="font-size: 40px;">予約処理</a>
-            <a href="${pageContext.request.contextPath}/reserveBook" class="menu-link" style="font-size: 40px;">貸出状況照会</a>
+            <a href="${pageContext.request.contextPath}/inquiryManagement" class="menu-link" style="font-size: 40px;">貸出状況照会</a>
         </div>
     </main>
 </body>

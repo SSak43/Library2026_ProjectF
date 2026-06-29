@@ -118,61 +118,85 @@ th {
 
 /* ★ポップアップ（モーダル）のCSS */
 .modal-overlay {
-	display: none;
-	/* 最初は非表示 */
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background: rgba(0, 0, 0, 0.5);
-	/* 背景を暗く半透明に */
-	z-index: 1000;
-	justify-content: center;
-	align-items: center;
+    display: none; /* 最初は非表示 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* 背景を暗く半透明に */
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
 }
 
+/* モーダル本体の白・グレー基調のボックス */
 .modal-content {
-	background: #d3d3d3;
-	border: 3px solid #666;
-	padding: 20px;
-	width: 500px;
-	box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+    background: #d3d3d3;
+    border: 3px solid #666;
+    padding: 25px;
+    width: 100%;
+    max-width: 500px; /* 画面サイズに合わせてレスポンシブに対応 */
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
 }
 
+/* モーダルのタイトル（「確認画面」「登録完了」など） */
 .modal-title {
-	text-align: center;
-	font-weight: bold;
-	margin-bottom: 15px;
-	font-size: 18px;
-}
-
-.popText{
-	background-color:#b0b0b0;
-}
-
-.modal-buttons {
-	display: flex;
-    justify-content: flex-end;
-    gap: 15px;
-    margin-top: 20px;
-    
-}
-
-.modal-buttons button {
-	padding: 8px 25px;
-	font-size: 14px;
-	border: 1px solid #2f5597;
-    background-color: white;
-    padding: 5px 20px;
-    width: 100px;
     text-align: center;
+    font-weight: bold;
+    margin-bottom: 20px;
+    font-size: 20px; /* 少し大きめで見やすく */
+    color: #333;
+}
+
+/* ポップアップ内の入力項目確認用テーブルの調整 */
+.modal-content table {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.modal-content th {
+    background: #e0e0e0;
+    width: 30%;
+    font-weight: bold;
+}
+
+/* ボタンを配置するエリア */
+.modal-buttons {
+    display: flex;
+    justify-content: flex-end; /* 右寄せ */
+    gap: 15px;                 /* ボタン同士の間隔 */
+    margin-top: 25px;
+}
+
+/* モーダル内のボタン（メニューボタンやログアウトボタンのデザインと統一） */
+.modal-buttons button {
+    background-color: white;
+    border: 1px solid #2f5597;
+    padding: 8px 25px;        /* 押しやすいしっかりとした余白 */
+    font-size: 16px;          /* 文字をくっきり見やすく */
+    font-family: inherit;
     cursor: pointer;
+    text-align: center;
+    min-width: 110px;         /* 最低限の幅を確保 */
+    width: auto;              /* 「続けて登録」など文字が長くても自動で広がる */
+    transition: background-color 0.2s ease;
+}
+
+/* モーダル内ボタンのホバー（マウスを乗せたとき）の効果 */
+.modal-buttons button:hover {
+    background-color: #f2f2f2; /* ほんのりグレーにしてクリック感を出す */
+}
+
+/* 必要に応じて使うテキスト背景用クラス */
+.popText {
+    background-color: #b0b0b0;
 }
 
 .w-full {
-	width: 100%;
+    width: 100%;
 }
+
 
 /*登録ボタンのいろ*/
 button:disabled {

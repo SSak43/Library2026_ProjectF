@@ -30,19 +30,22 @@ menuUrl = request.getContextPath() + "/home/riyousyahome.jsp";
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>F-08_メニュー</title>
     <!-- F-3用のCSSファイルを読み込む -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/F-03.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/riyousyahome.css">
 </head>
 <body>
 
-    <div class="header">
-        <h1 class="header-title">貸出状況照会</h1>
-        <button class="menu-button header-blue-button" onclick="location.href='<%= menuUrl %>'">メニュー</button>
-    </div>
+    <header class="header">
+    <div class="header-title">貸出状況照会</div>
+    <form style="margin-left: auto;">
+        <button type="button" class="btn-logout" 
+                onclick="location.href='<%= menuUrl %>'">
+            メニュー
+        </button>
+    </form>
 
-    <!-- メイン枠 -->
-    <div class="main-content-base layout-center">
-        <!-- リンク群をまとめる枠 -->
-        <div class="link-group">
+    <main class="main-container">
+
+        <div class="menu-panel">
             <a href="${pageContext.request.contextPath}/rentalSearch">貸出状況</a>
             <a href="${pageContext.request.contextPath}/reserveStatusInquiry">予約状況</a>
             <a href="${pageContext.request.contextPath}/userStatus">貸出・予約状況</a>

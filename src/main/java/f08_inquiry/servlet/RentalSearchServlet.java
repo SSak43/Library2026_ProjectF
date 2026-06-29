@@ -21,11 +21,13 @@ public class RentalSearchServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		HttpSession session = request.getSession();
-		Object userObj = session.getAttribute("usersBean");
-		UsersBean usersBean = new UsersBean();
+		Object userObj = session.getAttribute("loginUser");
+		
+		UsersBean usersBean = null;
 		int roleType = 2;
 		
 		if(userObj != null) {
+			usersBean = (UsersBean) userObj;
 			String userClass = usersBean.getUserClass();
 			if (userClass != null && !userClass.isEmpty()) {
 	            roleType = Integer.parseInt(userClass);
@@ -36,7 +38,16 @@ public class RentalSearchServlet extends HttpServlet {
 		
 		// 初期表示は条件なしで全件検索（貸出日の早い順）
 		RentalSearchDAO dao = new RentalSearchDAO();
-		List<RentalBean> rentalList = dao.searchRentals("all", "");
+		List<RentalBean> rentalList;
+		
+		if (roleType != 2) {
+		    // 管理者は全件検索
+		   rentalList = dao.searchRentals("all","");
+		} else {
+		    // 一般ユーザーは自分のログインIDに紐づくデータだけ検索
+		    int userId = usersBean.getUserId(); 
+		   rentalList = dao.searchRentalsByUserId(userId,"all","");
+		}
 
 		request.setAttribute("rentalList", rentalList);
 		request.setAttribute("searchCategory", "all");
@@ -51,11 +62,12 @@ public class RentalSearchServlet extends HttpServlet {
 		
 
 		HttpSession session = request.getSession();
-		Object userObj = session.getAttribute("usersBean");
-		UsersBean usersBean = new UsersBean();
+		Object userObj = session.getAttribute("loginUser");
+		UsersBean usersBean = null;
 		int roleType = 2;
 		
 		if(userObj != null) {
+			usersBean = (UsersBean) userObj;
 			String userClass = usersBean.getUserClass();
 			if (userClass != null && !userClass.isEmpty()) {
 	            roleType = Integer.parseInt(userClass);
@@ -77,10 +89,6 @@ public class RentalSearchServlet extends HttpServlet {
 		    int userId = usersBean.getUserId(); 
 		   rentalList = dao.searchRentalsByUserId(userId, searchCategory, searchKeyword);
 		}
-
-
-		if (searchCategory == null && rentalList == null) searchCategory = "all";
-		if (searchKeyword == null && rentalList == null) searchKeyword = "";
 
 
 		// 画面に入力値を残すために再セット

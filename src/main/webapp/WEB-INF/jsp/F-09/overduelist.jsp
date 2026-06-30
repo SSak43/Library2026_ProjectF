@@ -69,7 +69,7 @@ if (loginUser != null) {
 					</select></td>
 					<td class="search-col-value border-bottom"><input type="text"
 						class="search-input" name="keyword"
-						value="<c:out value='${param.keyword}'/>" autocomplete="off">
+						value="<c:out value='${param.keyword}'/>" autocomplete="off" autofocus>
 					</td>
 				</tr>
 			</table>

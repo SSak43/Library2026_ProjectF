@@ -63,7 +63,7 @@ String uClass = loginUser.getUserClass();
 					</select></td>
 					<td class="search-col-value border-bottom"><input type="text"
 						class="search-input" name="searchKeyword"
-						value="<c:out value='${keyword}'/>" autocomplete="off">
+						value="<c:out value='${keyword}'/>" autocomplete="off" autofocus>
 				</tr>
 			</table>
 		</form>
@@ -95,6 +95,7 @@ String uClass = loginUser.getUserClass();
 
 
 						<td class="col-action-cell">
+											<% if(!"2".equals(uClass)){ %>
 							<fmt:formatNumber value="${rental.bookId}" pattern="000000" var="fmtBookId" />
 							<fmt:formatNumber value="${sessionScope.loginUser.userId}" pattern="000000" var="fmtUserId" />
 
@@ -103,7 +104,9 @@ String uClass = loginUser.getUserClass();
 									type="hidden" name="bookId" value="${fmtBookId}"> <input
 									type="hidden" name="userId" value="${fmtUserId}">
 								<button type="submit" class="action-btn">返却</button>
-							</form></td>
+							</form>
+							<% } %>
+							</td>
 					</tr>
 				</c:forEach>
 				<!-- 取得件数が5件未満の場合、デザイン維持のために空行を追加 -->

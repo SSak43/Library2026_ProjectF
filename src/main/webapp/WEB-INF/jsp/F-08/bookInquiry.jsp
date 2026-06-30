@@ -67,7 +67,7 @@ String uClass = loginUser.getUserClass();
 								<% } %>
 					<td class="search-col-value border-bottom"><input type="text"
 						class="search-input" name="searchKeyword"
-						value="<c:out value='${keyword}'/>" autocomplete="off">
+						value="<c:out value='${keyword}'/>" autocomplete="off" autofocus>
 				</tr>
 			</table>
 		</form>

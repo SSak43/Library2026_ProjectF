@@ -53,7 +53,7 @@ public class RentalSearchServlet extends HttpServlet {
 		request.setAttribute("searchCategory", "all");
 		request.setAttribute("searchKeyword", "");
 
-		request.getRequestDispatcher("/WEB-INF/jsp/F-08/F-08.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/jsp/F-08/bookInquiry.jsp").forward(request, response);
 	}
 
 	// 「表示」ボタンが押されたとき
@@ -96,6 +96,6 @@ public class RentalSearchServlet extends HttpServlet {
 		request.setAttribute("searchCategory", searchCategory);
 		request.setAttribute("searchKeyword", searchKeyword);
 
-		request.getRequestDispatcher("/WEB-INF/jsp/F-08/F-08.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/jsp/F-08/bookInquiry.jsp").forward(request, response);
 	}
 }

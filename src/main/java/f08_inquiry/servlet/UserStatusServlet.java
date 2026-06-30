@@ -20,7 +20,14 @@ public class UserStatusServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
+		if(request.getParameter("userId") != null) {
+			execute(request,response);
+			return;
+		}
+		
 		HttpSession session = request.getSession();
+		
 		Object userObj = session.getAttribute("loginUser");
 		
 		UsersBean usersBean = new UsersBean();
@@ -57,7 +64,7 @@ public class UserStatusServlet extends HttpServlet {
 		request.setAttribute("searchCategory", "all");
 		request.setAttribute("searchKeyword", "");
 
-		request.getRequestDispatcher("/WEB-INF/jsp/F-08/F-08_3.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/jsp/F-08/allInquiry.jsp").forward(request, response);
 		
 	}
 
@@ -103,6 +110,6 @@ public class UserStatusServlet extends HttpServlet {
 		request.setAttribute("targetUserId", userId);
 
 		// JSPへフォワード
-		request.getRequestDispatcher("/WEB-INF/jsp/F-08/F-08_3.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/jsp/F-08/allInquiry.jsp").forward(request, response);
 	}
 }

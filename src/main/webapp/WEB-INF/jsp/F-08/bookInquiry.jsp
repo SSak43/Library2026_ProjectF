@@ -1,44 +1,91 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="java.util.Date"%>
+<%@ page import="Model.UsersBean"%>
 <%@ taglib uri="jakarta.tags.core" prefix="c"%>
 <%@ taglib uri="jakarta.tags.fmt" prefix="fmt"%>
-<%@ page import="Model.UsersBean" %>
 <%
 //ログインユーザーの区分に応じて遷移先URLを決定する処理
 UsersBean loginUser = null;
 Object loginUserObj = session.getAttribute("loginUser");
-if (loginUserObj == null) loginUserObj = session.getAttribute("user");
-if (loginUserObj == null) loginUserObj = session.getAttribute("login");
+if (loginUserObj == null)
+	loginUserObj = session.getAttribute("user");
+if (loginUserObj == null)
+	loginUserObj = session.getAttribute("login");
 if (loginUserObj != null && loginUserObj instanceof UsersBean) {
-loginUser = (UsersBean) loginUserObj;
+	loginUser = (UsersBean) loginUserObj;
 }
+
 String uClass = loginUser.getUserClass();
 %>
 
 
-<td>${reserve.reserveId }</td>
+<td>${lend.lendId}</td>
 
-<td><fmt:formatNumber value="${reserve.reserveId}" pattern="000000" /></td>
+<td><fmt:formatNumber value="${lend.lendId}" pattern="000000" /></td>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>予約状況</title>
+<title>貸出状況</title>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/F-08.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/home.css">
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+		const searchSelect = document.querySelector('.search-select');
+		const searchInput = document.querySelector('.search-input');
+
+		function updateInputAttributes() {
+			const category = searchSelect.value;
+
+			if (category === 'bookId' || category === 'userId') {
+				// 図書ID・利用者IDの場合は「6桁の数字」のバリデーションを適用
+				searchInput.type = 'text';
+				searchInput.inputMode = 'numeric';
+				searchInput.maxLength = 6;
+				searchInput.pattern = '[0-9]{6}';
+				searchInput.placeholder = '6桁の数字を入力';
+				// カスタムエラーメッセージの再設定
+				searchInput.oninvalid = function() {
+					this.setCustomValidity('6桁の数字（例: 123456）を入力してください');
+				};
+			} else {
+				// 「すべて」や「書名」「利用者氏名」などの場合は制限を解除
+				searchInput.type = 'text';
+				searchInput.removeAttribute('inputMode');
+				searchInput.removeAttribute('maxLength'); // 必要に応じて文字数制限を広げてください（例: 100）
+				searchInput.removeAttribute('pattern');
+				searchInput.placeholder = 'キーワードを入力';
+				// エラーメッセージをクリア
+				searchInput.oninvalid = function() {
+					this.setCustomValidity('');
+				};
+			}
+
+			// 判定が切り替わった際に入力エラーを即時リセットする
+			searchInput.setCustomValidity('');
+		}
+
+		// 1. セレクトボックスが変更されたときに実行
+		searchSelect.addEventListener('change', updateInputAttributes);
+
+		// 2. 画面表示時（初期状態）にも実行して状態を合わせる
+		updateInputAttributes();
+	});
+</script>
 </head>
 <body>
 	<div class="header">
-		<h1 class="header-title">予約状況</h1>
+		<h1 class="header-title">貸出状況</h1>
 		<button class="menu-button" type="button"
 			onclick="location.href='${pageContext.request.contextPath}/InquiryManagementServlet'">メニュー</button>
 	</div>
 	<!-- 新しく追加した検索エリア -->
 	<div class="search-container">
-		<form action="${pageContext.request.contextPath}/reserveStatusInquiry"
+		<form action="${pageContext.request.contextPath}/rentalSearch"
 			method="post" id="searchForm">
 			<table class="search-table">
 				<tr>
@@ -57,18 +104,23 @@ String uClass = loginUser.getUserClass();
 								${searchCategory == 'bookId' ? 'selected' : ''}>図書ID</option>
 							<option value="title"
 								${searchCategory == 'title' ? 'selected' : ''}>書名</option>
-					<% if(!"2".equals(uClass)){ %>
+							<%
+							if (!"2".equals(uClass)) {
+							%>
 							<option value="userId"
 								${searchCategory == 'userId' ? 'selected' : ''}>利用者ID</option>
 							<option value="name"
 								${searchCategory == 'name' ? 'selected' : ''}>利用者氏名</option>
-								<% } %>
-							<!--           <option>著者</option> -->
-							<!--           <option>出版社</option> -->
-					</select></td>
+							<%
+							}
+							%>
+					</select>
 					<td class="search-col-value border-bottom"><input type="text"
 						class="search-input" name="searchKeyword"
-						value="<c:out value='${keyword}'/>" autocomplete="off">
+						value="<c:out value='${keyword}'/>" autocomplete="off" autofocus
+						maxlength="6" pattern="[0-9]{6}" inputmode="numeric"
+						oninvalid="this.setCustomValidity('6桁の数字（例: 123456）を入力してください')"
+						oninput="checkNumberOnly(this)"></td>
 				</tr>
 			</table>
 		</form>
@@ -78,8 +130,8 @@ String uClass = loginUser.getUserClass();
 	<div class="table-container">
 		<p class="result-message">
 			<c:choose>
-				<c:when test="${reserveList.size() > 0}">
-     		   ${currentPage}ページ目：${reserveList.size()}件の図書を表示しています。
+				<c:when test="${rentalList.size() > 0}">
+     		   ${currentPage}ページ目：${rentalList.size()}件の図書を表示しています。
      			 </c:when>
 				<c:otherwise>
        		 条件に一致する図書が見つかりませんでした。
@@ -87,48 +139,52 @@ String uClass = loginUser.getUserClass();
 			</c:choose>
 		</p>
 
+
 		<table class="custom-table">
 			<thead>
 				<tr>
 					<th class="col-no">No.</th>
 					<th class="col-id">図書ID</th>
 					<th class="col-title">書名</th>
-					<th class="col-date">予約日</th>
-					<th class="col-name">利用者名</th>
+					<th class="col-date">貸出日</th>
+					<th class="col-date">返却期限</th>
 					<th class="col-action">操作</th>
 				</tr>
 			</thead>
 			<tbody>
 				<!-- Servletから受け取った図書リストをループで表示 -->
-				<c:forEach var="reserve" items="${reserveList}" varStatus="status">
+				<c:forEach var="rental" items="${rentalList}" varStatus="status">
+					<fmt:formatNumber value="${rental.bookId}" pattern="000000"
+						var="fmtBookId" />
+					<%-- 							<fmt:formatNumber value="${sessionScope.loginUser.userId}" pattern="000000" var="fmtUserId" /> --%>
+					<fmt:formatNumber value="${rental.userId}" pattern="000000"
+						var="fmtUserId" />
 					<tr>
 						<td>${((currentPage != null ? currentPage : 1) - 1) * 10 + status.count}</td>
-						<%-- 						<td><c:out value="${reserve.lendId}" /></td> --%>
-						<td><c:out value="${reserve.bookId}" /></td>
-						<td><c:out value="${reserve.title}" /></td>
-						<td><c:out value="${reserve.reserveDate}" /></td>
-						<td><c:out value="${reserve.userName}" /></td>
+						<%-- 						<td><c:out value="${rental.lendId}" /></td> --%>
+						<td><c:out value="${fmtBookId}" /></td>
+						<td><c:out value="${rental.title}" /></td>
+						<td><c:out value="${rental.loanDate}" /></td>
+						<td><c:out value="${rental.returnDeadline}" /></td>
 						<%-- 						<td><c:out value="${book.bookClass}" /></td> --%>
 
 
-						<td class="col-action-cell"><fmt:formatNumber
-								value="${reserve.bookId}" pattern="000000" var="fmtBookId" /> <%-- 							<fmt:formatNumber value="${sessionScope.loginUser.userId}" pattern="000000" var="fmtUserId" /> --%>
-							<fmt:formatNumber value="${reserve.userId}" pattern="000000"
-								var="fmtUserId" />
-
+						<td class="col-action-cell">
 							<form action="${pageContext.request.contextPath}/userStatus">
 								<input type="hidden" name="action" value="searchBook"> <input
 									type="hidden" name="bookId" value="${fmtBookId}"> <input
 									type="hidden" name="userId" value="${fmtUserId}">
 								<button type="submit" class="action-btn">詳細</button>
-							</form></td>
+
+							</form>
+						</td>
 					</tr>
 				</c:forEach>
+
 				<!-- 取得件数が10件未満の場合、デザイン維持のために空行を追加 -->
-				<c:if test="${empty reserveList || reserveList.size() < 10}">
-					<c:forEach
-						begin="${empty reserveList ? 1 : reserveList.size() + 1}" end="10"
-						var="i">
+				<c:if test="${empty rentalList || rentalList.size() < 10}">
+					<c:forEach begin="${empty rentalList ? 1 : rentalList.size() + 1}"
+						end="10" var="i">
 						<tr>
 							<td>${(currentPage != null ? currentPage - 1 : 0) * 10 + i}</td>
 							<td></td>

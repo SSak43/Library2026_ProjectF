@@ -5,7 +5,7 @@ import java.util.List;
 
 import Model.ReserveBean;
 import Model.UsersBean;
-import f07_reserve.dao.ReserveSearchDAO;
+import f08_inquiry.dao.ReserveStatusInquiryDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -33,7 +33,7 @@ public class ReserveStatusInquiryServlet extends HttpServlet {
 			}
 		}
 		
-		ReserveSearchDAO dao = new ReserveSearchDAO();
+		ReserveStatusInquiryDAO dao = new ReserveStatusInquiryDAO();
 		List<ReserveBean> reserveList;
 		if (roleType != 2) {
 		    // 管理者は全件検索
@@ -69,7 +69,7 @@ public class ReserveStatusInquiryServlet extends HttpServlet {
 		String searchCategory = request.getParameter("searchCategory");
 		String searchKeyword = request.getParameter("searchKeyword");
 
-		ReserveSearchDAO dao = new ReserveSearchDAO();
+		ReserveStatusInquiryDAO dao = new ReserveStatusInquiryDAO();
 		List<ReserveBean> reserveList;
 		request.setAttribute("roleType", roleType);
 		if (roleType != 2) {

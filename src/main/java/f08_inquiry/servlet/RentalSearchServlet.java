@@ -23,7 +23,7 @@ public class RentalSearchServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		Object userObj = session.getAttribute("loginUser");
 		
-		UsersBean usersBean = null;
+		UsersBean usersBean = new UsersBean();
 		int roleType = 2;
 		
 		if(userObj != null) {

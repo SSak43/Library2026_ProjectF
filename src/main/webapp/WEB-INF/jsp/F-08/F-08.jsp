@@ -13,6 +13,7 @@ if (loginUserObj == null) loginUserObj = session.getAttribute("login");
 if (loginUserObj != null && loginUserObj instanceof UsersBean) {
 loginUser = (UsersBean) loginUserObj;
 }
+
 String uClass = loginUser.getUserClass();
 %>
 

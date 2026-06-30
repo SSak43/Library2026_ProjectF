@@ -1,17 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page import="java.util.Date" %>
-<%@ page import="Model.UsersBean" %>
+<%@ page import="java.util.Date"%>
+<%@ page import="Model.UsersBean"%>
 <%@ taglib uri="jakarta.tags.core" prefix="c"%>
 <%@ taglib uri="jakarta.tags.fmt" prefix="fmt"%>
 <%
 //ログインユーザーの区分に応じて遷移先URLを決定する処理
 UsersBean loginUser = null;
 Object loginUserObj = session.getAttribute("loginUser");
-if (loginUserObj == null) loginUserObj = session.getAttribute("user");
-if (loginUserObj == null) loginUserObj = session.getAttribute("login");
+if (loginUserObj == null)
+	loginUserObj = session.getAttribute("user");
+if (loginUserObj == null)
+	loginUserObj = session.getAttribute("login");
 if (loginUserObj != null && loginUserObj instanceof UsersBean) {
-loginUser = (UsersBean) loginUserObj;
+	loginUser = (UsersBean) loginUserObj;
 }
 
 String uClass = loginUser.getUserClass();
@@ -31,6 +33,49 @@ String uClass = loginUser.getUserClass();
 	href="${pageContext.request.contextPath}/css/F-08.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/home.css">
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+		const searchSelect = document.querySelector('.search-select');
+		const searchInput = document.querySelector('.search-input');
+
+		function updateInputAttributes() {
+			const category = searchSelect.value;
+
+			if (category === 'bookId' || category === 'userId') {
+				// 図書ID・利用者IDの場合は「6桁の数字」のバリデーションを適用
+				searchInput.type = 'text';
+				searchInput.inputMode = 'numeric';
+				searchInput.maxLength = 6;
+				searchInput.pattern = '[0-9]{6}';
+				searchInput.placeholder = '6桁の数字を入力';
+				// カスタムエラーメッセージの再設定
+				searchInput.oninvalid = function() {
+					this.setCustomValidity('6桁の数字（例: 123456）を入力してください');
+				};
+			} else {
+				// 「すべて」や「書名」「利用者氏名」などの場合は制限を解除
+				searchInput.type = 'text';
+				searchInput.removeAttribute('inputMode');
+				searchInput.removeAttribute('maxLength'); // 必要に応じて文字数制限を広げてください（例: 100）
+				searchInput.removeAttribute('pattern');
+				searchInput.placeholder = 'キーワードを入力';
+				// エラーメッセージをクリア
+				searchInput.oninvalid = function() {
+					this.setCustomValidity('');
+				};
+			}
+
+			// 判定が切り替わった際に入力エラーを即時リセットする
+			searchInput.setCustomValidity('');
+		}
+
+		// 1. セレクトボックスが変更されたときに実行
+		searchSelect.addEventListener('change', updateInputAttributes);
+
+		// 2. 画面表示時（初期状態）にも実行して状態を合わせる
+		updateInputAttributes();
+	});
+</script>
 </head>
 <body>
 	<div class="header">
@@ -59,15 +104,23 @@ String uClass = loginUser.getUserClass();
 								${searchCategory == 'bookId' ? 'selected' : ''}>図書ID</option>
 							<option value="title"
 								${searchCategory == 'title' ? 'selected' : ''}>書名</option>
-					<% if(!"2".equals(uClass)){ %>
+							<%
+							if (!"2".equals(uClass)) {
+							%>
 							<option value="userId"
 								${searchCategory == 'userId' ? 'selected' : ''}>利用者ID</option>
 							<option value="name"
 								${searchCategory == 'name' ? 'selected' : ''}>利用者氏名</option>
-								<% } %>
+							<%
+							}
+							%>
+					</select>
 					<td class="search-col-value border-bottom"><input type="text"
 						class="search-input" name="searchKeyword"
-						value="<c:out value='${keyword}'/>" autocomplete="off" autofocus>
+						value="<c:out value='${keyword}'/>" autocomplete="off" autofocus
+						maxlength="6" pattern="[0-9]{6}" inputmode="numeric"
+						oninvalid="this.setCustomValidity('6桁の数字（例: 123456）を入力してください')"
+						oninput="checkNumberOnly(this)"></td>
 				</tr>
 			</table>
 		</form>
@@ -101,29 +154,30 @@ String uClass = loginUser.getUserClass();
 			<tbody>
 				<!-- Servletから受け取った図書リストをループで表示 -->
 				<c:forEach var="rental" items="${rentalList}" varStatus="status">
+					<fmt:formatNumber value="${rental.bookId}" pattern="000000"
+						var="fmtBookId" />
+					<%-- 							<fmt:formatNumber value="${sessionScope.loginUser.userId}" pattern="000000" var="fmtUserId" /> --%>
+					<fmt:formatNumber value="${rental.userId}" pattern="000000"
+						var="fmtUserId" />
 					<tr>
 						<td>${((currentPage != null ? currentPage : 1) - 1) * 10 + status.count}</td>
 						<%-- 						<td><c:out value="${rental.lendId}" /></td> --%>
-						<td><c:out value="${rental.bookId}" /></td>
+						<td><c:out value="${fmtBookId}" /></td>
 						<td><c:out value="${rental.title}" /></td>
 						<td><c:out value="${rental.loanDate}" /></td>
 						<td><c:out value="${rental.returnDeadline}" /></td>
 						<%-- 						<td><c:out value="${book.bookClass}" /></td> --%>
 
 
-						<td class="col-action-cell"><fmt:formatNumber
-								value="${rental.bookId}" pattern="000000" var="fmtBookId" /> <%-- 							<fmt:formatNumber value="${sessionScope.loginUser.userId}" pattern="000000" var="fmtUserId" /> --%>
-							<fmt:formatNumber value="${rental.userId}" pattern="000000"
-								var="fmtUserId" />
-
+						<td class="col-action-cell">
 							<form action="${pageContext.request.contextPath}/userStatus">
 								<input type="hidden" name="action" value="searchBook"> <input
 									type="hidden" name="bookId" value="${fmtBookId}"> <input
 									type="hidden" name="userId" value="${fmtUserId}">
 								<button type="submit" class="action-btn">詳細</button>
-								
+
 							</form>
-							</td>
+						</td>
 					</tr>
 				</c:forEach>
 

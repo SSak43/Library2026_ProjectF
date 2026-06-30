@@ -7,6 +7,7 @@
     <meta charset="UTF-8">
     <title>図書システム - 返却入力画面</title>
     <link rel="stylesheet" href="/Library2026_ProjectF/css/lending/lending.css">
+    <link rel="stylesheet" href="/Library2026_ProjectF/css/modal.css">
 </head>
 <body>
 
@@ -196,6 +197,16 @@ if (loginUserObj != null && loginUserObj instanceof UsersBean) {
         document.getElementById('popBookTitle').innerText = bookTitle;
         
         document.getElementById('confirmModal').style.display = 'flex';
+    }
+
+    function closeConfirmationModal() {
+        document.getElementById('confirmModal').style.display = 'none';
+    }
+
+    // ポップアップの「確定」が押されたときの処理
+    function submitReturn() {
+        document.getElementById('actionField').value = 'return'; // サーブレットに送るアクション名
+        document.getElementById('returnForm').submit();
     }
     </script>
 </body>

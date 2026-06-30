@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/home.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/F-02.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/register.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/modal.css">
 </head>
 <body>
 
@@ -107,10 +108,10 @@ if (loginUserObj != null && loginUserObj instanceof UsersBean) {
                     </tr>
                 </table>
                 
-                <div class="modal-buttons-right">
-                    <button type="button" class="cancel-button modal-action-button" onclick="hideConfirmModal()">戻る</button>
-                    <button type="button" class="submit-button modal-action-button" onclick="submitForm()">登録</button>
-                </div>
+                <div class="modal-buttons">
+				    <button type="button" onclick="hideConfirmModal()">戻る</button>
+				    <button type="button" onclick="submitForm()">登録</button>
+				</div>
             </div>
         </div>
 
@@ -128,14 +129,10 @@ if (loginUserObj != null && loginUserObj instanceof UsersBean) {
             </div>
   
 <!--  登録成功モーダル -->
-            <div class="modal-buttons-right">　
-            
-            	<button type="button" class="modal-action-button" style="width: 120px;" 
-                        onclick="location.href='<%= menuUrl %>'">メニュー</button>
-                <button type="button" class="modal-action-button" style="width: 120px;　font-size: 0.9rem;" 
-                        onclick="location.href='${pageContext.request.contextPath}/UsersRegist'">続けて登録</button>
-                
-            </div>
+           <div class="modal-buttons">
+			    <button type="button" onclick="location.href='<%= menuUrl %>'">メニュー</button>
+			    <button type="button" onclick="location.href='${pageContext.request.contextPath}/UsersRegist'">続けて登録</button>
+			</div>
         </div>
     </div>
 

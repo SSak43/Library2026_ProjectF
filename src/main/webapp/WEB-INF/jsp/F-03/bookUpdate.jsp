@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/F-02.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/register.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/update.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/modal.css">
     <style>
         /* 確認画面で「パスワード」ラベルが一行に収まるように小さく調整 */
         .confirm-password-label {
@@ -55,7 +56,7 @@
                 <tr>
                     <th>図書ID</th>
                     <td>
-                        <input type="text" class="input-field input-readonly-id" id="input-id" value="${isFound ? b.bookId : ''}" readonly placeholder="IDを表示します">
+                        <input type="text" class="input-field input-readonly-id" id="input-id" value="${isFound ? String.format('%06d', b.bookId) : ''}" readonly placeholder="IDを表示します">
                     </td>
                 </tr>
                 <tr>
@@ -82,7 +83,12 @@
                 <tr>
                     <th>分類</th>
                     <td>
-                        <input type="text" class="input-field ${!isFound ? 'input-field-locked' : 'input-field-active'}" id="input-bookClass" name="bookClass" value="${isFound ? b.bookClass : ''}" placeholder="${!isFound ? 'IDまたは書名を入力してください' : ''}" required ${!isFound ? 'disabled' : ''}>
+                        <input type="text" class="input-field ${!isFound ? 'input-field-locked' : 'input-field-active'}" id="input-bookClass" name="bookClass" 
+                               value="${isFound ? '' : ''}<c:if test='${isFound}'><fmt:formatNumber value='${b.bookClass}' pattern='00'/></c:if>" 
+                               placeholder="${!isFound ? 'IDまたは書名を入力してください' : ''}" required ${!isFound ? 'disabled' : ''}
+                               maxlength="2" inputmode="numeric" pattern="[0-9]{1,2}"
+                               oninvalid="this.setCustomValidity('2桁以内の数字で入力してください')" 
+                               oninput="this.setCustomValidity('')">
                         <button type="button" class="clear-button" onclick="clearInput('input-bookClass')" tabindex="-1" ${!isFound ? 'disabled' : ''}>クリア</button>
                     </td>
                 </tr>                <tr>
@@ -115,10 +121,10 @@
                         <tr><th>状態</th><td><input type="text" class="input-field w-full confirm-modal-field" id="confirm-status" readonly></td></tr>
                     </table>
           
-                    <div class="modal-buttons-right">
-                        <button type="button" class="modal-action-button" onclick="hideConfirmModal()">戻る</button>
-                        <button type="button" class="modal-action-button" onclick="submitForm()">更新</button>
-                    </div>
+                    <div class="modal-buttons">
+					    <button type="button" onclick="hideConfirmModal()">戻る</button>
+					    <button type="button" onclick="submitForm()">登録</button>
+					</div>
                 </div>
             </div>
         </form>
@@ -126,18 +132,15 @@
 
     <c:if test="${isSuccess == true}">
         <div id="completeModal" class="modal-overlay" style="display: flex;">
-            <div class="modal-content" style="height: 300px; display: flex; flex-direction: column; justify-content: center; position: relative;">
-                <div style="text-align: center; font-size: 1.8rem; letter-spacing: 0.1em;">
+            <div class="modal-content">
+                <div class="modal-title">更新完了</div>
+                <div style="text-align: center; font-size: 1.4rem; letter-spacing: 0.1em; margin: 30px 0;">
                     更新が完了しました。
                 </div>
 
-                <div class="modal-buttons-right" style="position: absolute; bottom: 20px; right: 20px; margin-top: 0;">
-                    <button type="button" class="modal-action-button" onclick="location.href='${pageContext.request.contextPath}/home/admin_home.jsp'">
-                        メニュー
-                    </button>
-                    <button type="button" class="modal-action-button" style="width: 120px;" onclick="location.href='${pageContext.request.contextPath}/BooksUpdate'">
-                        続けて更新
-                    </button>
+                <div class="modal-buttons">
+                    <button type="button" onclick="location.href='${pageContext.request.contextPath}/home/admin_home.jsp'">メニュー</button>
+                    <button type="button" onclick="location.href='${pageContext.request.contextPath}/BooksUpdate'">続けて更新</button>
                 </div>
             </div>
         </div>
@@ -145,37 +148,49 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-//             const telInput = document.getElementById('input-tel');
-            const titleInput = document.getElementById('input-title');
-            const nameInput = document.getElementById('input-writerName');
-            const companyInput = document.getElementById('input-company');
-            const claInput = document.getElementById('input-bookClass');
             const searchInput = document.getElementById('search-key');
+            const claInput = document.getElementById('input-bookClass');
 
-         // 検索バーの全角数字 ➡️ 半角自動置換
+            // 検索バーの全角数字 ➡️ 半角自動置換
             if (searchInput) {
-        searchInput.addEventListener('input', function(e) {
-            searchInput.value = searchInput.value.replace(/[０-９]/g, function(s) {
-                return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
-            });
-        });
-    }
+                searchInput.addEventListener('input', function(e) {
+                    searchInput.value = searchInput.value.replace(/[０-９]/g, function(s) {
+                        return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+                    });
+                });
+            }
 
+            // 分類の入力制御（数字のみ2桁、全角数字は半角に自動変換）
+            if (claInput) {
+                claInput.addEventListener('input', function() {
+                    // 1. 全角数字が入力されたら半角に変換する
+                    let val = this.value.replace(/[０-９]/g, function(s) {
+                        return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+                    });
+                    // 2. 数字以外の文字（日本語や記号、アルファベット）をすべて強制消去
+                    this.value = val.replace(/[^0-9]/g, '');
+                });
+            }
         });
 
+        // 各「クリア」ボタンを押したとき
         function clearInput(id) {
-            document.getElementById(id).value = '';
-            document.getElementById(id).focus();
+            const target = document.getElementById(id);
+            if (target) {
+                target.value = '';
+                target.focus();
+            }
         }
 
-     //  表示ボタンを押したときのチェック処理を追加
+        // 表示ボタンを押したときのチェック処理
         function validateSearch(event) {
-            var input = document.getElementById('search-key');
-            var val = input.value.trim();
+            const input = document.getElementById('search-key');
+            if (!input) return true;
+            
+            const val = input.value.trim();
 
             // 入力された文字が「すべて数字（全角・半角問わず）」かどうかを判定
             if (/^[0-9０-９]+$/.test(val)) {
-                
                 // 数字なのに「6桁」じゃなかったらエラーを出してストップ！
                 if (val.length !== 6) {
                     input.setCustomValidity('図書IDを検索する場合は、6桁の数字（例: 123456）を入力してください。');
@@ -184,55 +199,73 @@
                     return false;
                 }
             }
-            
-            // 数字以外の文字（漢字やアルファベット等）が含まれていれば、書名検索とみなしてそのまま送信
             return true;
         }
 
+        // 登録ボタンが押されたとき（確認モーダルを開く）
         function showConfirmModal() {
-
             const statusInput = document.querySelector('input[name="status"]:checked');
             const form = document.getElementById('updateForm');
             const errorMessage = document.getElementById('error-message');
 
-            // JavaScript側での初期化時はvisibilityを固定せず、JSTL側のエラー文言があれば残す
-            errorMessage.style.visibility = 'hidden';
+            if (errorMessage) {
+                errorMessage.style.visibility = 'hidden';
+            }
 
-            if (!form.checkValidity()) {
-                errorMessage.innerText = "未入力の欄があります。すべての項目に記入してください。";
-                errorMessage.style.visibility = 'visible';
+            // 未入力チェック（ブラウザの標準バリデーション機能）
+            if (form && !form.checkValidity()) {
+                if (errorMessage) {
+                    errorMessage.innerText = "未入力の欄があります。すべての項目に記入してください。";
+                    errorMessage.style.visibility = 'visible';
+                }
                 form.reportValidity();
                 return;
             }
 
-            const title = document.getElementById('input-title').value.trim();
-            const writerName = document.getElementById('input-writerName').value.trim();
-            const company = document.getElementById('input-company').value.trim();
-            const bookClass = document.getElementById('input-bookClass').value.trim();
+            // 各入力項目から値を取得
+            const id = document.getElementById('input-id') ? document.getElementById('input-id').value : '';
+            const title = document.getElementById('input-title') ? document.getElementById('input-title').value.trim() : '';
+            const writerName = document.getElementById('input-writerName') ? document.getElementById('input-writerName').value.trim() : '';
+            const company = document.getElementById('input-company') ? document.getElementById('input-company').value.trim() : '';
+            const bookClass = document.getElementById('input-bookClass') ? document.getElementById('input-bookClass').value.trim() : '';
+            const statusLabel = statusInput ? statusInput.parentElement.textContent.trim() : '';
 
+            // モーダル内の確認用入力欄（readonly）に値をセット
+            const confirmId = document.getElementById('confirm-id');
+            const confirmTitle = document.getElementById('confirm-title');
+            const confirmWriterName = document.getElementById('confirm-writerName');
+            const confirmCompany = document.getElementById('confirm-company');
+            const confirmBookClass = document.getElementById('confirm-bookClass');
+            const confirmStatus = document.getElementById('confirm-status');
 
-            
-//             document.getElementById('confirm-id').value = document.getElementById('input-id').value;
-//             document.getElementById('confirm-bookClass').value = claInput.parentElement.textContent.trim();
-//             document.getElementById('confirm-name').value = name;
-//             document.getElementById('confirm-tel').value = tel;
-//             document.getElementById('confirm-pass').value = pass === "" ? "（変更なし）" : "********";
-            document.getElementById('confirm-id').value = document.getElementById('input-id').value;
-            document.getElementById('confirm-title').value = title;
-            document.getElementById('confirm-writerName').value = writerName;
-            document.getElementById('confirm-company').value = company;
-            document.getElementById('confirm-bookClass').value = bookClass;
-            document.getElementById('confirm-status').value = statusInput.parentElement.textContent.trim();
+            if (confirmId) confirmId.value = id;
+            if (confirmTitle) confirmTitle.value = title;
+            if (confirmWriterName) confirmWriterName.value = writerName;
+            if (confirmCompany) confirmCompany.value = company;
+            if (confirmBookClass) confirmBookClass.value = bookClass;
+            if (confirmStatus) confirmStatus.value = statusLabel;
 
-            document.getElementById('confirmModal').style.display = 'flex';
+            // 確認モーダルを表示
+            const confirmModal = document.getElementById('confirmModal');
+            if (confirmModal) {
+                confirmModal.style.display = 'flex';
+            }
         }
 
+        // 確認モーダルの「戻る」ボタンを押したとき
         function hideConfirmModal() {
-            document.getElementById('confirmModal').style.display = 'none';
+            const confirmModal = document.getElementById('confirmModal');
+            if (confirmModal) {
+                confirmModal.style.display = 'none';
+            }
         }
         
+        // 確認モーダルの「登録」ボタンを押したとき（送信）
         function submitForm() {
-            document.getElementById('updateForm').submit();
+            const form = document.getElementById('updateForm');
+            if (form) {
+                form.submit();
+            }
         }
     </script>
 </body>

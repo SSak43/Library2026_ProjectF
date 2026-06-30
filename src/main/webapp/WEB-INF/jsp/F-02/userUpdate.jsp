@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/F-02.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/register.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/update.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/modal.css">
     <style>
         /* 確認画面で「パスワード」ラベルが一行に収まるように小さく調整 */
         .confirm-password-label {
@@ -171,10 +172,10 @@ if (loginUser != null) {
                         <tr><th>状態</th><td><input type="text" class="input-field w-full confirm-modal-field" id="confirm-status" readonly></td></tr>
                     </table>
           
-                    <div class="modal-buttons-right">
-                        <button type="button" class="modal-action-button" onclick="hideConfirmModal()">戻る</button>
-                        <button type="button" class="modal-action-button" onclick="submitForm()">更新</button>
-                    </div>
+                    <div class="modal-buttons">
+					    <button type="button" onclick="hideConfirmModal()">戻る</button>
+					    <button type="button" onclick="submitForm()">更新</button>
+					</div>
                 </div>
             </div>
         </form>
@@ -187,14 +188,10 @@ if (loginUser != null) {
                     更新が完了しました。
                 </div>
 
-                <div class="modal-buttons-right" style="position: absolute; bottom: 20px; right: 20px; margin-top: 0;">
-                    <button type="button" class="modal-action-button" onclick="location.href='${pageContext.request.contextPath}/home/admin_home.jsp'">
-                        メニュー
-                    </button>
-                    <button type="button" class="modal-action-button" style="width: 120px;" onclick="location.href='${pageContext.request.contextPath}/UsersUpdate'">
-                        続けて更新
-                    </button>
-                </div>
+                <div class="modal-buttons">
+				    <button type="button" onclick="location.href='<%= menuUrl %>'">メニュー</button>
+				    <button type="button" onclick="location.href='${pageContext.request.contextPath}/UsersUpdate'">続けて更新</button>
+				</div>
             </div>
         </div>
     </c:if>

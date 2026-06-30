@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/home.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/F-02.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/register.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/modal.css">
 </head>
 <body>
 
@@ -79,7 +80,10 @@ if (loginUserObj != null && loginUserObj instanceof UsersBean) {
                 <tr>
                     <th>分類</th>
                     <td>
-                        <input type="text" class="input-field" id="input-cla" name="cla" required>
+                        <input type="text" class="input-field" id="input-cla" name="cla" required 
+					       maxlength="2" inputmode="numeric" pattern="[0-9]{1,2}"
+					       oninvalid="this.setCustomValidity('2桁以内の数字で入力してください')" 
+					       oninput="this.setCustomValidity('')">
                         <button type="button" class="clear-button" onclick="clearInput('input-cla')">クリア</button>
                     </td>
                 </tr>
@@ -101,10 +105,10 @@ if (loginUserObj != null && loginUserObj instanceof UsersBean) {
                    <tr><th>分類</th><td><input type="text" class="input-field w-full" id="confirm-cla" readonly></td></tr>
                 </table>
                 
-                <div class="modal-buttons-right">
-                    <button type="button" class="cancel-button modal-action-button" onclick="hideConfirmModal()">戻る</button>
-                    <button type="button" class="submit-button modal-action-button" onclick="submitForm()">登録</button>
-                </div>
+                <div class="modal-buttons">
+				    <button type="button" onclick="hideConfirmModal()">戻る</button>
+				    <button type="button" onclick="submitForm()">登録</button>
+				</div>
             </div>
         </div>
 
@@ -122,37 +126,29 @@ if (loginUserObj != null && loginUserObj instanceof UsersBean) {
             </div>
   
 <!--  登録成功モーダル -->
-            <div class="modal-buttons-right">　
-            
-            	<button type="button" class="modal-action-button" style="width: 120px;" 
-                        onclick="location.href='<%= menuUrl %>'">メニュー</button>
-                <button type="button" class="modal-action-button" style="width: 120px;　font-size: 0.9rem;" 
-                        onclick="location.href='${pageContext.request.contextPath}/BooksRegist'">続けて登録</button>
-                
-            </div>
+            <div class="modal-buttons">
+    <button type="button" onclick="location.href='<%= menuUrl %>'">メニュー</button>
+    <button type="button" onclick="location.href='${pageContext.request.contextPath}/BooksRegist'">続けて登録</button>
+</div>
         </div>
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-//             const titleInput = document.getElementById('input-title');
-//             const writerNameInput = document.getElementById('input-writerName');
-            
-//             // 氏名の入力制御（ひらがな、カタカナ、漢字、英字、スペースを許可）
-//             titleInput.addEventListener('input', function(e) {
-//                 let cleanVal = this.value.replace(/[^a-zA-Z0-9\sぁ-んァ-ヶ亜-熙纊-鶴々ーａ-ｚＡ-Ｚ]/g, ''); 
-//                 cleanVal = cleanVal.replace(/[0-9０-９]/g, '');
-//                 this.value = cleanVal;
-//             });
-            
-//             writerNameInput.addEventListener('input', function(e) {
-//                 let cleanVal = this.value.replace(/[^a-zA-Z0-9\sぁ-んァ-ヶ亜-熙纊-鶴々ーａ-ｚＡ-Ｚ]/g, ''); 
-//                 cleanVal = cleanVal.replace(/[0-9０-９]/g, '');
-//                 this.value = cleanVal;
-//             });
 
-            // 電話番号の入力制御
-        });
+    document.addEventListener("DOMContentLoaded", function() {
+        // 分類の入力制御（数字のみ2桁、全角数字は半角に自動変換）
+        const claInput = document.getElementById('input-cla');
+        if (claInput) {
+            claInput.addEventListener('input', function() {
+                // 1. 全角数字が入力されたら半角に変換する
+                let val = this.value.replace(/[０-９]/g, function(s) {
+                    return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+                });
+                // 2. 数字以外の文字（日本語や記号、アルファベット）をすべて強制消去
+                this.value = val.replace(/[^0-9]/g, '');
+            });
+        }
+    });
 
 
         function showConfirmModal() {
@@ -173,38 +169,6 @@ if (loginUserObj != null && loginUserObj instanceof UsersBean) {
             const company = document.getElementById('input-company').value.trim();
             const cla = document.getElementById('input-cla').value.trim();
 
-//             const nameRegex = /^[ぁ-んァ-ヶ亜-熙纊-鶴々ーa-zA-Zａ-ｚＡ-Ｚ\s ]+$/;
-//             if (!nameRegex.test(name)) {
-//                 errorMessage.innerText = "氏名には数字や記号は使用できません。";
-//                 errorMessage.style.visibility = 'visible';
-//                 return;
-//             }
-
-//             const telRegex = /^[0-9-]+$/;
-//             if (!telRegex.test(tel)) {
-//                 errorMessage.innerText = "電話番号は数字（ハイフン含む）のみで入力してください。";
-//                 errorMessage.style.visibility = 'visible';
-//                 return;
-//             }
-
-//             // パスワードの全角文字チェック
-//             const invalidRegex = /[^\x20-\x7E]/; 
-//             if (invalidRegex.test(pass)) {
-//                 errorMessage.innerText = "パスワードに利用できない文字が含まれています。使用可能文字（大小英数字、記号）";
-//                 errorMessage.style.visibility = 'visible';
-//                 return; 
-//             } 
-            
-//             // 値をセットして確認画面を表示
-//             let claLabel = "";
-// 				if (claInput.value === "1") {
-// 				    claLabel = "管理者";
-// 				} else if (claInput.value === "2") {
-// 				    claLabel = "司書";
-// 				} else {
-// 				    claLabel = "利用者";
-// 				}
-// 				document.getElementById('confirm-cla').value = claLabel;
 
             document.getElementById('confirm-title').value = title;
             document.getElementById('confirm-writerName').value = writerName;

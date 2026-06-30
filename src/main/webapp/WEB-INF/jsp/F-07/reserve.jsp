@@ -28,6 +28,8 @@
     }
 %>
 
+
+
     <div class="header">
         <h1 class="header-title">図書予約登録画面</h1>
         <button class="menu-button" type="button" onclick="location.href='${pageContext.request.contextPath}/ReserveManagement'">メニュー</button>
@@ -134,6 +136,8 @@
             </div>
         </div>
     </form>
+    
+    s
 
     <div id="confirmModal" class="modal-overlay">
      <div class="modal-content">

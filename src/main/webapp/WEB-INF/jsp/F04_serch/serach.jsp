@@ -199,13 +199,16 @@
   /* セルの共通設定 */
   .custom-table th,
   .custom-table td {
-    border: 1px solid #000; /* セルを1pxの黒い実線で囲む */
+    border: 1px solid #000;
     padding: 4px 8px; /* セル内の上下に4px、左右に8pxの余白を設定 */
-    font-size: 14px; /* セル内の文字の大きさを14pxに設定 */
-    height: 24px; /* セルの高さを24pxに固定（空行でも高さを維持するため） */
-    overflow: hidden; /* セルから内容がはみ出した部分を隠す */
+    font-size: 14px;
+    height: 40px;           /* ★ 24px から 40px に変更（ボタンが綺麗に収まる高さ） */
+    box-sizing: border-box; /* ★ 追加：パディングや枠線を含めて高さを完全に固定する */
+    vertical-align: middle; /* ★ 追加：テキストやボタンを上下中央に揃える */
+    overflow: hidden;
     white-space: nowrap; /* セル内の文字を改行させない */
-    text-overflow: ellipsis; /* はみ出した文字の末尾を「...」にして省略表示する */
+    text-overflow: ellipsis;
+    /* はみ出した文字の末尾を「...」にして省略表示する */
   }
 
   .custom-table th {
@@ -387,7 +390,7 @@ menuUrl = request.getContextPath() + "/home/riyousyahome.jsp";
             </c:choose>
           </td>
           
-          <td style="text-align: right; vertical-align: middle; padding: 5px 18px 5px 0;">
+          <td style="text-align: center; vertical-align: middle; padding: 4px 0;">
             <c:if test="${book.bookStatus == '0'}">
 			    <fmt:formatNumber value="${book.bookId}" pattern="000000" var="fmtBookId" />
 			    <fmt:formatNumber value="${sessionScope.loginUser.userId}" pattern="000000" var="fmtUserId" />

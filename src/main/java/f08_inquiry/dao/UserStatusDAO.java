@@ -18,7 +18,7 @@ public class UserStatusDAO extends DAOBase {
 		List<RentalBean> list = new ArrayList<>();
 		
 		// 💡 設計書通り LENDS テーブル、LEND_DATE、RETURN_LINE に変更
-		String sql = "SELECT LPAD(L.BOOK_ID, 5, '0') AS BOOK_ID_STR, B.TITLE, " +
+		String sql = "SELECT LPAD(L.BOOK_ID, 6, '0') AS BOOK_ID_STR, B.TITLE, " +
 					 "DATE_FORMAT(L.LEND_DATE, '%Y/%m/%d') AS LOAN_DATE_STR, " +
 					 "DATE_FORMAT(L.RETURN_LINE, '%Y/%m/%d') AS RETURN_DEADLINE_STR " +
 					 "FROM LENDS L JOIN BOOKS B ON L.BOOK_ID = B.BOOK_ID " +
@@ -54,7 +54,7 @@ public class UserStatusDAO extends DAOBase {
 	public List<ReserveBean> getUserReserves(String userId) {
 		List<ReserveBean> list = new ArrayList<>();
 		String sql =
-				"SELECT R.RESERVE_ID, LPAD(R.BOOK_ID, 5, '0') AS BOOK_ID_STR, B.TITLE, R.RESERVE_DATE, " +
+				"SELECT R.RESERVE_ID, LPAD(R.BOOK_ID, 6, '0') AS BOOK_ID_STR, B.TITLE, R.RESERVE_DATE, " +
 				 "DATE_FORMAT(R.RESERVE_DATE, '%Y/%m/%d') AS RESERVE_DATE_STR, U.USER_NAME " +
 				 "FROM RESERVE R JOIN BOOKS B ON R.BOOK_ID = B.BOOK_ID " +
 				 "JOIN USERS U ON R.USER_ID = U.USER_ID " +

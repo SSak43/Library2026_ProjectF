@@ -44,7 +44,7 @@ if (loginUser != null) {
 	</div>
 
 	<div class="search-container">
-		<form action="" method="post" id="searchForm">
+		<form action="${pageContext.request.contextPath}/Over" method="post" id="searchForm">
 			<table class="search-table">
 				<tr>
 					<th class="search-col-item border-bottom-gap">検索項目</th>
@@ -57,19 +57,19 @@ if (loginUser != null) {
 				</tr>
 				<tr>
 					<td class="search-col-item border-bottom-gap"><select
-						class="search-select" name="searchType">
+						class="search-select" name="searchCategory">
 							<option value="all"
-								${param.searchType == 'all' ? 'selected' : ''}>すべての項目▼</option>
+								${param.searchCategory == 'all' ? 'selected' : ''}>すべての項目▼</option>
 							<option value="bookId"
-								${param.searchType == 'bookId' ? 'selected' : ''}>図書ID</option>
+								${param.searchCategory == 'bookId' ? 'selected' : ''}>図書ID</option>
 							<option value="title"
-								${param.searchType == 'title' ? 'selected' : ''}>書名</option>
+								${param.searchCategory == 'title' ? 'selected' : ''}>書名</option>
 							<option value="userId"
-								${param.searchType == 'userId' ? 'selected' : ''}>利用者ID</option>
+								${param.searchCategory == 'userId' ? 'selected' : ''}>利用者ID</option>
 					</select></td>
 					<td class="search-col-value border-bottom"><input type="text"
-						class="search-input" name="keyword"
-						value="<c:out value='${param.keyword}'/>" autocomplete="off" autofocus>
+						class="search-input" name="searchKeyword"
+						value="<c:out value='${param.searchKeyword}'/>" autocomplete="off" autofocus>
 					</td>
 				</tr>
 			</table>
@@ -79,7 +79,7 @@ if (loginUser != null) {
 	<div class="table-container">
 		<p class="result-message">
 			<c:if test="${pageContext.request.method == 'POST'}">
-        「<c:out value="${param.keyword}" />」の検索結果（※現在はデモ表示です）
+        「<c:out value="${param.searchKeyword}" />」の検索結果
     </c:if>
 		</p>
 

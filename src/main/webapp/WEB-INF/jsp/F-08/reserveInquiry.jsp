@@ -31,49 +31,6 @@ String uClass = loginUser.getUserClass();
 	href="${pageContext.request.contextPath}/css/F-08.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/home.css">
-	<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const searchSelect = document.querySelector('.search-select');
-    const searchInput = document.querySelector('.search-input');
-
-    function updateInputAttributes() {
-        const category = searchSelect.value;
-
-        if (category === 'bookId' || category === 'userId') {
-            // 図書ID・利用者IDの場合は「6桁の数字」のバリデーションを適用
-            searchInput.type = 'text';
-            searchInput.inputMode = 'numeric';
-            searchInput.maxLength = 6;
-            searchInput.pattern = '[0-9]{6}';
-            searchInput.placeholder = '6桁の数字を入力';
-            // カスタムエラーメッセージの再設定
-            searchInput.oninvalid = function() {
-                this.setCustomValidity('6桁の数字（例: 123456）を入力してください');
-            };
-        } else {
-            // 「すべて」や「書名」「利用者氏名」などの場合は制限を解除
-            searchInput.type = 'text';
-            searchInput.removeAttribute('inputMode');
-            searchInput.removeAttribute('maxLength'); // 必要に応じて文字数制限を広げてください（例: 100）
-            searchInput.removeAttribute('pattern');
-            searchInput.placeholder = 'キーワードを入力';
-            // エラーメッセージをクリア
-            searchInput.oninvalid = function() {
-                this.setCustomValidity('');
-            };
-        }
-        
-        // 判定が切り替わった際に入力エラーを即時リセットする
-        searchInput.setCustomValidity('');
-    }
-
-    // 1. セレクトボックスが変更されたときに実行
-    searchSelect.addEventListener('change', updateInputAttributes);
-
-    // 2. 画面表示時（初期状態）にも実行して状態を合わせる
-    updateInputAttributes();
-});
-</script>
 </head>
 <body>
 	<div class="header">
@@ -116,12 +73,25 @@ document.addEventListener('DOMContentLoaded', function() {
 							<!--           <option>出版社</option> -->
 					</select></td>
 
-					<td class="search-col-value border-bottom"><input type="text"
-						class="search-input" name="searchKeyword"
-						value="<c:out value='${keyword}'/>" autocomplete="off" autofocus
-						maxlength="6" pattern="[0-9]{6}" inputmode="numeric"
-						oninvalid="this.setCustomValidity('6桁の数字（例: 123456）を入力してください')"
-						oninput="checkNumberOnly(this)"></td>
+					<td class="search-col-value border-bottom"><c:choose>
+							<%-- 【ID検索の場合】 6桁数字制限の属性を付与 --%>
+							<c:when
+								test="${searchCategory == 'bookId' || searchCategory == 'userId'}">
+								<input type="text" class="search-input" name="searchKeyword"
+									value="<c:out value='${param.searchKeyword}'/>"
+									autocomplete="off" autofocus inputmode="numeric" maxlength="6"
+									pattern="[0-9]{6}" placeholder="6桁の数字を入力"
+									oninvalid="this.setCustomValidity('6桁の数字（例: 123456）を入力してください')"
+									oninput="this.setCustomValidity('')">
+							</c:when>
+
+							<%-- 【それ以外の場合】 制限なし --%>
+							<c:otherwise>
+								<input type="text" class="search-input" name="searchKeyword"
+									value="<c:out value='${param.searchKeyword}'/>"
+									autocomplete="off" autofocus placeholder="キーワードを入力">
+							</c:otherwise>
+						</c:choose></td>
 				</tr>
 			</table>
 		</form>

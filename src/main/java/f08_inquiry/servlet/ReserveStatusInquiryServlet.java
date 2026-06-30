@@ -72,13 +72,17 @@ public class ReserveStatusInquiryServlet extends HttpServlet {
 		ReserveStatusInquiryDAO dao = new ReserveStatusInquiryDAO();
 		List<ReserveBean> reserveList;
 		request.setAttribute("roleType", roleType);
+		
+		if(searchCategory == null) searchCategory = "all";
+		if(searchKeyword == null) searchKeyword = "";
+		
 		if (roleType != 2) {
 		    // 管理者は全件検索
-		   reserveList = dao.searchReserves("all","");
+		   reserveList = dao.searchReserves(searchCategory, searchKeyword);
 		} else {
 		    // 一般ユーザーは自分のログインIDに紐づくデータだけ検索
 		    int userId = usersBean.getUserId(); 
-		   reserveList = dao.searchReservesByUserId(userId,"all","");
+		   reserveList = dao.searchReservesByUserId(userId,searchCategory, searchKeyword);
 		}	
 
 		request.setAttribute("reserveList", reserveList);

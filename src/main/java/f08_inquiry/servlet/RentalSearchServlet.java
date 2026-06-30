@@ -40,6 +40,7 @@ public class RentalSearchServlet extends HttpServlet {
 		RentalSearchDAO dao = new RentalSearchDAO();
 		List<RentalBean> rentalList;
 		
+		
 		if (roleType != 2) {
 		    // 管理者は全件検索
 		   rentalList = dao.searchRentals("all","");
@@ -81,6 +82,9 @@ public class RentalSearchServlet extends HttpServlet {
 		List<RentalBean> rentalList;	
 		request.setAttribute("roleType", roleType);
 				// 権限によってDAOの呼び出し方を変えるイメージ
+		if(searchCategory == null) searchCategory = "all";
+		if(searchKeyword == null) searchKeyword = "";
+		
 		if (roleType != 2) {
 		    // 管理者は全件検索
 		   rentalList = dao.searchRentals(searchCategory, searchKeyword);

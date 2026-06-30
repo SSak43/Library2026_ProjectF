@@ -6,6 +6,8 @@ import java.util.List;
 import Model.RentalBean;
 import Model.ReserveBean;
 import Model.UsersBean;
+import f08_inquiry.dao.RentalSearchDAO;
+import f08_inquiry.dao.ReserveStatusInquiryDAO;
 import f08_inquiry.dao.UserStatusDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -70,7 +72,49 @@ public class UserStatusServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		execute(request, response);
+		request.setCharacterEncoding("UTF-8");
+		HttpSession session = request.getSession();
+		Object userObj = session.getAttribute("loginUser");
+		
+		UsersBean usersBean = null;
+		int roleType = 2;
+		
+		if(userObj != null) {
+			usersBean = (UsersBean) userObj;
+			String userClass = usersBean.getUserClass();
+			if(userClass != null && !userClass.isEmpty()) {
+				roleType = Integer.parseInt(userClass);
+			}
+		}
+		
+		String searchCategory = request.getParameter("searchCategory");
+		String searchKeyword = request.getParameter("searchKeyword");
+		RentalSearchDAO rndao = new RentalSearchDAO();
+		ReserveStatusInquiryDAO rsdao = new ReserveStatusInquiryDAO();
+		List<RentalBean> rentalList;
+		List<ReserveBean> reserveList;
+		request.setAttribute("roleType", roleType);
+		
+		if(searchCategory == null) searchCategory = "all";
+		if(searchKeyword == null) searchKeyword = "";
+		
+		if (roleType != 2) {
+		    // 管理者は全件検索
+			rentalList = rndao.searchRentals(searchCategory,searchKeyword);
+		   reserveList = rsdao.searchReserves(searchCategory, searchKeyword);
+		} else {
+		    // 一般ユーザーは自分のログインIDに紐づくデータだけ検索
+		    int userId = usersBean.getUserId();
+		    rentalList = rndao.searchRentalsByUserId(userId, searchCategory, searchKeyword);
+		   reserveList = rsdao.searchReservesByUserId(userId,searchCategory, searchKeyword);
+		}	
+		request.setAttribute("rentalList", rentalList);
+		request.setAttribute("reserveList", reserveList);
+		request.setAttribute("searchCategory", searchCategory);
+		request.setAttribute("searchKeyword", searchKeyword);
+
+		request.getRequestDispatcher("/WEB-INF/jsp/F-08/allInquiry.jsp").forward(request, response);
+
 	}
 
 	private void execute(HttpServletRequest request, HttpServletResponse response)

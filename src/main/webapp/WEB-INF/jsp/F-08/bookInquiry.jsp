@@ -5,18 +5,30 @@
 <%@ taglib uri="jakarta.tags.core" prefix="c"%>
 <%@ taglib uri="jakarta.tags.fmt" prefix="fmt"%>
 <%
-//ログインユーザーの区分に応じて遷移先URLを決定する処理
+// ログインユーザーの区分に応じて遷移先URLを決定する処理
 UsersBean loginUser = null;
 Object loginUserObj = session.getAttribute("loginUser");
-if (loginUserObj == null)
-	loginUserObj = session.getAttribute("user");
-if (loginUserObj == null)
-	loginUserObj = session.getAttribute("login");
+if (loginUserObj == null) loginUserObj = session.getAttribute("user");
+if (loginUserObj == null) loginUserObj = session.getAttribute("login");
 if (loginUserObj != null && loginUserObj instanceof UsersBean) {
-	loginUser = (UsersBean) loginUserObj;
+loginUser = (UsersBean) loginUserObj;
 }
 
+String menuUrl = request.getContextPath() + "/home/admin_home.jsp"; // デフォルト
+String userClassStr = "";
 String uClass = loginUser.getUserClass();
+if (loginUser != null) {
+
+userClassStr = uClass;
+if ("0".equals(uClass) || "管理者".equals(uClass)) {
+menuUrl = request.getContextPath() + "/home/admin_home.jsp";
+} else if ("1".equals(uClass) || "司書".equals(uClass)) {
+menuUrl = request.getContextPath() + "/home/sisyo_home.jsp";
+} else if ("2".equals(uClass) || "利用者".equals(uClass)) {
+menuUrl = request.getContextPath() + "/home/riyousyahome.jsp";
+}
+}
+pageContext.setAttribute("currentUserClass", userClassStr);
 %>
 
 

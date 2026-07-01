@@ -290,8 +290,10 @@ loginUser = (UsersBean) loginUserObj;
 }
 
 String menuUrl = request.getContextPath() + "/home/admin_home.jsp"; // デフォルト
+String userClassStr = "";
 if (loginUser != null) {
 String uClass = loginUser.getUserClass();
+userClassStr = uClass;
 if ("0".equals(uClass) || "管理者".equals(uClass)) {
 menuUrl = request.getContextPath() + "/home/admin_home.jsp";
 } else if ("1".equals(uClass) || "司書".equals(uClass)) {
@@ -300,6 +302,7 @@ menuUrl = request.getContextPath() + "/home/sisyo_home.jsp";
 menuUrl = request.getContextPath() + "/home/riyousyahome.jsp";
 }
 }
+pageContext.setAttribute("currentUserClass", userClassStr);
 %>
 
 <div class="page-header">
@@ -392,16 +395,25 @@ menuUrl = request.getContextPath() + "/home/riyousyahome.jsp";
           
           <td style="text-align: center; vertical-align: middle; padding: 4px 0;">
             <c:if test="${book.bookStatus == '0'}">
-			    <fmt:formatNumber value="${book.bookId}" pattern="000000" var="fmtBookId" />
-			    <fmt:formatNumber value="${sessionScope.loginUser.userId}" pattern="000000" var="fmtUserId" />
-			    
-			    <form action="${pageContext.request.contextPath}/lending" method="post" style="display:inline;">
-			        <input type="hidden" name="action" value="searchBook">
-			        <input type="hidden" name="bookId" value="${fmtBookId}">
-			        <input type="hidden" name="userId" value="${fmtUserId}">
-			        <button type="submit" class="action-btn">貸出</button>
-			    </form>
-			</c:if>
+    <c:choose>
+        <%-- ★追加：利用者の場合（2 または 利用者）はバッジを表示 --%>
+        <c:when test="${currentUserClass == '2' || currentUserClass == '利用者'}">
+            <span style="display: inline-block; padding: 2px 10px; margin: 0 4px; background-color: #e0e0e0; color: #555; border: 1px solid #ccc; font-size: 12px; box-sizing: border-box; text-align: center; vertical-align: middle;">窓口貸出</span>
+        </c:when>
+        <%-- ★追加：管理者・司書の場合は今まで通り貸出ボタンを表示 --%>
+        <c:otherwise>
+            <fmt:formatNumber value="${book.bookId}" pattern="000000" var="fmtBookId" />
+            <fmt:formatNumber value="${sessionScope.loginUser.userId}" pattern="000000" var="fmtUserId" />
+
+            <form action="${pageContext.request.contextPath}/lending" method="post" style="display:inline;">
+                <input type="hidden" name="action" value="searchBook">
+                <input type="hidden" name="bookId" value="${fmtBookId}">
+                <input type="hidden" name="userId" value="${fmtUserId}">
+                <button type="submit" class="action-btn">貸出</button>
+            </form>
+        </c:otherwise>
+    </c:choose>
+</c:if>
           </td>
         </tr>
       </c:forEach>

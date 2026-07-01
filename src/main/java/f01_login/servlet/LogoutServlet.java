@@ -22,7 +22,7 @@ public class LogoutServlet extends HttpServlet {
 			session.invalidate();
 		}
 		
-		// 3. ⭕ ログイン画面のサーブレット（/login）へ戻るように修正！
+		// 3. ログイン画面のサーブレット（/login）へ戻る
 		response.sendRedirect(request.getContextPath() + "/login");
 	}
 

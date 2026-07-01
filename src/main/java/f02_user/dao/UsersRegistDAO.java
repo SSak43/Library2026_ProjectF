@@ -15,8 +15,6 @@ import common.DAOBase;
 public class UsersRegistDAO extends DAOBase {
 	public int getMaxUserId() {
 	    int maxId = 0;
-	    
-	    // ※テーブル名（users）やカラム名（user_id）は、ご自身のデータベースに合わせてください
 
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -66,22 +64,7 @@ public class UsersRegistDAO extends DAOBase {
 			
 			return result > 0;
 			
-//			try (ResultSet rs = pStmt.executeQuery()) {
-//				while (rs.next()) {
-//					UsersBean u = new UsersBean();
-//					u.setUserId(rs.getInt("USER_ID"));
-//					u.setUserName(rs.getString("USER_NAME"));
-//					u.setTel(rs.getString("TEL"));
-//					u.setPassword(rs.getString("PASSWORD"));
-//					u.setUserClass(rs.getString("USER_CLASS"));
-//					u.setUserStatus(rs.getString("USER_STATUS"));
-//					u.setUserRegist(rs.getDate("USER_REGIST"));
-//					u.setUserUpdate(rs.getDate("USER_UPDATE"));
-//					usersList.add(u);
-//				}
-//
-//			}
-			
+//			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
@@ -101,7 +84,7 @@ public class UsersRegistDAO extends DAOBase {
 			for (byte b : hash) {
 				sb.append(String.format("%02x", b));
 			}
-			return sb.toString(); // 64文字の暗号化された文字列が返ります
+			return sb.toString(); // 64文字の暗号化された文字列が返る
 
 		} catch (Exception e) {
 			e.printStackTrace();

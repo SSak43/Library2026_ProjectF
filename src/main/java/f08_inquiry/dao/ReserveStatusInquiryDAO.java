@@ -54,7 +54,7 @@ public class ReserveStatusInquiryDAO extends DAOBase {
 			case "all":
 			default:
 				sql.append(
-						"AND (R.BOOK_ID LIKE ? OR B.TITLE LIKE ? OR B.WRITER_NAME LIKE ? OR B.COMPANY LIKE ? OR R.USER_ID LIKE ? OR U.USER_NAME LIKE ?) ");
+						"AND (LPAD(CAST(R.BOOK_ID AS CHAR), 6, '0') LIKE ? OR B.TITLE LIKE ? OR B.WRITER_NAME LIKE ? OR B.COMPANY LIKE ? OR LPAD(CAST(R.USER_ID AS CHAR), 6, '0') LIKE ? OR U.USER_NAME LIKE ?) ");
 				isAllSearch = true;
 				break;
 			}
@@ -146,7 +146,7 @@ public class ReserveStatusInquiryDAO extends DAOBase {
 			case "all":
 			default:
 				sql.append(
-						"AND (R.BOOK_ID LIKE ? OR B.TITLE LIKE ? OR B.WRITER_NAME LIKE ? OR B.COMPANY LIKE ? OR R.USER_ID LIKE ? OR U.USER_NAME LIKE ?) ");
+						"AND (LPAD(CAST(R.BOOK_ID AS CHAR), 6, '0') LIKE ? OR B.TITLE LIKE ? OR B.WRITER_NAME LIKE ? OR B.COMPANY LIKE ?) ");
 				isAllSearch = true;
 				break;
 			}
@@ -169,16 +169,15 @@ public class ReserveStatusInquiryDAO extends DAOBase {
 			if (hasKeyword) {
 				if (isAllSearch) {
 					String likeStr = "%" + targetKeyword + "%";
-					for (int i = 2; i <= 7; i++)
-						ps.setString(i, likeStr);
-				} else if ("bookId".equals(category) || "userId".equals(category)) {
+					for (int i = 2; i <= 5; i++) ps.setString(i, likeStr);
+				} else if ("bookId".equals(category)) {
 					try {
 						ps.setInt(2, Integer.parseInt(targetKeyword));
 					} catch (NumberFormatException e) {
-						ps.setInt(1, -1); // 数値変換できない場合は該当なしにする
+						ps.setInt(2, -1); // 数値変換できない場合は該当なしにする
 					}
 				} else {
-					ps.setString(1, "%" + targetKeyword + "%");
+					ps.setString(2, "%" + targetKeyword + "%");
 				}
 			}
 

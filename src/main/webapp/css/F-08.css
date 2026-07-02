@@ -126,6 +126,7 @@
     font-size: 14px; /* ボタンの文字の大きさを14pxに設定 */
     padding: 4px 15px; /* ボタンの内側の上下に4px、左右に15pxの余白を設定 */
     margin: 0 4px; /* ボタンの外側の左右に4pxの間隔を空ける */
+    margin-top: 5px;
     background-color: #fff; /* ボタンの背景色を白に設定 */
     border: 1px solid #8ca1c2; /* ボタンの枠線を青っぽく設定 */
     cursor: pointer; /* マウスオーバー時にカーソルを指のマークにする */
@@ -217,15 +218,15 @@
   /* 各列の幅の比率 */
   .col-no { width: 5%; } /* 「No.」列の幅を全体の6%に設定 */
   .col-id { width: 10%; } /* 「図書ID」列の幅を全体の10%に設定 */
-  .col-title { width: 65%; } /* 「書名」列の幅を全体の34%に設定 */
+  .col-title { width: 64%; } /* 「書名」列の幅を全体の34%に設定 */
   .col-date { width: 8%; } /* 「日付」列の幅を全体の12%に設定 */
   .col-name { width: 8%; text-align: center; }/* 「名前」列の幅を全体の10%に設定 */
-  .col-action { width: 6%; } /* 「操作」列の幅を全体の10%に設定 */
+  .col-action { width: 7%; } /* 「操作」列の幅を全体の10%に設定 */
   
   .col-action-cell {
           text-align: center !important;   /* 横方向の中央揃え */
           vertical-align: middle !important; /* 縦方向の中央揃え */
-          padding: 12px 0px 0px 4px !important;    /* 縦の詰まりを抑えて綺麗に見せるための余白調整 */
+/*          padding: 12px 0px 0px 4px !important;     縦の詰まりを抑えて綺麗に見せるための余白調整 */
         }
 
         /* 詳細ボタンの個別スタイル補完 */

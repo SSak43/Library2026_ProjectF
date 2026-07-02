@@ -46,6 +46,23 @@ pageContext.setAttribute("currentUserClass", userClassStr);
 	href="${pageContext.request.contextPath}/css/home.css">
 </head>
 <body>
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+    // クラス名「search-input」が付いた入力欄を取得
+    const searchInput = document.querySelector('.search-input');
+    
+    if (searchInput) {
+        // 一度フォーカスを当てる
+        searchInput.focus();
+        
+        // 入力されている文字の長さを取得
+        const len = searchInput.value.length;
+        
+        // カーソルの選択範囲を開始位置・終了位置ともに末尾に設定する
+        searchInput.setSelectionRange(len, len);
+    }
+});
+</script>
 	<div class="header">
 		<h1 class="header-title">予約状況</h1>
 		<button class="menu-button" type="button"

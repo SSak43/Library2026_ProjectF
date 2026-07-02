@@ -46,7 +46,6 @@ public class OverServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String action = request.getParameter("action");
 		String searchCategory = request.getParameter("searchCategory");
 		String searchKeyword = request.getParameter("searchKeyword");
 

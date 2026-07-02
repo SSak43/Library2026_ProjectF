@@ -74,7 +74,7 @@ public class RentalSearchServlet extends HttpServlet {
 	            roleType = Integer.parseInt(userClass);
 	        }
 		}
-		String action = request.getParameter("action");
+
 		String searchCategory = request.getParameter("searchCategory");
 		String searchKeyword = request.getParameter("searchKeyword");
 		

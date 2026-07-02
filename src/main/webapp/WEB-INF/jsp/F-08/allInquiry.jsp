@@ -56,6 +56,23 @@ pageContext.setAttribute("currentUserClass", userClassStr);
 	href="${pageContext.request.contextPath}/css/home.css">
 </head>
 <body>
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+    // クラス名「search-input」が付いた入力欄を取得
+    const searchInput = document.querySelector('.search-input');
+    
+    if (searchInput) {
+        // 一度フォーカスを当てる
+        searchInput.focus();
+        
+        // 入力されている文字の長さを取得
+        const len = searchInput.value.length;
+        
+        // カーソルの選択範囲を開始位置・終了位置ともに末尾に設定する
+        searchInput.setSelectionRange(len, len);
+    }
+});
+</script>
 	<div class="header">
 		<h1 class="header-title">貸出・予約状況</h1>
 		<button class="menu-button" type="button"
@@ -171,7 +188,7 @@ pageContext.setAttribute("currentUserClass", userClassStr);
 								<input type="hidden" name="action" value="searchBook"> <input
 									type="hidden" name="bookId" value="${fmtBookId}"> <input
 									type="hidden" name="userId" value="${fmtUserId}">
-								<button type="submit" class="action-btn">返却</button>
+								<button type="submit" class="action-btn" style="margin-bottom: 10px;">返却</button>
 								<!-- 							</form> -->
 								<%
 								} else{
@@ -197,7 +214,29 @@ pageContext.setAttribute("currentUserClass", userClassStr);
 				</c:if>
 			</tbody>
 		</table>
+<div class="pagination-area">
+	<div class="pagination-buttons">
+		<c:choose>
+			<c:when test="${currentPage > 1}">
+				<button type="button" onclick="location.href='${pageContext.request.contextPath}/userStatus?page=${currentPage - 1}'">◀</button>
+			</c:when>
+			<c:otherwise>
+				<button type="button" disabled style="opacity: 0.5;">◀</button>
+			</c:otherwise>
+		</c:choose>
 
+		<span style="margin: 0 15px; align-self: center;">${currentPage} / ${maxPage != null ? maxPage : 1}</span>
+
+		<c:choose>
+			<c:when test="${currentPage < maxPage}">
+				<button type="button" onclick="location.href='${pageContext.request.contextPath}/userStatus?page=${currentPage + 1}'">▶</button>
+			</c:when>
+			<c:otherwise>
+				<button type="button" disabled style="opacity: 0.5;">▶</button>
+			</c:otherwise>
+		</c:choose>
+	</div>
+</div>
 		<table class="custom-table">
 			<thead>
 				<tr>
@@ -233,7 +272,7 @@ pageContext.setAttribute("currentUserClass", userClassStr);
 								<input type="hidden" name="action" value="searchBook"> <input
 									type="hidden" name="bookId" value="${fmtBookId}"> <input
 									type="hidden" name="userId" value="${fmtUserId}">
-								<button type="submit" class="action-btn">取り消し</button>
+								<button type="submit" class="action-btn" style="margin-bottom: 5px;">取り消し</button>
 							</form>
 						</td>
 					</tr>
@@ -256,12 +295,29 @@ pageContext.setAttribute("currentUserClass", userClassStr);
 			</tbody>
 		</table>
 
-		<div class="pagination-area">
-			<div class="pagination-buttons">
-				<button type="button">◀</button>
-				<button type="button">▶</button>
-			</div>
-		</div>
+<div class="pagination-area">
+	<div class="pagination-buttons">
+		<c:choose>
+			<c:when test="${currentPage > 1}">
+				<button type="button" onclick="location.href='${pageContext.request.contextPath}/userStatus?page=${currentPage - 1}'">◀</button>
+			</c:when>
+			<c:otherwise>
+				<button type="button" disabled style="opacity: 0.5;">◀</button>
+			</c:otherwise>
+		</c:choose>
+
+		<span style="margin: 0 15px; align-self: center;">${currentPage} / ${maxPage != null ? maxPage : 1}</span>
+
+		<c:choose>
+			<c:when test="${currentPage < maxPage}">
+				<button type="button" onclick="location.href='${pageContext.request.contextPath}/userStatus?page=${currentPage + 1}'">▶</button>
+			</c:when>
+			<c:otherwise>
+				<button type="button" disabled style="opacity: 0.5;">▶</button>
+			</c:otherwise>
+		</c:choose>
+	</div>
+</div>
 	</div>
 </body>
 </html>

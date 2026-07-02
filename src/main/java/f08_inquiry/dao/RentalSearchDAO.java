@@ -33,25 +33,26 @@ public class RentalSearchDAO extends DAOBase {
 			case "title":
 				sql.append("AND B.TITLE LIKE ? ");
 				break;
-			case "writerName":
-				sql.append("AND B.WRITER_NAME LIKE ? ");
-				break;
-			case "company":
-				sql.append("AND B.COMPANY LIKE ? ");
-				break;
+//			case "writerName":
+//				sql.append("AND B.WRITER_NAME LIKE ? ");
+//				break;
+//			case "company":
+//				sql.append("AND B.COMPANY LIKE ? ");
+//				break;
 			case "userId":
 				sql.append("AND LPAD(L.USER_ID, 6, '0') LIKE ? ");
 				break;
 			case "name":
 				sql.append("AND U.USER_NAME LIKE ? ");
 				break;
-			case "bookClass":
-				sql.append("AND B.BOOK_CLASS LIKE ? ");
-				break;
+//			case "bookClass":
+//				sql.append("AND B.BOOK_CLASS LIKE ? ");
+//				break;
 			case "all":
 			default:
-				sql.append(
-						"AND (LPAD(L.BOOK_ID, 6, '0') LIKE ? OR B.TITLE LIKE ? OR B.WRITER_NAME LIKE ? OR B.COMPANY LIKE ? OR B.BOOK_CLASS LIKE ? OR LPAD(L.USER_ID, 6, '0') LIKE ? OR U.USER_NAME LIKE ?) ");
+//				sql.append(
+//						"AND (LPAD(L.BOOK_ID, 6, '0') LIKE ? OR B.TITLE LIKE ? OR B.WRITER_NAME LIKE ? OR B.COMPANY LIKE ? OR B.BOOK_CLASS LIKE ? OR LPAD(L.USER_ID, 6, '0') LIKE ? OR U.USER_NAME LIKE ?) ");
+				sql.append("AND (LPAD(L.BOOK_ID, 6, '0') LIKE ? OR B.TITLE LIKE ? OR LPAD(L.USER_ID, 6, '0') LIKE ? OR U.USER_NAME LIKE ?) ");
 				break;
 			}
 		}
@@ -121,25 +122,27 @@ public class RentalSearchDAO extends DAOBase {
 			case "title":
 				sql.append("AND B.TITLE LIKE ? ");
 				break;
-			case "writerName":
-				sql.append("AND B.WRITER_NAME LIKE ? ");
-				break;
-			case "company":
-				sql.append("AND B.COMPANY LIKE ? ");
-				break;
-			case "userId":
-				sql.append("AND LPAD(L.USER_ID, 6, '0') LIKE ? ");
-				break;
-			case "name":
-				sql.append("AND U.USER_NAME LIKE ? ");
-				break;
-			case "bookClass":
-				sql.append("AND B.BOOK_CLASS LIKE ? ");
-				break;
+//			case "writerName":
+//				sql.append("AND B.WRITER_NAME LIKE ? ");
+//				break;
+//			case "company":
+//				sql.append("AND B.COMPANY LIKE ? ");
+//				break;
+//			case "userId":
+//				sql.append("AND LPAD(L.USER_ID, 6, '0') LIKE ? ");
+//				break;
+//			case "userName":
+//				sql.append("AND U.USER_NAME LIKE ? ");
+//				break;
+//			case "bookClass":
+//				sql.append("AND B.BOOK_CLASS LIKE ? ");
+//				break;
 			case "all":
 			default:
-				sql.append(
-						"AND (LPAD(L.BOOK_ID, 6, '0') LIKE ? OR B.TITLE LIKE ? OR B.WRITER_NAME LIKE ? OR B.COMPANY LIKE ? OR B.BOOK_CLASS LIKE ? OR LPAD(L.USER_ID, 6, '0') LIKE ? OR U.USER_NAME LIKE ?) ");
+//				sql.append(
+//						"AND (LPAD(L.BOOK_ID, 6, '0') LIKE ? OR B.TITLE LIKE ? OR B.WRITER_NAME LIKE ? OR B.COMPANY LIKE ? OR B.BOOK_CLASS LIKE ?) ");
+				sql.append("AND (LPAD(L.BOOK_ID, 6, '0') LIKE ? OR B.TITLE LIKE ?) ");
+
 				break;
 			}
 		}

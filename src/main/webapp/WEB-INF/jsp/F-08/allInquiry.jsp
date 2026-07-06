@@ -89,6 +89,21 @@ function clearForm(button) {
         select.selectedIndex = 0;
     }
 }
+
+window.addEventListener('beforeunload', function() {
+    sessionStorage.setItem('sidebar_scroll_top', window.scrollY);
+});
+
+// 2. ページが読み込まれたときに、保存された位置があればそこにスクロールする
+window.addEventListener('DOMContentLoaded', function() {
+    const scrollTop = sessionStorage.getItem('sidebar_scroll_top');
+    if (scrollTop !== null) {
+        // スムーズではなく、一瞬で元の位置に戻す（違和感を減らすため）
+        window.scrollTo(0, parseInt(scrollTop, 10));
+        // 一度復元したらメモリから消す（別の画面から来たときは上から表示させるため）
+        sessionStorage.removeItem('sidebar_scroll_top');
+    }
+});
 </script>
 	<div class="header">
 		<h1 class="header-title">貸出・予約状況</h1>
@@ -201,7 +216,7 @@ function clearForm(button) {
 									type="hidden" name="bookId" value="${fmtBookId}"> <input
 									type="hidden" name="userId" value="${fmtUserId}">
 								<button type="submit" class="action-btn"
-									style="margin-bottom: 10px;">返却</button>
+									style="width: 80%; margin: -1px; padding: 2px 8px; font-size: 13px;">返却</button>
 								<!-- 							</form> -->
 								<%
 								} else {
@@ -292,7 +307,7 @@ function clearForm(button) {
 									type="hidden" name="bookId" value="${fmtBookId}"> <input
 									type="hidden" name="userId" value="${fmtUserId}">
 								<button type="submit" class="action-btn"
-									style="margin-bottom: 5px;">取り消し</button>
+									style="width: 80%; margin: -1px; padding: 2px 8px; font-size: 13px;">取り消し</button>
 							</form>
 						</td>
 					</tr>

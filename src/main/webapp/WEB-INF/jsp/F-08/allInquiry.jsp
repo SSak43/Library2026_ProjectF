@@ -56,7 +56,7 @@ pageContext.setAttribute("currentUserClass", userClassStr);
 	href="${pageContext.request.contextPath}/css/home.css">
 </head>
 <body>
-<script>
+	<script>
 window.addEventListener('DOMContentLoaded', () => {
     // クラス名「search-input」が付いた入力欄を取得
     const searchInput = document.querySelector('.search-input');
@@ -183,36 +183,36 @@ function clearForm(button) {
 
 
 						<td class="col-action-cell">
-<%-- 							<c:choose>	追加：利用者の場合はボタンを表示 --%>
-<%-- 								<c:when test="${uClass == '2'}"> --%>
-<!-- 									<span -->
-<!-- 										style="display: inline-block; padding: 5px 12px; background-color: #e0e0e0; color: #555; border-radius: 4px; font-size: 0.9rem; font-weight: bold; border: 1px solid #ccc; letter-spacing: 0.05em; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);">窓口返却</span> -->
-<%-- 								</c:when> --%>
-<%-- 								追加：管理者・司書の場合は今まで通り貸出ボタンを表示 --%>
-<%-- 								<c:otherwise> --%>
-<%-- 									<form action="${pageContext.request.contextPath}/returnBook" --%>
-<!-- 										method="post" style="display: inline;"> -->
-<!-- 										<input type="hidden" name="action" value="searchBook"> -->
-<%-- 										<input type="hidden" name="bookId" value="${fmtBookId}"> --%>
-<%-- 										<input type="hidden" name="userId" value="${fmtUserId}"> --%>
-<!-- 										<button type="submit" class="action-btn">返却</button> -->
-<!-- 									</form> -->
-<%-- 								</c:otherwise> --%>
-<%-- 							</c:choose> --%>
-							
-							<% if (!"2".equals(uClass)) { %>
+							<%-- 							<c:choose>	追加：利用者の場合はボタンを表示 --%> <%-- 								<c:when test="${uClass == '2'}"> --%>
+							<!-- 									<span --> <!-- 										style="display: inline-block; padding: 5px 12px; background-color: #e0e0e0; color: #555; border-radius: 4px; font-size: 0.9rem; font-weight: bold; border: 1px solid #ccc; letter-spacing: 0.05em; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);">窓口返却</span> -->
+							<%-- 								</c:when> --%> <%-- 								追加：管理者・司書の場合は今まで通り貸出ボタンを表示 --%>
+							<%-- 								<c:otherwise> --%> <%-- 									<form action="${pageContext.request.contextPath}/returnBook" --%>
+							<!-- 										method="post" style="display: inline;"> --> <!-- 										<input type="hidden" name="action" value="searchBook"> -->
+							<%-- 										<input type="hidden" name="bookId" value="${fmtBookId}"> --%>
+							<%-- 										<input type="hidden" name="userId" value="${fmtUserId}"> --%>
+							<!-- 										<button type="submit" class="action-btn">返却</button> -->
+							<!-- 									</form> --> <%-- 								</c:otherwise> --%> <%-- 							</c:choose> --%>
+
+							<%
+							if (!"2".equals(uClass)) {
+							%>
 							<form action="${pageContext.request.contextPath}/returnBook">
 								<input type="hidden" name="action" value="searchBook"> <input
 									type="hidden" name="bookId" value="${fmtBookId}"> <input
 									type="hidden" name="userId" value="${fmtUserId}">
-								<button type="submit" class="action-btn" style="margin-bottom: 10px;">返却</button>
+								<button type="submit" class="action-btn"
+									style="margin-bottom: 10px;">返却</button>
 								<!-- 							</form> -->
 								<%
-								} else{
+								} else {
 								%>
-								<span style="display: inline-block; padding: 5px 12px; background-color: #e0e0e0; color: #555; border-radius: 4px; font-size: 0.9rem; font-weight: bold; border: 1px solid #ccc; letter-spacing: 0.05em; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);">窓口返却</span>
-								<% } %>
-							</td>
+								<span
+									style="display: inline-block; padding: 5px 12px; background-color: #e0e0e0; color: #555; border-radius: 4px; font-size: 0.9rem; font-weight: bold; border: 1px solid #ccc; letter-spacing: 0.05em; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);">窓口返却</span>
+								<%
+								}
+								%>
+							</form>
+						</td>
 					</tr>
 				</c:forEach>
 				<!-- 取得件数が5件未満の場合、デザイン維持のために空行を追加 -->
@@ -231,29 +231,32 @@ function clearForm(button) {
 				</c:if>
 			</tbody>
 		</table>
-<div class="pagination-area">
-	<div class="pagination-buttons">
-		<c:choose>
-			<c:when test="${currentPageRental > 1}">
-				<button type="button" onclick="location.href='${pageContext.request.contextPath}/userStatus?pageRental=${currentPageRental - 1}&pageReserve=${currentPageReserve}'">◀</button>
-			</c:when>
-			<c:otherwise>
-				<button type="button" disabled style="opacity: 0.5;">◀</button>
-			</c:otherwise>
-		</c:choose>
+		<div class="pagination-area">
+			<div class="pagination-buttons">
+				<c:choose>
+					<c:when test="${currentPageRental > 1}">
+						<button type="button"
+							onclick="location.href='${pageContext.request.contextPath}/userStatus?pageRental=${currentPageRental - 1}&pageReserve=${currentPageReserve}'">◀</button>
+					</c:when>
+					<c:otherwise>
+						<button type="button" disabled style="opacity: 0.5;">◀</button>
+					</c:otherwise>
+				</c:choose>
 
-		<span style="margin: 0 15px; align-self: center;">${currentPageRental} / ${maxPageRental != null ? maxPageRental : 1}</span>
+				<span style="margin: 0 15px; align-self: center;">${currentPageRental}
+					/ ${maxPageRental != null ? maxPageRental : 1}</span>
 
-		<c:choose>
-			<c:when test="${currentPageRental < maxPageRental}">
-				<button type="button" onclick="location.href='${pageContext.request.contextPath}/userStatus?pageRental=${currentPageRental + 1}&pageReserve=${currentPageReserve}'">▶</button>
-			</c:when>
-			<c:otherwise>
-				<button type="button" disabled style="opacity: 0.5;">▶</button>
-			</c:otherwise>
-		</c:choose>
-	</div>
-</div>
+				<c:choose>
+					<c:when test="${currentPageRental < maxPageRental}">
+						<button type="button"
+							onclick="location.href='${pageContext.request.contextPath}/userStatus?pageRental=${currentPageRental + 1}&pageReserve=${currentPageReserve}'">▶</button>
+					</c:when>
+					<c:otherwise>
+						<button type="button" disabled style="opacity: 0.5;">▶</button>
+					</c:otherwise>
+				</c:choose>
+			</div>
+		</div>
 		<table class="custom-table">
 			<thead>
 				<tr>
@@ -283,13 +286,13 @@ function clearForm(button) {
 
 
 						<td class="col-action-cell">
-
 							<form action="${pageContext.request.contextPath}/reserveSearch"
 								method="post" style="display: inline;">
 								<input type="hidden" name="action" value="searchBook"> <input
 									type="hidden" name="bookId" value="${fmtBookId}"> <input
 									type="hidden" name="userId" value="${fmtUserId}">
-								<button type="submit" class="action-btn" style="margin-bottom: 5px;">取り消し</button>
+								<button type="submit" class="action-btn"
+									style="margin-bottom: 5px;">取り消し</button>
 							</form>
 						</td>
 					</tr>
@@ -312,29 +315,32 @@ function clearForm(button) {
 			</tbody>
 		</table>
 
-<div class="pagination-area">
-	<div class="pagination-buttons">
-		<c:choose>
-			<c:when test="${currentPageReserve > 1}">
-				<button type="button" onclick="location.href='${pageContext.request.contextPath}/userStatus?pageReserve=${currentPageReserve - 1}&pageRental=${currentPageRental}'">◀</button>
-			</c:when>
-			<c:otherwise>
-				<button type="button" disabled style="opacity: 0.5;">◀</button>
-			</c:otherwise>
-		</c:choose>
+		<div class="pagination-area">
+			<div class="pagination-buttons">
+				<c:choose>
+					<c:when test="${currentPageReserve > 1}">
+						<button type="button"
+							onclick="location.href='${pageContext.request.contextPath}/userStatus?pageReserve=${currentPageReserve - 1}&pageRental=${currentPageRental}'">◀</button>
+					</c:when>
+					<c:otherwise>
+						<button type="button" disabled style="opacity: 0.5;">◀</button>
+					</c:otherwise>
+				</c:choose>
 
-		<span style="margin: 0 15px; align-self: center;">${currentPageReserve} / ${maxPageReserve != null ? maxPageReserve : 1}</span>
+				<span style="margin: 0 15px; align-self: center;">${currentPageReserve}
+					/ ${maxPageReserve != null ? maxPageReserve : 1}</span>
 
-		<c:choose>
-			<c:when test="${currentPageReserve < maxPageReserve}">
-				<button type="button" onclick="location.href='${pageContext.request.contextPath}/userStatus?pageReserve=${currentPageReserve + 1}&pageRental=${currentPageRental}'">▶</button>
-			</c:when>
-			<c:otherwise>
-				<button type="button" disabled style="opacity: 0.5;">▶</button>
-			</c:otherwise>
-		</c:choose>
-	</div>
-</div>
+				<c:choose>
+					<c:when test="${currentPageReserve < maxPageReserve}">
+						<button type="button"
+							onclick="location.href='${pageContext.request.contextPath}/userStatus?pageReserve=${currentPageReserve + 1}&pageRental=${currentPageRental}'">▶</button>
+					</c:when>
+					<c:otherwise>
+						<button type="button" disabled style="opacity: 0.5;">▶</button>
+					</c:otherwise>
+				</c:choose>
+			</div>
+		</div>
 	</div>
 </body>
 </html>

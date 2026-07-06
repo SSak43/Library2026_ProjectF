@@ -72,7 +72,7 @@ public class RentalSearchDAO extends DAOBase {
 			if (keyword != null && !keyword.trim().isEmpty()) {
 				String searchWord = "%" + keyword + "%";
 				if ("all".equals(category)) {
-					for (int i = 1; i <= 7; i++)
+					for (int i = 1; i <= 4; i++)
 						ps.setString(i, searchWord);
 				} else {
 					ps.setString(1, searchWord);
@@ -164,7 +164,7 @@ public class RentalSearchDAO extends DAOBase {
 			if (keyword != null && !keyword.trim().isEmpty()) {
 				String searchWord = "%" + keyword + "%";
 				if ("all".equals(category)) {
-					for (int i = 2; i <= 8; i++)
+					for (int i = 2; i <= 3; i++)
 						ps.setString(i, searchWord);
 				} else {
 					ps.setString(2, searchWord);

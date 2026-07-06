@@ -53,7 +53,7 @@ public class ReserveStatusInquiryDAO extends DAOBase {
 				break;
 			case "all":
 			default:
-				sql.append("AND (LPAD(L.BOOK_ID, 6, '0') LIKE ? OR B.TITLE LIKE ? OR LPAD(L.USER_ID, 6, '0') LIKE ? OR U.USER_NAME LIKE ?) ");
+				sql.append("AND (LPAD(R.BOOK_ID, 6, '0') LIKE ? OR B.TITLE LIKE ? OR LPAD(R.USER_ID, 6, '0') LIKE ? OR U.USER_NAME LIKE ?) ");
 				isAllSearch = true;
 				break;
 			}
@@ -74,7 +74,7 @@ public class ReserveStatusInquiryDAO extends DAOBase {
 			if (hasKeyword) {
 				if (isAllSearch) {
 					String likeStr = "%" + targetKeyword + "%";
-					for (int i = 1; i <= 6; i++)
+					for (int i = 1; i <= 4; i++)
 						ps.setString(i, likeStr);
 				} else if ("bookId".equals(category) || "userId".equals(category)) {
 					try {
@@ -146,7 +146,7 @@ public class ReserveStatusInquiryDAO extends DAOBase {
 			default:
 //				sql.append(
 //						"AND (LPAD(CAST(R.BOOK_ID AS CHAR), 6, '0') LIKE ? OR B.TITLE LIKE ? OR B.WRITER_NAME LIKE ? OR B.COMPANY LIKE ?) ");
-				sql.append("AND (LPAD(L.BOOK_ID, 6, '0') LIKE ? OR B.TITLE LIKE ?) ");
+				sql.append("AND (LPAD(R.BOOK_ID, 6, '0') LIKE ? OR B.TITLE LIKE ?) ");
 				isAllSearch = true;
 				break;
 			}
@@ -169,7 +169,7 @@ public class ReserveStatusInquiryDAO extends DAOBase {
 			if (hasKeyword) {
 				if (isAllSearch) {
 					String likeStr = "%" + targetKeyword + "%";
-					for (int i = 2; i <= 5; i++) ps.setString(i, likeStr);
+					for (int i = 2; i <= 3; i++) ps.setString(i, likeStr);
 				} else if ("bookId".equals(category)) {
 					try {
 						ps.setInt(2, Integer.parseInt(targetKeyword));

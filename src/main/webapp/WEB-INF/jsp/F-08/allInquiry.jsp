@@ -72,6 +72,23 @@ window.addEventListener('DOMContentLoaded', () => {
         searchInput.setSelectionRange(len, len);
     }
 });
+
+function clearForm(button) {
+    // ボタンから見て一番近い <form> 要素を取得
+    const form = button.closest('form');
+    
+    // フォーム内のテキスト入力欄をすべて空にする
+    const inputs = form.querySelectorAll('.search-input');
+    inputs.forEach(input => {
+        input.value = '';
+    });
+    
+    // セレクトボックスを一番上の項目（すべての項目）に戻す
+    const select = form.querySelector('.search-select');
+    if (select) {
+        select.selectedIndex = 0;
+    }
+}
 </script>
 	<div class="header">
 		<h1 class="header-title">貸出・予約状況</h1>
@@ -88,7 +105,7 @@ window.addEventListener('DOMContentLoaded', () => {
 					<th class="search-col-value border-bottom">検索値</th>
 					<td rowspan="2" class="search-col-buttons">
 						<button type="submit" class="action-btn">検索</button>
-						<button type="button" class="action-btn">リセット</button>
+						<button type="button" class="action-btn" onclick="clearForm(this)">リセット</button>
 					</td>
 				</tr>
 				<tr>
@@ -156,7 +173,7 @@ window.addEventListener('DOMContentLoaded', () => {
 					<fmt:formatNumber value="${sessionScope.loginUser.userId}"
 						pattern="000000" var="fmtUserId" />
 					<tr>
-						<td>${((currentPage != null ? currentPage : 1) - 1) * 5 + status.count}</td>
+						<td>${((currentPageRental != null ? currentPageRental : 1) - 1) * 5 + status.count}</td>
 						<%-- 						<td><c:out value="${rental.lendId}" /></td> --%>
 						<td><c:out value="${fmtBookId}" /></td>
 						<td><c:out value="${rental.title}" /></td>
@@ -203,7 +220,7 @@ window.addEventListener('DOMContentLoaded', () => {
 					<c:forEach begin="${empty rentalList ? 1 : rentalList.size() + 1}"
 						end="5" var="i">
 						<tr>
-							<td>${(currentPage != null ? currentPage - 1 : 0) * 5 + i}</td>
+							<td>${(currentPageRental != null ? currentPageRental - 1 : 0) * 5 + i}</td>
 							<td></td>
 							<td></td>
 							<td></td>
@@ -217,19 +234,19 @@ window.addEventListener('DOMContentLoaded', () => {
 <div class="pagination-area">
 	<div class="pagination-buttons">
 		<c:choose>
-			<c:when test="${currentPage > 1}">
-				<button type="button" onclick="location.href='${pageContext.request.contextPath}/userStatus?page=${currentPage - 1}'">◀</button>
+			<c:when test="${currentPageRental > 1}">
+				<button type="button" onclick="location.href='${pageContext.request.contextPath}/userStatus?pageRental=${currentPageRental - 1}&pageReserve=${currentPageReserve}'">◀</button>
 			</c:when>
 			<c:otherwise>
 				<button type="button" disabled style="opacity: 0.5;">◀</button>
 			</c:otherwise>
 		</c:choose>
 
-		<span style="margin: 0 15px; align-self: center;">${currentPage} / ${maxPage != null ? maxPage : 1}</span>
+		<span style="margin: 0 15px; align-self: center;">${currentPageRental} / ${maxPageRental != null ? maxPageRental : 1}</span>
 
 		<c:choose>
-			<c:when test="${currentPage < maxPage}">
-				<button type="button" onclick="location.href='${pageContext.request.contextPath}/userStatus?page=${currentPage + 1}'">▶</button>
+			<c:when test="${currentPageRental < maxPageRental}">
+				<button type="button" onclick="location.href='${pageContext.request.contextPath}/userStatus?pageRental=${currentPageRental + 1}&pageReserve=${currentPageReserve}'">▶</button>
 			</c:when>
 			<c:otherwise>
 				<button type="button" disabled style="opacity: 0.5;">▶</button>
@@ -240,7 +257,7 @@ window.addEventListener('DOMContentLoaded', () => {
 		<table class="custom-table">
 			<thead>
 				<tr>
-					<th class="col-no">予約状況状況</th>
+					<th class="col-no">予約状況</th>
 					<th class="col-id">図書ID</th>
 					<th class="col-title">書名</th>
 					<th class="col-date">予約日</th>
@@ -256,7 +273,7 @@ window.addEventListener('DOMContentLoaded', () => {
 					<fmt:formatNumber value="${sessionScope.loginUser.userId}"
 						pattern="000000" var="fmtUserId" />
 					<tr>
-						<td>${((currentPage != null ? currentPage : 1) - 1) * 5 + status.count}</td>
+						<td>${((currentPageReserve != null ? currentPageReserve : 1) - 1) * 5 + status.count}</td>
 						<%-- 						<td><c:out value="${reserve.lendId}" /></td> --%>
 						<td><c:out value="${fmtBookId}" /></td>
 						<td><c:out value="${reserve.title}" /></td>
@@ -283,7 +300,7 @@ window.addEventListener('DOMContentLoaded', () => {
 						begin="${empty reserveList ? 1 : reserveList.size() + 1}" end="5"
 						var="i">
 						<tr>
-							<td>${(currentPage != null ? currentPage - 1 : 0) * 5 + i}</td>
+							<td>${(currentPageReserve != null ? currentPageReserve - 1 : 0) * 5 + i}</td>
 							<td></td>
 							<td></td>
 							<td></td>
@@ -298,19 +315,19 @@ window.addEventListener('DOMContentLoaded', () => {
 <div class="pagination-area">
 	<div class="pagination-buttons">
 		<c:choose>
-			<c:when test="${currentPage > 1}">
-				<button type="button" onclick="location.href='${pageContext.request.contextPath}/userStatus?page=${currentPage - 1}'">◀</button>
+			<c:when test="${currentPageReserve > 1}">
+				<button type="button" onclick="location.href='${pageContext.request.contextPath}/userStatus?pageReserve=${currentPageReserve - 1}&pageRental=${currentPageRental}'">◀</button>
 			</c:when>
 			<c:otherwise>
 				<button type="button" disabled style="opacity: 0.5;">◀</button>
 			</c:otherwise>
 		</c:choose>
 
-		<span style="margin: 0 15px; align-self: center;">${currentPage} / ${maxPage != null ? maxPage : 1}</span>
+		<span style="margin: 0 15px; align-self: center;">${currentPageReserve} / ${maxPageReserve != null ? maxPageReserve : 1}</span>
 
 		<c:choose>
-			<c:when test="${currentPage < maxPage}">
-				<button type="button" onclick="location.href='${pageContext.request.contextPath}/userStatus?page=${currentPage + 1}'">▶</button>
+			<c:when test="${currentPageReserve < maxPageReserve}">
+				<button type="button" onclick="location.href='${pageContext.request.contextPath}/userStatus?pageReserve=${currentPageReserve + 1}&pageRental=${currentPageRental}'">▶</button>
 			</c:when>
 			<c:otherwise>
 				<button type="button" disabled style="opacity: 0.5;">▶</button>

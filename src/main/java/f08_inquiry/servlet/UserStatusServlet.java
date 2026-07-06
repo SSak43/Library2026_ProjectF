@@ -53,7 +53,7 @@ public class UserStatusServlet extends HttpServlet {
 		List<RentalBean> rentalList = null;
 		List<ReserveBean> reserveList = null;
 
-		if (request.getParameter("page") != null) {
+		if (request.getParameter("pageRental") != null || request.getParameter("pageReserve") != null) {
 			rentalList = (List<RentalBean>) session.getAttribute("sessionRentalList");
 			reserveList = (List<ReserveBean>) session.getAttribute("sessionReserveList");
 			
@@ -123,6 +123,7 @@ public class UserStatusServlet extends HttpServlet {
 		    // 管理者は全件検索
 			rentalList = rndao.searchRentals(searchCategory,searchKeyword);
 		   reserveList = rsdao.searchReserves(searchCategory, searchKeyword);
+		   
 		} else {
 		    // 一般ユーザーは自分のログインIDに紐づくデータだけ検索
 		    int userId = usersBean.getUserId();
@@ -191,13 +192,22 @@ public class UserStatusServlet extends HttpServlet {
 			List<RentalBean> rentalList, List<ReserveBean> reserveList) throws ServletException, IOException {
 		
 		// 1. 現在のページ番号を取得 (リクエストになければ1ページ目とする)
-		int currentPage = 1;
-		String pageParam = request.getParameter("page");
-		if (pageParam != null && !pageParam.isEmpty()) {
+		int currentPageRental = 1;
+		int currentPageReserve = 1;
+		String pageRen = request.getParameter("pageRental");
+		String pageRes = request.getParameter("pageReserve");
+		if (pageRen != null && !pageRen.isEmpty()) {
 			try {
-				currentPage = Integer.parseInt(pageParam);
+				currentPageRental = Integer.parseInt(pageRen);
 			} catch (NumberFormatException e) {
-				currentPage = 1;
+				currentPageRental = 1;
+			}
+		}
+		if (pageRes != null && !pageRes.isEmpty()) {
+			try {
+				currentPageReserve = Integer.parseInt(pageRes);
+			} catch (NumberFormatException e) {
+				currentPageReserve = 1;
 			}
 		}
 		
@@ -207,8 +217,11 @@ public class UserStatusServlet extends HttpServlet {
 		int totalRentals = (rentalList != null) ? rentalList.size() : 0;
 		int maxPageRental = (int) Math.ceil((double) totalRentals / pageSize);
 		if (maxPageRental == 0) maxPageRental = 1;
+		
+		if (currentPageRental > maxPageRental) currentPageRental = maxPageRental;
+		if (currentPageRental < 1) currentPageRental = 1;
 
-		int rentalFrom = (currentPage - 1) * pageSize;
+		int rentalFrom = (currentPageRental - 1) * pageSize;
 		int rentalTo = Math.min(rentalFrom + pageSize, totalRentals);
 		
 		List<RentalBean> pagedRentalList = new ArrayList<>();
@@ -220,8 +233,11 @@ public class UserStatusServlet extends HttpServlet {
 		int totalReserves = (reserveList != null) ? reserveList.size() : 0;
 		int maxPageReserve = (int) Math.ceil((double) totalReserves / pageSize);
 		if (maxPageReserve == 0) maxPageReserve = 1;
+		
+		if (currentPageReserve > maxPageReserve) currentPageReserve = maxPageReserve;
+		if (currentPageReserve < 1) currentPageReserve = 1;
 
-		int reserveFrom = (currentPage - 1) * pageSize;
+		int reserveFrom = (currentPageReserve - 1) * pageSize;
 		int reserveTo = Math.min(reserveFrom + pageSize, totalReserves);
 		
 		List<ReserveBean> pagedReserveList = new ArrayList<>();
@@ -230,13 +246,15 @@ public class UserStatusServlet extends HttpServlet {
 		}
 
 		// 全体の最大ページ数を決定 (貸出か予約、どちらか大きい方)
-		int maxPage = Math.max(maxPageRental, maxPageReserve);
+//		int maxPage = Math.max(maxPageRental, maxPageReserve);
 
 		// 2. 切り出した5件のデータと、ページ情報をリクエスト属性にセット
 		request.setAttribute("rentalList", pagedRentalList);
 		request.setAttribute("reserveList", pagedReserveList);
-		request.setAttribute("currentPage", currentPage);
-		request.setAttribute("maxPage", maxPage);
+		request.setAttribute("currentPageRental", currentPageRental);
+		request.setAttribute("currentPageReserve", currentPageReserve);
+		request.setAttribute("maxPageRental", maxPageRental);
+		request.setAttribute("maxPageReserve",maxPageReserve);
 
 		// 3. JSPへフォワード
 		request.getRequestDispatcher("/WEB-INF/jsp/F-08/allInquiry.jsp").forward(request, response);

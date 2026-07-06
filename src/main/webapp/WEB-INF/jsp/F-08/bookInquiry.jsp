@@ -63,6 +63,22 @@ window.addEventListener('DOMContentLoaded', () => {
         searchInput.setSelectionRange(len, len);
     }
 });
+function clearForm(button) {
+    // ボタンから見て一番近い <form> 要素を取得
+    const form = button.closest('form');
+    
+    // フォーム内のテキスト入力欄をすべて空にする
+    const inputs = form.querySelectorAll('.search-input');
+    inputs.forEach(input => {
+        input.value = '';
+    });
+    
+    // セレクトボックスを一番上の項目（すべての項目）に戻す
+    const select = form.querySelector('.search-select');
+    if (select) {
+        select.selectedIndex = 0;
+    }
+}
 </script>
 	<div class="header">
 		<h1 class="header-title">貸出状況</h1>
@@ -79,7 +95,7 @@ window.addEventListener('DOMContentLoaded', () => {
 					<th class="search-col-value border-bottom">検索値</th>
 					<td rowspan="2" class="search-col-buttons">
 						<button type="submit" class="action-btn">検索</button>
-						<button type="button" class="action-btn">リセット</button>
+						<button type="button" class="action-btn" onclick="clearForm(this)">リセット</button>
 					</td>
 				</tr>
 				<tr>

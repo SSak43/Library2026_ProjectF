@@ -312,6 +312,12 @@ body {
 	background-color: #f2f2f2;
 }
 
+.custom-table .col-action-cell form {
+    margin: 0 !important;
+    padding: 0 !important;
+    display: inline; /* または flex */
+}
+
 /* 各列の幅の比率 */
 .col-no {
 	width: 5%;

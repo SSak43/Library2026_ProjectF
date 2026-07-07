@@ -189,8 +189,8 @@ function clearForm(button) {
 								<input type="hidden" name="action" value="searchBook"> <input
 									type="hidden" name="bookId" value="${fmtBookId}"> <input
 									type="hidden" name="userId" value="${fmtUserId}">
-								<button type="submit" class="action-btn" style="width: 80%; margin: -1px; padding: 2px 8px; font-size: 13px;">詳細</button>
-
+								<button type="submit" class="action-btn"
+									style="width: 80%; margin: -1px; padding: 2px 8px; font-size: 13px;">詳細</button>
 							</form>
 						</td>
 					</tr>

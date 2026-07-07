@@ -18,30 +18,30 @@ body {
 }
 
 /* --- 2. ヘッダーエリア (F-06のデザインを完全採用) --- */
-.header {
-  background-color: #e2e2e2; /* 薄いグレー背景 */
-  border-bottom: 1.5px solid #7a8fa6; /* 落ち着いた青グレーの境界線 */
-  padding: 0 30px;
-  height: 55px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end; /* ボタンを右端に寄せる */
-  position: relative;
-  margin-bottom: 10px; /* 下の検索コンテナとの間隔 */
-  width: 100%;
-}
+/*.header {*/
+/*  background-color: #e2e2e2;  薄いグレー背景 */
+/*  border-bottom: 1.5px solid #7a8fa6;  落ち着いた青グレーの境界線 */
+/*  padding: 0 30px;*/
+/*  height: 55px;*/
+/*  display: flex;*/
+/*  align-items: center;*/
+/*  justify-content: flex-end;  ボタンを右端に寄せる */
+/*  position: relative;*/
+/*  margin-bottom: 10px;  下の検索コンテナとの間隔 */
+/*  width: 100%;*/
+/*}*/
 
-.header-title {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%); /* 画面の真ん中にタイトルを固定 */
-  margin: 0;
-  font-size: 1.25rem;
-  font-weight: normal;
-  white-space: nowrap;
-  color: #333;
-}
+/*.header-title {*/
+/*  position: absolute;*/
+/*  left: 50%;*/
+/*  top: 50%;*/
+/*  transform: translate(-50%, -50%);  画面の真ん中にタイトルを固定 */
+/*  margin: 0;*/
+/*  font-size: 1.25rem;*/
+/*  font-weight: normal;*/
+/*  white-space: nowrap;*/
+/*  color: #333;*/
+/*}*/
 
 .menu-button {
   background-color: white;
@@ -225,14 +225,18 @@ body {
 .custom-table tbody tr:nth-child(even) td {
   background-color: #f2f2f2; /* 偶数行は極薄グレー */
 }
-
+.custom-table .col-action-cell form {
+    margin: 0 !important;
+    padding: 0 !important;
+    display: inline; /* または flex */
+}
 /* --- 5. 列ごとの横幅指定 (合計100%になるように調整) --- */
-.col-no { width: 6%; }           /* No. */
-.col-book-id { width: 14%; }     /* 図書ID */
-.col-title { width: 35%; }       /* 書名 */
-.col-user-id { width: 15%; }     /* 利用者ID */
-.col-return-date { width: 15%; } /* 返却日 */
-.col-action { width: 15%; }      /* 操作（詳細ボタン） */
+.col-no { width: 5%; }           /* No. */
+.col-book-id { width: 10%; }     /* 図書ID */
+.col-title { width: 64%; }       /* 書名 */
+.col-user-id { width: 8%; }     /* 利用者ID */
+.col-return-line { width: 8%; } /* 返却日 */
+.col-action { width: 7%; }      /* 操作（詳細ボタン） */
 
 /* --- 6. ご要望：特定列の強制中央寄せ設定 --- */
 .text-center {

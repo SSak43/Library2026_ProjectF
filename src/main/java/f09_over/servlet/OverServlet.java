@@ -1,6 +1,7 @@
 package f09_over.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import Model.RentalBean;
@@ -32,13 +33,13 @@ public class OverServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		OverDAO dao = new OverDAO();
-		List<RentalBean> rentalList = dao.searchOver("all", "");
+		List<RentalBean> rentalList = dao.searchOver("all", "");		//ページを開いた最初は全検索
 		
-		request.setAttribute("rentalList", rentalList);
+		request.setAttribute("rentalList", rentalList);					//検索結果をrentalListへ当てはめる
 		request.setAttribute("searchCategory", "all");
 		request.setAttribute("searchKeyword", "");
 		
-		request.getRequestDispatcher("/WEB-INF/jsp/F-09/overduelist.jsp").forward(request, response);
+		pagingAndForward(request,response, rentalList);
 	}
 
 	/**
@@ -46,21 +47,60 @@ public class OverServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String searchCategory = request.getParameter("searchCategory");
-		String searchKeyword = request.getParameter("searchKeyword");
+		String searchCategory = request.getParameter("searchCategory");	//カテゴリーを取得
+		String searchKeyword = request.getParameter("searchKeyword");	//キーワードを取得
 
-		if (searchCategory == null) searchCategory = "all";
-		if (searchKeyword == null) searchKeyword = "";
+		if (searchCategory == null) searchCategory = "all";				//カテゴリーがもし取得できなければすべて
+		if (searchKeyword == null) searchKeyword = "";					//キーワードが取得できなければ空白
 
 		OverDAO dao = new OverDAO();
-		List<RentalBean> rentalList = dao.searchOver(searchCategory, searchKeyword);
+		List<RentalBean> rentalList = dao.searchOver(searchCategory, searchKeyword);	//daoでカテゴリーとキーワードを引数に探す
 
 		// 画面に入力値を残すために再セット
 		request.setAttribute("rentalList", rentalList);
 		request.setAttribute("searchCategory", searchCategory);
 		request.setAttribute("searchKeyword", searchKeyword);
 
+		pagingAndForward(request,response, rentalList);
+	}
+	
+	private void pagingAndForward(HttpServletRequest request, HttpServletResponse response, 
+			List<RentalBean> rentalList) throws ServletException, IOException {
+		
+		// 1. 現在のページ番号を取得 (リクエストになければ1ページ目とする)
+		int currentPage = 1;
+		String pageParam = request.getParameter("page");
+		if (pageParam != null && !pageParam.isEmpty()) {
+			try {
+				currentPage = Integer.parseInt(pageParam);
+			} catch (NumberFormatException e) {
+				currentPage = 1;
+			}
+		}
+		
+		int pageSize = 5; // 1ページあたりの件数
+
+		// --- 貸出状況 (rentalList) のページング処理 ---
+		int totalRentals = (rentalList != null) ? rentalList.size() : 0;
+		int maxPageRental = (int) Math.ceil((double) totalRentals / pageSize);
+		if (maxPageRental == 0) maxPageRental = 1;
+
+		int rentalFrom = (currentPage - 1) * pageSize;
+		int rentalTo = Math.min(rentalFrom + pageSize, totalRentals);
+		
+		List<RentalBean> pagedRentalList = new ArrayList<>();
+		if (rentalList != null && rentalFrom < totalRentals) {
+			pagedRentalList = rentalList.subList(rentalFrom, rentalTo);
+		}
+
+		int maxPage = maxPageRental;
+
+		// 2. 切り出した5件のデータと、ページ情報をリクエスト属性にセット
+		request.setAttribute("rentalList", pagedRentalList);
+		request.setAttribute("currentPage", currentPage);
+		request.setAttribute("maxPage", maxPage);
+
+		// 3. JSPへフォワード
 		request.getRequestDispatcher("/WEB-INF/jsp/F-09/overduelist.jsp").forward(request, response);
 	}
-
 }

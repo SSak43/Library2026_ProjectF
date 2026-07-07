@@ -106,16 +106,10 @@ function clearForm(button) {
 								${searchCategory == 'bookId' ? 'selected' : ''}>図書ID</option>
 							<option value="title"
 								${searchCategory == 'title' ? 'selected' : ''}>書名</option>
-							<%
-							if (!"2".equals(uClass)) {
-							%>
 							<option value="userId"
 								${searchCategory == 'userId' ? 'selected' : ''}>利用者ID</option>
 							<option value="name"
 								${searchCategory == 'name' ? 'selected' : ''}>利用者氏名</option>
-							<%
-							}
-							%>
 					</select></td>
 					<td class="search-col-value border-bottom"><c:choose>
 							<%-- 【ID検索の場合】 6桁数字制限の属性を付与 --%>

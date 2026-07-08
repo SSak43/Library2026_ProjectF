@@ -35,7 +35,8 @@ if (loginUser != null) {
 <title>返却期限超過の貸出一覧</title>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/F-09.css?v=2">
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/home.css"
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/css/home.css"
 </head>
 <body>
 	<div class="header">
@@ -45,7 +46,8 @@ if (loginUser != null) {
 	</div>
 
 	<div class="search-container">
-		<form action="${pageContext.request.contextPath}/Over" method="post" id="searchForm">
+		<form action="${pageContext.request.contextPath}/Over" method="post"
+			id="searchForm">
 			<table class="search-table">
 				<tr>
 					<th class="search-col-item border-bottom-gap">検索項目</th>
@@ -68,10 +70,10 @@ if (loginUser != null) {
 							<option value="userId"
 								${param.searchCategory == 'userId' ? 'selected' : ''}>利用者ID</option>
 					</select></td>
-<!-- 					<td class="search-col-value border-bottom"><input type="text" -->
-<!-- 						class="search-input" name="searchKeyword" -->
-<%-- 						value="<c:out value='${param.searchKeyword}'/>" autocomplete="off" autofocus> --%>
-<!-- 					</td> -->
+					<!-- 					<td class="search-col-value border-bottom"><input type="text" -->
+					<!-- 						class="search-input" name="searchKeyword" -->
+					<%-- 						value="<c:out value='${param.searchKeyword}'/>" autocomplete="off" autofocus> --%>
+					<!-- 					</td> -->
 					<td class="search-col-value border-bottom"><c:choose>
 							<%-- 【ID検索の場合】 6桁数字制限の属性を付与 --%>
 							<c:when
@@ -138,7 +140,8 @@ if (loginUser != null) {
 								<input type="hidden" name="action" value="searchBook"> <input
 									type="hidden" name="bookId" value="${fmtBookId}"> <input
 									type="hidden" name="userId" value="${fmtUserId}">
-								<button type="submit" class="action-btn" style="width: 80%; margin: -1px; padding: 2px 8px; font-size: 13px;">返却</button>
+								<button type="submit" class="action-btn"
+									style="width: 80%; margin: -1px; padding: 2px 8px; font-size: 13px;">返却</button>
 							</form>
 						</td>
 					</tr>
@@ -163,8 +166,28 @@ if (loginUser != null) {
 
 		<div class="pagination-area">
 			<div class="pagination-buttons">
-				<button type="button">◀</button>
-				<button type="button">▶</button>
+				<c:choose>
+					<c:when test="${currentPage > 1}">
+						<button type="button"
+							onclick="location.href='${pageContext.request.contextPath}/userStatus?page=${currentPage - 1}'">◀</button>
+					</c:when>
+					<c:otherwise>
+						<button type="button" disabled style="opacity: 0.5;">◀</button>
+					</c:otherwise>
+				</c:choose>
+
+				<span style="margin: 0 15px; align-self: center;">${currentPage}
+					/ ${maxPage != null ? maxPage : 1}</span>
+
+				<c:choose>
+					<c:when test="${currentPage < maxPage}">
+						<button type="button"
+							onclick="location.href='${pageContext.request.contextPath}/userStatus?page=${currentPage + 1}'">▶</button>
+					</c:when>
+					<c:otherwise>
+						<button type="button" disabled style="opacity: 0.5;">▶</button>
+					</c:otherwise>
+				</c:choose>
 			</div>
 		</div>
 	</div>
@@ -174,28 +197,6 @@ if (loginUser != null) {
 			window.location.href = 'F-3.bookManagement.jsp';
 		}
 	</script>
-	<div class="pagination-area">
-	<div class="pagination-buttons">
-		<c:choose>
-			<c:when test="${currentPage > 1}">
-				<button type="button" onclick="location.href='${pageContext.request.contextPath}/userStatus?page=${currentPage - 1}'">◀</button>
-			</c:when>
-			<c:otherwise>
-				<button type="button" disabled style="opacity: 0.5;">◀</button>
-			</c:otherwise>
-		</c:choose>
 
-		<span style="margin: 0 15px; align-self: center;">${currentPage} / ${maxPage != null ? maxPage : 1}</span>
-
-		<c:choose>
-			<c:when test="${currentPage < maxPage}">
-				<button type="button" onclick="location.href='${pageContext.request.contextPath}/userStatus?page=${currentPage + 1}'">▶</button>
-			</c:when>
-			<c:otherwise>
-				<button type="button" disabled style="opacity: 0.5;">▶</button>
-			</c:otherwise>
-		</c:choose>
-	</div>
-</div>
 </body>
 </html>

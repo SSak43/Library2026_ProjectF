@@ -68,7 +68,7 @@ public class ReserveServlet extends HttpServlet {
             try {
                 int bookId = Integer.parseInt(bookIdStr);
                 BooksSearchDAO bookDAO = new BooksSearchDAO();
-                List<BooksBean> bookList = bookDAO.searchBooks("bookId", String.valueOf(bookId), 1);
+                List<BooksBean> bookList = bookDAO.searchBooks("bookId", String.valueOf(bookId));
                 
                 if (bookList != null && !bookList.isEmpty()) {
                     selectedBook = bookList.get(0);

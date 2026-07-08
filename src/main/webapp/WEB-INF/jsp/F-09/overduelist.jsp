@@ -135,7 +135,7 @@ if (loginUser != null) {
 						<%-- 						<td><c:out value="${book.bookClass}" /></td> --%>
 
 
-						<td class="col-action-cell">
+						<td class="col-action-cell text-center">
 							<form action="${pageContext.request.contextPath}/returnBook">
 								<input type="hidden" name="action" value="searchBook"> <input
 									type="hidden" name="bookId" value="${fmtBookId}"> <input

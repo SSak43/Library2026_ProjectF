@@ -121,7 +121,8 @@ if (loginUserObj != null && loginUserObj instanceof UsersBean) {
             <div style="text-align: center; margin: 25px 0; font-size: 1.1rem; line-height: 1.6;">
                 <p>図書登録が完了しました。</p>
                 <p style="color: #2f5597; font-weight: bold; margin-top: 10px;">
-                    登録された図書IDは 「 <c:out value="${registeredBookId}" /> 」 です。
+<%--                     登録された図書IDは 「 <c:out value="${registeredBookId}" /> 」 です。 --%>
+					登録された図書IDは「<fmt:formatNumber value="${ registeredBookId}" pattern='000000' /> 」
                 </p>
             </div>
   

@@ -430,28 +430,6 @@ pageContext.setAttribute("currentUserClass", userClassStr);
     </tbody>
   </table>
 
-  <div class="pagination-area">
-    <div class="pagination-buttons">
-      <c:choose>
-        <c:when test="${hasPrevPage}">
-          <button type="button" onclick="changePage(${currentPage - 1})">◀</button>
-        </c:when>
-        <c:otherwise>
-          <button type="button" disabled style="color:#ccc; cursor:default;">◀</button>
-        </c:otherwise>
-      </c:choose>
-      
-      <c:choose>
-        <c:when test="${hasNextPage}">
-          <button type="button" onclick="changePage(${currentPage + 1})">▶</button>
-        </c:when>
-        <c:otherwise>
-          <button type="button" disabled style="color:#ccc; cursor:default;">▶</button>
-        </c:otherwise>
-      </c:choose>
-    </div>
-  </div>
-</div>
 <div class="pagination-area">
 	<div class="pagination-buttons">
 		<c:choose>
@@ -475,6 +453,8 @@ pageContext.setAttribute("currentUserClass", userClassStr);
 		</c:choose>
 	</div>
 </div>
+</div>
+
 <script>
 function changePage(page) {
   // 隠しフィールドにページ番号をセットして検索フォームを送信

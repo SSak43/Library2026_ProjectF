@@ -1,6 +1,7 @@
 package f04_book_search.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import Model.BooksBean;
@@ -31,7 +32,7 @@ public class BooksSearchServlet extends HttpServlet {
 		// 1. 画面から検索条件を受け取る
 		String searchType = request.getParameter("searchType");
 		String keyword = request.getParameter("keyword");
-		String pageStr = request.getParameter("page");
+//		String pageStr = request.getParameter("page");
 
 		// 初回アクセス時や、未入力時のデフォルト値を設定
 		if (searchType == null || searchType.isEmpty()) {
@@ -42,30 +43,48 @@ public class BooksSearchServlet extends HttpServlet {
 		}
 
 		// ページ番号の処理（指定がなければ1ページ目）
-		int page = 1;
-		if (pageStr != null && !pageStr.isEmpty()) {
+//		int page = 1;
+//		if (pageStr != null && !pageStr.isEmpty()) {
+//			try {
+//				page = Integer.parseInt(pageStr);
+//			} catch (NumberFormatException e) {
+//				page = 1; // 数字以外が送られてきたら1ページ目にする
+//			}
+//		}
+
+		int currentPage = 1;
+		String pageParam = request.getParameter("page");
+		if(pageParam != null && !pageParam.isEmpty()) {
 			try {
-				page = Integer.parseInt(pageStr);
-			} catch (NumberFormatException e) {
-				page = 1; // 数字以外が送られてきたら1ページ目にする
+				currentPage = Integer.parseInt(pageParam);
+			}catch(NumberFormatException e) {
+				currentPage = 1;
 			}
 		}
-
-		// 2. DAOを使ってDBから図書リストを取得（1ページあたり最大10件）
+		
+		// 2. DAOを使ってDBから図書リストを取得
 		BooksSearchDAO dao = new BooksSearchDAO();
-		List<BooksBean> bookList = dao.searchBooks(searchType, keyword, page);
+		List<BooksBean> bookList = dao.searchBooks(searchType, keyword);
 
-		// 3. ページ送り（ページネーション）のための判定
-		// 10件ぴったり取れた場合、次のページにもデータがある「可能性」がある
-		boolean hasNextPage = (bookList.size() == 10);
-		// 2ページ目以降なら「前へ」ボタンを表示できる
-		boolean hasPrevPage = (page > 1);
-
+		//ページング処理
+		int pageSize = 10;
+		
+		int totalBooks = (bookList != null) ? bookList.size() : 0;
+		int maxPageBook = (int) Math.ceil ((double) totalBooks / pageSize);
+		if(maxPageBook == 0) maxPageBook = 1;
+		
+		int bookFrom = (currentPage - 1) * pageSize;
+		int bookTo = Math.min(bookFrom + pageSize, totalBooks);
+		
+		List<BooksBean> pagedBookList = new ArrayList<>();
+		if(bookList != null && bookFrom < totalBooks) {
+			pagedBookList = bookList.subList(bookFrom, bookTo);
+		}
+		
 		// 4. JSP（画面）に渡すデータを箱（request）に詰める
-		request.setAttribute("bookList", bookList);
-		request.setAttribute("currentPage", page);
-		request.setAttribute("hasNextPage", hasNextPage);
-		request.setAttribute("hasPrevPage", hasPrevPage);
+		request.setAttribute("bookList", pagedBookList);
+		request.setAttribute("currentPage", currentPage);
+		request.setAttribute("maxPage", maxPageBook);
 		request.setAttribute("searchType", searchType);
 		request.setAttribute("keyword", keyword);
 

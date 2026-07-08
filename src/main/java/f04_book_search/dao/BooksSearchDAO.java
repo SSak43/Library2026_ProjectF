@@ -20,14 +20,9 @@ public class BooksSearchDAO extends DAOBase {
      * @param page 現在のページ番号（1〜）
      * @return 該当する図書のリスト（最大10件）
      */
-    public List<BooksBean> searchBooks(String searchType, String keyword, int page) {
+    public List<BooksBean> searchBooks(String searchType, String keyword) {
         List<BooksBean> bookList = new ArrayList<>();
         
-        // 1ページあたりの表示件数
-        int limit = 10;
-        // スキップする件数の計算（1ページ目は0件、2ページ目は10件スキップ）
-        int offset = (page - 1) * limit;
-
         // ベースとなるSQL文
         StringBuilder sql = new StringBuilder("SELECT * FROM BOOKS ");
         List<Object> params = new ArrayList<>();
@@ -63,10 +58,8 @@ public class BooksSearchDAO extends DAOBase {
             }
         }
 
-        // 並び替えとページネーション（LIMIT, OFFSET）を追加
-        sql.append("ORDER BY BOOK_ID ASC LIMIT ? OFFSET ?");
-        params.add(limit);
-        params.add(offset);
+        // 並び替えを追加
+        sql.append("ORDER BY BOOK_ID ASC");
 
         // --- データベース接続と実行 ---
         try {

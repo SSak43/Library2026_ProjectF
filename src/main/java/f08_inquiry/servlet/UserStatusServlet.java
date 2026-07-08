@@ -228,8 +228,6 @@ public class UserStatusServlet extends HttpServlet {
 			pagedReserveList = reserveList.subList(reserveFrom, reserveTo);
 		}
 
-		// 全体の最大ページ数を決定 (貸出か予約、どちらか大きい方)
-//		int maxPage = Math.max(maxPageRental, maxPageReserve);
 
 		// 2. 切り出した5件のデータと、ページ情報をリクエスト属性にセット
 		request.setAttribute("rentalList", pagedRentalList);

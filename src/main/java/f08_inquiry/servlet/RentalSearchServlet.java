@@ -44,7 +44,7 @@ public class RentalSearchServlet extends HttpServlet {
 		List<RentalBean> rentalList = null;
 
 		if (request.getParameter("page") != null) {
-			rentalList = (List<RentalBean>) session.getAttribute("sessionReserveList");
+			rentalList = (List<RentalBean>) session.getAttribute("sessionRentalList");
 
 			// 検索キーワードなどもセッションから復元して入力欄を維持する
 			request.setAttribute("searchCategory", session.getAttribute("sessionSearchCategory"));
@@ -64,6 +64,8 @@ public class RentalSearchServlet extends HttpServlet {
 			request.setAttribute("searchKeyword", "");
 		}
 
+		session.setAttribute("sessionRentalList",rentalList);
+		
 		request.setAttribute("searchCategory", "all");
 		request.setAttribute("searchKeyword", "");
 
@@ -110,6 +112,10 @@ public class RentalSearchServlet extends HttpServlet {
 			rentalList = dao.searchRentalsByUserId(userId, searchCategory, searchKeyword);
 		}
 
+		session.setAttribute("sessionReserveList", rentalList);
+		session.setAttribute("sessionSearchCategory", searchCategory);
+		session.setAttribute("sessionSearchKeyword", searchKeyword);
+		
 		// 画面に入力値を残すために再セット
 		request.setAttribute("rentalList", rentalList);
 		request.setAttribute("searchCategory", searchCategory);
@@ -133,7 +139,7 @@ public class RentalSearchServlet extends HttpServlet {
 			}
 		}
 		
-		int pageSize = 5; // 1ページあたりの件数
+		int pageSize = 10; // 1ページあたりの件数
 
 		// --- 貸出状況 (rentalList) のページング処理 ---
 		int totalRentals = (rentalList != null) ? rentalList.size() : 0;

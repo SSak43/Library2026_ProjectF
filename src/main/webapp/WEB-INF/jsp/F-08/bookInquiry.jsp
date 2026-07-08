@@ -211,7 +211,7 @@ function clearForm(button) {
 	<div class="pagination-buttons">
 		<c:choose>
 			<c:when test="${currentPage > 1}">
-				<button type="button" onclick="location.href='${pageContext.request.contextPath}/userStatus?page=${currentPage - 1}'">◀</button>
+				<button type="button" onclick="location.href='${pageContext.request.contextPath}/rentalSearch?page=${currentPage - 1}'">◀</button>
 			</c:when>
 			<c:otherwise>
 				<button type="button" disabled style="opacity: 0.5;">◀</button>
@@ -222,7 +222,7 @@ function clearForm(button) {
 
 		<c:choose>
 			<c:when test="${currentPage < maxPage}">
-				<button type="button" onclick="location.href='${pageContext.request.contextPath}/userStatus?page=${currentPage + 1}'">▶</button>
+				<button type="button" onclick="location.href='${pageContext.request.contextPath}/rentalSearch?page=${currentPage + 1}'">▶</button>
 			</c:when>
 			<c:otherwise>
 				<button type="button" disabled style="opacity: 0.5;">▶</button>

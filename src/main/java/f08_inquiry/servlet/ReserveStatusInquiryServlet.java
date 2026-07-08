@@ -57,10 +57,11 @@ public class ReserveStatusInquiryServlet extends HttpServlet {
 			request.setAttribute("searchCategory", "all");
 			request.setAttribute("searchKeyword", "");
 		}
+		session.setAttribute("sessionReserveList", reserveList);
+		
 		request.setAttribute("searchCategory", "all");
 		request.setAttribute("searchKeyword", "");
 
-//		request.getRequestDispatcher("/WEB-INF/jsp/F-08/reserveInquiry.jsp").forward(request, response);
 		
 		pagingAndForward(request,response, reserveList);
 	}
@@ -100,13 +101,13 @@ public class ReserveStatusInquiryServlet extends HttpServlet {
 		   reserveList = dao.searchReservesByUserId(userId,searchCategory, searchKeyword);
 		}	
 
-//		request.setAttribute("reserveList", reserveList);
 		
 		session.setAttribute("sessionReserveList", reserveList);
+		session.setAttribute("sessionSearchCategory", searchCategory);
+		session.setAttribute("sessionSearchKeyword", searchKeyword);
+
 		request.setAttribute("searchCategory", searchCategory);
 		request.setAttribute("searchKeyword", searchKeyword);
-
-//		request.getRequestDispatcher("/WEB-INF/jsp/F-08/reserveInquiry.jsp").forward(request, response);
 
 		pagingAndForward(request, response, reserveList);
 	}

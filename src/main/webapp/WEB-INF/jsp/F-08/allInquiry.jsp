@@ -4,19 +4,6 @@
 <!DOCTYPE html>
 <%@ taglib uri="jakarta.tags.core" prefix="c"%>
 <%@ taglib uri="jakarta.tags.fmt" prefix="fmt"%>
-<%-- <% --%>
-<!-- // //ログインユーザーの区分に応じて遷移先URLを決定する処理 -->
-<!-- // UsersBean loginUser = null; -->
-<!-- // Object loginUserObj = session.getAttribute("loginUser"); -->
-<!-- // if (loginUserObj == null) -->
-<!-- // 	loginUserObj = session.getAttribute("user"); -->
-<!-- // if (loginUserObj == null) -->
-<!-- // 	loginUserObj = session.getAttribute("login"); -->
-<!-- // if (loginUserObj != null && loginUserObj instanceof UsersBean) { -->
-<!-- // 	loginUser = (UsersBean) loginUserObj; -->
-<!-- // } -->
-<!-- // String uClass = loginUser.getUserClass(); -->
-<%-- %> --%>
 <%
 // ログインユーザーの区分に応じて遷移先URLを決定する処理
 UsersBean loginUser = null;
@@ -198,18 +185,8 @@ window.addEventListener('DOMContentLoaded', function() {
 
 
 						<td class="col-action-cell">
-							<%-- 							<c:choose>	追加：利用者の場合はボタンを表示 --%> <%-- 								<c:when test="${uClass == '2'}"> --%>
-							<!-- 									<span --> <!-- 										style="display: inline-block; padding: 5px 12px; background-color: #e0e0e0; color: #555; border-radius: 4px; font-size: 0.9rem; font-weight: bold; border: 1px solid #ccc; letter-spacing: 0.05em; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);">窓口返却</span> -->
-							<%-- 								</c:when> --%> <%-- 								追加：管理者・司書の場合は今まで通り貸出ボタンを表示 --%>
-							<%-- 								<c:otherwise> --%> <%-- 									<form action="${pageContext.request.contextPath}/returnBook" --%>
-							<!-- 										method="post" style="display: inline;"> --> <!-- 										<input type="hidden" name="action" value="searchBook"> -->
-							<%-- 										<input type="hidden" name="bookId" value="${fmtBookId}"> --%>
-							<%-- 										<input type="hidden" name="userId" value="${fmtUserId}"> --%>
-							<!-- 										<button type="submit" class="action-btn">返却</button> -->
-							<!-- 									</form> --> <%-- 								</c:otherwise> --%> <%-- 							</c:choose> --%>
-
 							<%
-							if (!"2".equals(uClass)) {
+							if (!"2".equals(uClass)) {		//利用者区分が2(=利用者)ではない場合、返却画面へ
 							%>
 							<form action="${pageContext.request.contextPath}/returnBook">
 								<input type="hidden" name="action" value="searchBook"> <input
@@ -217,9 +194,8 @@ window.addEventListener('DOMContentLoaded', function() {
 									type="hidden" name="userId" value="${fmtUserId}">
 								<button type="submit" class="action-btn"
 									style="width: 80%; margin: -1px;padding: 2px 8px; font-size: 13px;">返却</button>
-								<!-- 							</form> -->
 								<%
-								} else {
+								} else {					//利用者の場合は窓口返却を示す
 								%>
 								<span
 									style="display: inline-block; padding: 5px 12px; background-color: #e0e0e0; color: #555; border-radius: 4px; font-size: 0.9rem; font-weight: bold; border: 1px solid #ccc; letter-spacing: 0.05em; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);">窓口返却</span>
@@ -246,6 +222,7 @@ window.addEventListener('DOMContentLoaded', function() {
 				</c:if>
 			</tbody>
 		</table>
+<!-- 		ページング処理。取得データ件数が5件より多い場合はページ数を増やし、遷移可能に。5件以下の場合は何の反応も示さないボタン -->
 		<div class="pagination-area">
 			<div class="pagination-buttons">
 				<c:choose>

@@ -206,7 +206,7 @@ function clearForm(button) {
 				</c:if>
 			</tbody>
 		</table>
-
+<!-- 		ページング処理。取得データ件数が10件より多い場合はページ数を増やし、遷移可能に。10件以下の場合は何の反応も示さないボタン -->
 <div class="pagination-area">
 	<div class="pagination-buttons">
 		<c:choose>

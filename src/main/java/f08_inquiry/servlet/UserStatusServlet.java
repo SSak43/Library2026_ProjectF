@@ -24,14 +24,11 @@ public class UserStatusServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 	        throws ServletException, IOException {
 		
-//		execute(request,response);
 	    
 	    if(request.getParameter("userId") != null) {
 	        execute(request,response);
 	        return;
 	    }
-	    
-
 	    
 	    HttpSession session = request.getSession();
 		
@@ -39,7 +36,7 @@ public class UserStatusServlet extends HttpServlet {
 		
 		UsersBean usersBean = new UsersBean();
 		int roleType = 2;
-		
+		//役職判定。取得できなければ役職の初期値は2(=利用者)
 		if(userObj != null) {
 			usersBean = (UsersBean) userObj;
 			String userClass = usersBean.getUserClass();
@@ -62,6 +59,7 @@ public class UserStatusServlet extends HttpServlet {
 			request.setAttribute("searchKeyword", session.getAttribute("sessionSearchKeyword"));
 		} 
 		// 初期表示の場合
+		// 管理者は未表示
 		else {
 			UserStatusDAO dao = new UserStatusDAO();
 			if (roleType == 2) {
@@ -72,34 +70,24 @@ public class UserStatusServlet extends HttpServlet {
 			request.setAttribute("searchCategory", "all");
 			request.setAttribute("searchKeyword", "");
 		}
-		
-//		if (roleType != 2) {
-//		    // 管理者は全件検索
-//		   rentalList = null;
-//		} else {
-//		    // 一般ユーザーは自分のログインIDに紐づくデータだけ検索
-//		    String userId = Integer.toString(usersBean.getUserId()); 
-//			rentalList = dao.getUserRentals(userId);
-//			reserveList = dao.getUserReserves(userId);
-//		}
 
 		request.setAttribute("searchCategory", "all");
 		request.setAttribute("searchKeyword", "");
-//		request.getRequestDispatcher("/WEB-INF/jsp/F-08/allInquiry.jsp").forward(request, response);
+		
+		//ページング処理の判定
 		pagingAndForward(request, response, rentalList,reserveList);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
-//		execute(request,response);
 		request.setCharacterEncoding("UTF-8");
 		HttpSession session = request.getSession();
 		Object userObj = session.getAttribute("loginUser");
 		
 		UsersBean usersBean = null;
 		int roleType = 2;
-		
+		//役職判定。取得できなければ役職の初期値は2(=利用者)
 		if(userObj != null) {
 			usersBean = (UsersBean) userObj;
 			String userClass = usersBean.getUserClass();
@@ -120,7 +108,7 @@ public class UserStatusServlet extends HttpServlet {
 		if(searchKeyword == null) searchKeyword = "";
 		
 		if (roleType != 2) {
-		    // 管理者は全件検索
+		    // 管理者は全ユーザーのデータを検索
 			rentalList = rndao.searchRentals(searchCategory,searchKeyword);
 		   reserveList = rsdao.searchReserves(searchCategory, searchKeyword);
 		   
@@ -130,8 +118,7 @@ public class UserStatusServlet extends HttpServlet {
 		    rentalList = rndao.searchRentalsByUserId(userId, searchCategory, searchKeyword);
 		   reserveList = rsdao.searchReservesByUserId(userId,searchCategory, searchKeyword);
 		}	
-//		request.setAttribute("rentalList", rentalList);
-//		request.setAttribute("reserveList", reserveList);
+
 		session.setAttribute("sessionRentalList", rentalList);
 		session.setAttribute("sessionReserveList", reserveList);
 		session.setAttribute("sessionSearchCategory", searchCategory);
@@ -140,7 +127,7 @@ public class UserStatusServlet extends HttpServlet {
 		request.setAttribute("searchCategory", searchCategory);
 		request.setAttribute("searchKeyword", searchKeyword);
 
-//		request.getRequestDispatcher("/WEB-INF/jsp/F-08/allInquiry.jsp").forward(request, response);
+//		ページング処理の判定
 		pagingAndForward(request, response, rentalList, reserveList);
 
 	}
@@ -175,17 +162,13 @@ public class UserStatusServlet extends HttpServlet {
 		if (!userId.isEmpty()) {
 			rentalList = dao.getUserRentals(userId);
 			reserveList = dao.getUserReserves(userId);
-
-//			request.setAttribute("rentalList", rentalList);
-//			request.setAttribute("reserveList", reserveList);
 		}
 		session.setAttribute("sessionRentalList", rentalList);
 		session.setAttribute("sessionReserveList", reserveList);
 		// 画面上の「利用者ID」テキストボックスに渡す値をセット
 		request.setAttribute("targetUserId", userId);
 
-		// JSPへフォワード
-//		request.getRequestDispatcher("/WEB-INF/jsp/F-08/allInquiry.jsp").forward(request, response);
+		// ページング処理の判定
 		pagingAndForward(request, response, rentalList, reserveList);
 	}
 	private void pagingAndForward(HttpServletRequest request, HttpServletResponse response, 

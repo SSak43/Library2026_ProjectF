@@ -28,6 +28,7 @@ public class RentalSearchServlet extends HttpServlet {
 		UsersBean usersBean = new UsersBean();
 		int roleType = 2;
 
+		//役職判定。取得できなければ役職の初期値は2(=利用者)
 		if (userObj != null) {
 			usersBean = (UsersBean) userObj;
 			String userClass = usersBean.getUserClass();
@@ -41,14 +42,6 @@ public class RentalSearchServlet extends HttpServlet {
 		// 初期表示は条件なしで全件検索（貸出日の早い順）
 		RentalSearchDAO dao = new RentalSearchDAO();
 		List<RentalBean> rentalList = null;
-		//		if (roleType != 2) {
-		//		    // 管理者は全件検索
-		//		   rentalList = dao.searchRentals("all","");
-		//		} else {
-		//		    // 一般ユーザーは自分のログインIDに紐づくデータだけ検索
-		//		    int userId = usersBean.getUserId(); 
-		//		   rentalList = dao.searchRentalsByUserId(userId,"all","");
-		//		}
 
 		if (request.getParameter("page") != null) {
 			rentalList = (List<RentalBean>) session.getAttribute("sessionReserveList");
@@ -60,7 +53,7 @@ public class RentalSearchServlet extends HttpServlet {
 		// 初期表示の場合
 		else {
 					if (roleType != 2) {
-					    // 管理者は全件検索
+					    // 管理者は全ユーザーのデータを検索
 					   rentalList = dao.searchRentals("all","");
 					} else {
 					    // 一般ユーザーは自分のログインIDに紐づくデータだけ検索
@@ -71,11 +64,8 @@ public class RentalSearchServlet extends HttpServlet {
 			request.setAttribute("searchKeyword", "");
 		}
 
-		//		request.setAttribute("rentalList", rentalList);
 		request.setAttribute("searchCategory", "all");
 		request.setAttribute("searchKeyword", "");
-
-//		request.getRequestDispatcher("/WEB-INF/jsp/F-08/bookInquiry.jsp").forward(request, response);
 
 		pagingAndForward(request,response, rentalList);
 	}
@@ -90,6 +80,7 @@ public class RentalSearchServlet extends HttpServlet {
 		UsersBean usersBean = null;
 		int roleType = 2;
 
+		//役職判定。取得できなければ役職の初期値は2(=利用者)
 		if (userObj != null) {
 			usersBean = (UsersBean) userObj;
 			String userClass = usersBean.getUserClass();
@@ -111,7 +102,7 @@ public class RentalSearchServlet extends HttpServlet {
 			searchKeyword = "";
 
 		if (roleType != 2) {
-			// 管理者は全件検索
+			// 管理者は全ユーザーのデータを検索
 			rentalList = dao.searchRentals(searchCategory, searchKeyword);
 		} else {
 			// 一般ユーザーは自分のログインIDに紐づくデータだけ検索

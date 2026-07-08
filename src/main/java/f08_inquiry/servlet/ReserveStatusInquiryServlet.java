@@ -25,7 +25,7 @@ public class ReserveStatusInquiryServlet extends HttpServlet {
 		
 		UsersBean usersBean = null;
 		int roleType = 2;
-		
+		//役職判定。取得できなければ役職の初期値は2(=利用者)		
 		if(userObj != null) {
 			usersBean = (UsersBean) userObj;
 			String userClass = usersBean.getUserClass();
@@ -47,7 +47,7 @@ public class ReserveStatusInquiryServlet extends HttpServlet {
 		// 初期表示の場合
 		else {
 			if (roleType != 2) {
-			    // 管理者は全件検索
+			    // 管理者は全ユーザーのデータを検索
 			   reserveList = dao.searchReserves("all","");
 			} else {
 			    // 一般ユーザーは自分のログインIDに紐づくデータだけ検索
@@ -72,7 +72,7 @@ public class ReserveStatusInquiryServlet extends HttpServlet {
 		
 		UsersBean usersBean = null;
 		int roleType = 2;
-		
+		//役職判定。取得できなければ役職の初期値は2(=利用者)
 		if(userObj != null) {
 			usersBean = (UsersBean) userObj;
 			String userClass = usersBean.getUserClass();
@@ -92,7 +92,7 @@ public class ReserveStatusInquiryServlet extends HttpServlet {
 		if(searchKeyword == null) searchKeyword = "";
 		
 		if (roleType != 2) {
-		    // 管理者は全件検索
+		    // 管理者は全ユーザーのデータを検索
 		   reserveList = dao.searchReserves(searchCategory, searchKeyword);
 		} else {
 		    // 一般ユーザーは自分のログインIDに紐づくデータだけ検索

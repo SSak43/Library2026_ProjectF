@@ -164,6 +164,7 @@ if (loginUser != null) {
 			</tbody>
 		</table>
 
+<!-- ページング処理。 10件より多くデータが存在する場合はページ遷移（前ページ）。それ以外は何の反応も示さないボタン-->
 		<div class="pagination-area">
 			<div class="pagination-buttons">
 				<c:choose>
@@ -178,7 +179,7 @@ if (loginUser != null) {
 
 				<span style="margin: 0 15px; align-self: center;">${currentPage}
 					/ ${maxPage != null ? maxPage : 1}</span>
-
+<!-- 10件より多くデータが存在する場合はページ遷移（次ページ） 。それ以外は何の反応も示さないボタン-->
 				<c:choose>
 					<c:when test="${currentPage < maxPage}">
 						<button type="button"

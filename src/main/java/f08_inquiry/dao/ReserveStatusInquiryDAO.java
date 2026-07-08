@@ -36,15 +36,6 @@ public class ReserveStatusInquiryDAO extends DAOBase {
 			case "title":
 				sql.append("AND B.TITLE LIKE ? ");
 				break;
-//			case "writerName":
-//				sql.append("AND B.WRITER_NAME LIKE ? ");
-//				break;
-//			case "company":
-//				sql.append("AND B.COMPANY LIKE ? ");
-//				break;
-//			case "bookClass":
-//				sql.append("AND B.BOOK_CLASS LIKE ? ");
-//				break;
 			case "userId":
 				sql.append("AND R.USER_ID = ? ");
 				break;
@@ -127,25 +118,8 @@ public class ReserveStatusInquiryDAO extends DAOBase {
 			case "title":
 				sql.append("AND B.TITLE LIKE ? ");
 				break;
-//			case "writerName":
-//				sql.append("AND B.WRITER_NAME LIKE ? ");
-//				break;
-//			case "company":
-//				sql.append("AND B.COMPANY LIKE ? ");
-//				break;
-//			case "bookClass":
-//				sql.append("AND B.BOOK_CLASS LIKE ? ");
-//				break;
-//			case "userId":
-//				sql.append("AND R.USER_ID = ? ");
-//				break;
-//			case "userName":
-//				sql.append("AND U.USER_NAME LIKE ? ");
-//				break;
 			case "all":
 			default:
-//				sql.append(
-//						"AND (LPAD(CAST(R.BOOK_ID AS CHAR), 6, '0') LIKE ? OR B.TITLE LIKE ? OR B.WRITER_NAME LIKE ? OR B.COMPANY LIKE ?) ");
 				sql.append("AND (LPAD(R.BOOK_ID, 6, '0') LIKE ? OR B.TITLE LIKE ?) ");
 				isAllSearch = true;
 				break;

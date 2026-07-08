@@ -452,7 +452,29 @@ pageContext.setAttribute("currentUserClass", userClassStr);
     </div>
   </div>
 </div>
+<div class="pagination-area">
+	<div class="pagination-buttons">
+		<c:choose>
+			<c:when test="${currentPage > 1}">
+				<button type="button" onclick="location.href='${pageContext.request.contextPath}/booksSearch?page=${currentPage - 1}'">◀</button>
+			</c:when>
+			<c:otherwise>
+				<button type="button" disabled style="opacity: 0.5;">◀</button>
+			</c:otherwise>
+		</c:choose>
 
+		<span style="margin: 0 15px; align-self: center;">${currentPage} / ${maxPage != null ? maxPage : 1}</span>
+
+		<c:choose>
+			<c:when test="${currentPage < maxPage}">
+				<button type="button" onclick="location.href='${pageContext.request.contextPath}/booksSearch?page=${currentPage + 1}'">▶</button>
+			</c:when>
+			<c:otherwise>
+				<button type="button" disabled style="opacity: 0.5;">▶</button>
+			</c:otherwise>
+		</c:choose>
+	</div>
+</div>
 <script>
 function changePage(page) {
   // 隠しフィールドにページ番号をセットして検索フォームを送信

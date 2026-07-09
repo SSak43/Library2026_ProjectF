@@ -158,12 +158,12 @@ function resetForm() {
             }
     %>
       <tr>
-        <td class="col-id"><%= String.format("%05d", reserve.getBookId()) %></td>
+        <td class="col-id"><%= String.format("%06d", reserve.getBookId()) %></td>
         <td class="col-category"><%= reserve.getUserName() %></td>
         <td class="col-title"><%= reserve.getTitle() %></td>
         <td class="col-author"><%= reserve.getWriterName() %></td>
         <td class="col-publisher"><%= reserve.getReserveDate() %></td>
-        <td class="col-status"><%= Integer.parseInt(String.valueOf(reserve.getReserveNo()).trim()) + 1 %></td>
+        <td class="col-status"><%= Integer.parseInt(String.valueOf(reserve.getReserveNo()).trim())%></td>
         <td class="col-action" style="text-align: center;">
           <% if (showCancelButton) { %>
             <button type="button" class="action-btn" style="color: #ff0000; padding: 2px 8px; font-size: 13px;" onclick="cancelReserve('<%= reserve.getReserveId() %>')">取り消し</button>

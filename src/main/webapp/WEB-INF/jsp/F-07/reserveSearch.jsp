@@ -1,14 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List, Model.ReserveBean, Model.UsersBean" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %> 
+
 <%
     // サーブレットから渡されたデータを取得
     List<ReserveBean> reserveList = (List<ReserveBean>) request.getAttribute("reserveList");
     Integer currentPageObj = (Integer) request.getAttribute("currentPage");
     int currentPage = (currentPageObj != null) ? currentPageObj : 1;
-    Boolean hasNextPageObj = (Boolean) request.getAttribute("hasNextPage");
-    boolean hasNextPage = (hasNextPageObj != null) ? hasNextPageObj : false;
-    Boolean hasPrevPageObj = (Boolean) request.getAttribute("hasPrevPage");
-    boolean hasPrevPage = (hasPrevPageObj != null) ? hasPrevPageObj : false;
     
     String successMessage = (String) request.getAttribute("successMessage");
     String errorMessage = (String) request.getAttribute("errorMessage");
@@ -189,13 +188,29 @@ function resetForm() {
     %>
     </tbody>
   </table>
-
   <div class="pagination-area">
-    <div class="pagination-buttons">
-      <button type="button" <%= hasPrevPage ? "" : "disabled style='cursor: default; opacity: 0.5;'" %> onclick="movePage(<%= currentPage - 1 %>)">◀</button>
-      <button type="button" <%= hasNextPage ? "" : "disabled style='cursor: default; opacity: 0.5;'" %> onclick="movePage(<%= currentPage + 1 %>)">▶</button>
-    </div>
-  </div>
+	<div class="pagination-buttons">
+		<c:choose>
+			<c:when test="${currentPage > 1}">
+				<button type="button" onclick="location.href='${pageContext.request.contextPath}/reserveSearch?page=${currentPage - 1}'">◀</button>
+			</c:when>
+			<c:otherwise>
+				<button type="button" disabled style="opacity: 0.5;">◀</button>
+			</c:otherwise>
+		</c:choose>
+
+		<span style="margin: 0 15px; align-self: center;">${currentPage} / ${maxPage != null ? maxPage : 1}</span>
+
+		<c:choose>
+			<c:when test="${currentPage < maxPage}">
+				<button type="button" onclick="location.href='${pageContext.request.contextPath}/reserveSearch?page=${currentPage + 1}'">▶</button>
+			</c:when>
+			<c:otherwise>
+				<button type="button" disabled style="opacity: 0.5;">▶</button>
+			</c:otherwise>
+		</c:choose>
+	</div>
+</div>
 </div>
 </form>
 </body>

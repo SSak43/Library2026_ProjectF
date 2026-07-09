@@ -1,6 +1,7 @@
 package f07_reserve.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import Model.ReserveBean;
@@ -58,23 +59,35 @@ public class ReserveSearchServlet extends HttpServlet {
         if (searchKeyword == null) searchKeyword = "";
 
         // ③ ページ番号の処理
-        String pageStr = request.getParameter("page");
-        int page = 1;
-        if (pageStr != null && !pageStr.isEmpty()) {
-            try {
-                page = Integer.parseInt(pageStr);
-            } catch (NumberFormatException e) {
-                page = 1; 
-            }
-        }
+		int currentPage = 1;
+		String pageParam = request.getParameter("page");
+		if(pageParam != null && !pageParam.isEmpty()) {
+			try {
+				currentPage = Integer.parseInt(pageParam);
+			}catch(NumberFormatException e) {
+				currentPage = 1;
+			}
+		}
+		
 
         // ④ DAOを使ってDBから予約リストを検索・取得
-        List<ReserveBean> reserveList = dao.searchReserves(searchType, searchKeyword, page);
+        List<ReserveBean> reserveList = dao.searchReserves(searchType, searchKeyword);
 
-        // ⑤ ページ送り判定
-        boolean hasNextPage = (reserveList.size() == 10);
-        boolean hasPrevPage = (page > 1);
+        // ⑤ ページング処理
+        int pageSize = 10;
+        
+		int totalReserves = (reserveList != null) ? reserveList.size() : 0;
+		int maxPageReserve = (int) Math.ceil((double) totalReserves / pageSize);
+		if (maxPageReserve == 0) maxPageReserve = 1;
 
+		int reserveFrom = (currentPage - 1) * pageSize;
+		int reserveTo = Math.min(reserveFrom + pageSize, totalReserves);
+		
+		List<ReserveBean> pagedReserveList = new ArrayList<>();
+		if (reserveList != null && reserveFrom <= totalReserves) {
+			pagedReserveList = reserveList.subList(reserveFrom, reserveTo);
+		}
+        
         if ("search".equals(action) && reserveList.isEmpty()) {
             errorMessage = "該当する予約情報が見つかりませんでした。";
         }
@@ -82,10 +95,10 @@ public class ReserveSearchServlet extends HttpServlet {
         // ⑥ JSPにデータを渡す
         request.setAttribute("searchType", searchType); 
         request.setAttribute("searchKeyword", searchKeyword); 
-        request.setAttribute("reserveList", reserveList);
-        request.setAttribute("currentPage", page);
-        request.setAttribute("hasNextPage", hasNextPage);
-        request.setAttribute("hasPrevPage", hasPrevPage);
+        request.setAttribute("reserveList", pagedReserveList);
+        request.setAttribute("currentPage", currentPage);
+        request.setAttribute("maxPage", maxPageReserve);
+
         request.setAttribute("successMessage", successMessage);
         request.setAttribute("errorMessage", errorMessage);
 

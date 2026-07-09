@@ -16,12 +16,8 @@ public class ReserveSearchDAO extends DAOBase {
     /**
      * 検索タイプとキーワードを指定して予約状況を取得する
      */
-    public List<ReserveBean> searchReserves(String searchType, String searchKeyword, int page) {
+    public List<ReserveBean> searchReserves(String searchType, String searchKeyword) {
         List<ReserveBean> reserveList = new ArrayList<>();
-        
-        int limit = 10;
-        int offset = (page - 1) * limit;
-
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
@@ -81,11 +77,9 @@ public class ReserveSearchDAO extends DAOBase {
                 }
             }
 
-            // 並び替えとページネーション
-            sql.append("ORDER BY R.RESERVE_ID ASC LIMIT ? OFFSET ?");
-            params.add(limit);
-            params.add(offset);
-
+            // 並び替え
+            sql.append("ORDER BY R.RESERVE_ID ASC");
+            
             PreparedStatement pStmt = conn.prepareStatement(sql.toString());
             
             for (int i = 0; i < params.size(); i++) {

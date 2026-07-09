@@ -21,7 +21,9 @@ public class ReserveStatusInquiryDAO extends DAOBase {
 				"SELECT R.BOOK_ID, B.TITLE, R.RESERVE_DATE, U.USER_NAME, U.USER_ID " +
 						"FROM RESERVE R " +
 						"JOIN BOOKS B ON R.BOOK_ID = B.BOOK_ID " +
-						"JOIN USERS U ON R.USER_ID = U.USER_ID WHERE 1=1 ");
+						"JOIN USERS U ON R.USER_ID = U.USER_ID WHERE R.RESERVE_STATUS = '0' " + 
+						"AND R.DELETE_FLAG = '0' AND B.DELETE_FLAG = '0' AND U.DELETE_FLAG = '0' "
+				);
 
 		boolean hasKeyword = (keyword != null && !keyword.trim().isEmpty());
 		String targetKeyword = hasKeyword ? keyword.trim() : "";

@@ -58,7 +58,8 @@ public class UserStatusDAO extends DAOBase {
 				 "DATE_FORMAT(R.RESERVE_DATE, '%Y/%m/%d') AS RESERVE_DATE_STR, U.USER_NAME " +
 				 "FROM RESERVE R JOIN BOOKS B ON R.BOOK_ID = B.BOOK_ID " +
 				 "JOIN USERS U ON R.USER_ID = U.USER_ID " +
-				 "WHERE R.USER_ID = ? ORDER BY R.RESERVE_DATE DESC LIMIT 5";
+				 "WHERE R.USER_ID = ? AND R.RESERVE_STATUS = '0' AND R.DELETE_FLAG = '0' AND B.DELETE_FLAG = '0' AND U.DELETE_FLAG = '0' " +
+				 "ORDER BY R.RESERVE_DATE DESC ";
 
 		try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
 			 PreparedStatement ps = conn.prepareStatement(sql)) {
